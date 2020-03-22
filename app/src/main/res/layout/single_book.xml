@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="140dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
     android:orientation="vertical">
@@ -30,6 +31,7 @@
             android:layout_marginTop="16dp"
             android:maxLines="3"
             android:text="Item"
+            android:textColor="?attr/textcolor"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
         <TextView
@@ -42,6 +44,7 @@
             android:drawablePadding="2dp"
             android:drawableRight="@drawable/ic_star_black_24dp"
             android:gravity="center"
+            android:textColor="?attr/textcolor"
             android:text="4.5"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="15sp" />

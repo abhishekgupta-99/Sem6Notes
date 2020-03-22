@@ -4,11 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="8dp"
+    android:background="?attr/backgroundcolor"
+    android:padding="12dp"
     tools:context="com.abhishek.SEM6.HomeActivity">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="24dp"
         android:id="@+id/rvSubject"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

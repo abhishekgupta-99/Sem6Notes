@@ -1,36 +1,88 @@
 package com.abhishek.SEM6;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Toast;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.abhishek.SEM6.adapters.SubjectAdapter;
+import com.abhishek.SEM6.adapters.SubjectAdapter_db;
 import com.abhishek.SEM6.models.Book;
+import com.abhishek.SEM6.models.Book_db;
 import com.abhishek.SEM6.models.Subject;
+import com.abhishek.SEM6.models.Subject_db;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
     private RecyclerView rvSubject;
     private SubjectAdapter subjectAdapter;
-    private ArrayList<Subject> subjects;
 
+    private SubjectAdapter_db subjectAdapter_db;
+    private ArrayList<Subject> subjects;
+    private FirebaseFirestore db;
+    List<String> subject_names = new ArrayList<>();
+
+    ArrayList<Subject_db> subjects_db = new ArrayList<Subject_db>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.AppTheme);
+
+
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+       // this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+
         setContentView(R.layout.activity_main);
+
+         db = FirebaseFirestore.getInstance();
 
         initComponents();
 
         subjects = prepareData();
 
-        subjectAdapter = new SubjectAdapter(subjects, HomeActivity.this);
+
+      //  set_recyclerView();
+
+//        subjectAdapter = new SubjectAdapter(subjects, HomeActivity.this);
+//        LinearLayoutManager manager = new LinearLayoutManager(HomeActivity.this);
+//        rvSubject.setLayoutManager(manager);
+//        rvSubject.setAdapter(subjectAdapter);
+
+    }
+
+    private void set_recyclerView(ArrayList<Subject_db> subjects_db) {
+        subjectAdapter_db = new SubjectAdapter_db(subjects_db, HomeActivity.this);
         LinearLayoutManager manager = new LinearLayoutManager(HomeActivity.this);
         rvSubject.setLayoutManager(manager);
-        rvSubject.setAdapter(subjectAdapter);
-
+        rvSubject.setAdapter(subjectAdapter_db);
     }
 
     private void initComponents() {
@@ -38,6 +90,11 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private ArrayList<Subject> prepareData() {
+
+
+        getAllSubject();
+       // getAllBooks();
+
         ArrayList<Subject> subjects = new ArrayList<Subject>();
 
         Subject physics = new Subject();
@@ -178,5 +235,94 @@ public class HomeActivity extends AppCompatActivity {
         subjects.add(bio);
 
         return subjects;
+    }
+
+    private void getAllBooks() {
+
+        final int[] count = {0};
+
+        for(String each_subject_from_db: subject_names)
+        {
+             final Subject_db subject=new Subject_db();
+             subject.subjectName=each_subject_from_db;
+            subject.books=new ArrayList<Book_db>();
+            Toast.makeText(this, each_subject_from_db, Toast.LENGTH_SHORT).show();
+            db.collection(each_subject_from_db)
+                    //.whereEqualTo("capital", true)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                count[0] += 1;
+
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                    Book_db book = document.toObject(Book_db.class);
+                                    subject.books.add(book);
+                                    Toast.makeText(HomeActivity.this, book.name+" hh", Toast.LENGTH_SHORT).show();
+                                   // Log.d("All Books",  " => " + book.name);
+
+                                    Log.d("UnReached adapter",  " => " );
+
+
+                                }
+                            //    Log.d("All Books",  " => " + subject.books.get(0).getName());
+                                subjects_db.add(subject);
+
+
+                            } else {
+                                Log.d("Book", "Error getting documents: ", task.getException());
+                            }
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                    if(count[0] ==subject_names.size())
+                    {
+                        set_recyclerView(subjects_db);
+
+                    }
+
+
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                    Toast.makeText(HomeActivity.this, "Failed to retrieve Books", Toast.LENGTH_SHORT).show();
+
+                }
+            });
+
+        }
+
+        Log.d("Reached adapter",  " => " );
+
+
+
+    }
+
+    private void getAllSubject() {
+        db.collection("Subjects").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        subject_names.add(document.getId());
+                    }
+                    Log.d("subjects", subject_names.toString());
+                    getAllBooks();
+                   // set_recyclerView(subjects_db);
+
+                } else {
+                    Log.d("subjects", "Error getting documents: ", task.getException());
+                }
+            }
+        });
+
     }
 }
