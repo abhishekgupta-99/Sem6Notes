@@ -1,4 +1,4 @@
-package com.abhishekgupta.list_in_list.adapters;
+package com.abhishek.SEM6.adapters;
 
 import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.abhishekgupta.list_in_list.R;
-import com.abhishekgupta.list_in_list.models.Chapter;
+import com.abhishek.SEM6.R;
+import com.abhishek.SEM6.models.Book;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -18,15 +18,15 @@ import java.util.ArrayList;
  * Created by ashu on 6/2/17.
  */
 
-public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.CustomViewHolder> {
+public class BookAdapter extends RecyclerView.Adapter<BookAdapter.CustomViewHolder> {
 
     private Context context;
-    private ArrayList<Chapter> chapters;
+    private ArrayList<Book> books;
     private LayoutInflater inflater;
 
-    public ChapterAdapter(Context context, ArrayList<Chapter> chapters) {
+    public BookAdapter(Context context, ArrayList<Book> books) {
         this.context = context;
-        this.chapters = chapters;
+        this.books = books;
         this.inflater = LayoutInflater.from(context);
 
     }
@@ -34,20 +34,20 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.CustomVi
     @Override
     public CustomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
-        view = inflater.inflate(R.layout.single_chapter, parent, false);
+        view = inflater.inflate(R.layout.single_book, parent, false);
         return new CustomViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(CustomViewHolder holder, int position) {
-        Chapter chapter = chapters.get(position);
-        holder.tvChapterName.setText(chapter.chapterName);
-        Picasso.get().load(chapter.imageUrl).into(holder.ivChapter);
+        Book book = books.get(position);
+        holder.tvChapterName.setText(book.chapterName);
+        Picasso.get().load(book.imageUrl).into(holder.ivChapter);
     }
 
     @Override
     public int getItemCount() {
-        return chapters.size();
+        return books.size();
     }
 
 
@@ -60,7 +60,7 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.CustomVi
             super(itemView);
 
             tvChapterName = (TextView) itemView.findViewById(R.id.tvChapterName);
-            ivChapter = (ImageView) itemView.findViewById(R.id.ivChapter);
+            ivChapter = (ImageView) itemView.findViewById(R.id.ivBook);
         }
     }
 }

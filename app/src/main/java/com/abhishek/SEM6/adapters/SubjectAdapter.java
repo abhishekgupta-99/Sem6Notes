@@ -1,4 +1,4 @@
-package com.abhishekgupta.list_in_list.adapters;
+package com.abhishek.SEM6.adapters;
 
 import android.content.Context;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.abhishekgupta.list_in_list.R;
-import com.abhishekgupta.list_in_list.models.Subject;
+import com.abhishek.SEM6.R;
+import com.abhishek.SEM6.models.Subject;
 
 import java.util.ArrayList;
 
@@ -37,7 +37,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.recyclerView.setAdapter(new ChapterAdapter(context, subjects.get(position).chapters));
+        holder.recyclerView.setAdapter(new BookAdapter(context, subjects.get(position).books));
         holder.recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         holder.recyclerView.setHasFixedSize(true);
         holder.tvHeading.setText(subjects.get(position).subjectName);

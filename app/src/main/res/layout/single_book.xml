@@ -13,7 +13,7 @@
         android:padding="6dp">
 
         <ImageView
-            android:id="@+id/ivChapter"
+            android:id="@+id/ivBook"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:scaleX="1.2"
