@@ -3,7 +3,7 @@ package com.abhishek.SEM6.models;
 import java.util.ArrayList;
 
 /**
- * Created by Ashish on 06-05-2018.
+ * Created by abhishek on 3/2020.
  */
 
 public class Subject {

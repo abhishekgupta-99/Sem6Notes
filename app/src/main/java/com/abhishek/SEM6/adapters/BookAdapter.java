@@ -15,7 +15,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 /**
- * Created by ashu on 6/2/17.
+ * Created by abhishek on 3/2020.
  */
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.CustomViewHolder> {
