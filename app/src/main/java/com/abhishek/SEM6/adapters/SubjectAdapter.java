@@ -14,7 +14,7 @@ import com.abhishek.SEM6.models.Subject;
 import java.util.ArrayList;
 
 /**
- * * Created by abhishek on 3/2020.
+ * * Created by abhishek   on 3/2020.
  */
 
 public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHolder> {
