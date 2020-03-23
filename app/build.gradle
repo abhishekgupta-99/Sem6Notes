@@ -30,6 +30,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:19.2.1'
 
 
+    implementation 'com.google.android.material:material:1.2.0-alpha05'
+
+
     implementation 'com.google.firebase:firebase-firestore:21.4.1'
 //    implementation "com.firebaseui:firebase-ui-auth:3.0.0"
 //    implementation "com.firebaseui:firebase-ui-firestore:4.2.1"
