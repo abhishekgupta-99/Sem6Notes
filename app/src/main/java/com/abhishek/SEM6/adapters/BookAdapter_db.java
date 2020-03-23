@@ -1,12 +1,16 @@
 package com.abhishek.SEM6.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.abhishek.SEM6.R;
@@ -41,10 +45,18 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
     }
 
     @Override
-    public void onBindViewHolder(CustomViewHolder holder, int position) {
+    public void onBindViewHolder(CustomViewHolder holder, final int position) {
         Book_db book = books.get(position);
         holder.tvChapterName.setText(book.name);
-        Picasso.get().load(book.url).into(holder.ivChapter);
+       holder.download_button.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(books.get(position).url)));
+
+
+           }
+       });
+       // Picasso.get().load(book.url).into(holder.ivChapter);
     }
 
     @Override
@@ -57,12 +69,14 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
 
         public ImageView ivChapter;
         public TextView tvChapterName;
+        public CardView download_button;
 
         public CustomViewHolder(View itemView) {
             super(itemView);
 
             tvChapterName = (TextView) itemView.findViewById(R.id.tvChapterName);
             ivChapter = (ImageView) itemView.findViewById(R.id.ivBook);
+            download_button=(CardView) itemView.findViewById(R.id.download_card);
         }
     }
 }

@@ -21,7 +21,7 @@
         <ImageView
             android:id="@+id/ivBook"
             android:layout_width="100dp"
-            android:layout_height="125dp"
+            android:layout_height="100dp"
             android:layout_gravity="center"
             android:scaleX="1.2"
             android:scaleType="fitXY"
@@ -45,10 +45,11 @@
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/cartype_card"
+            android:id="@+id/download_card"
             android:layout_gravity="center"
             android:textStyle="bold"
             android:layout_marginTop="5dp"
+            android:clickable="true"
             app:cardCornerRadius="5dp"
             android:layout_margin="5dp"
             app:cardBackgroundColor="@color/colorAccent"
@@ -59,7 +60,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/ratingTextView"
+                android:id="@+id/download"
                 android:textSize="15sp"
                 android:layout_gravity="center"
                 android:text="Download"
