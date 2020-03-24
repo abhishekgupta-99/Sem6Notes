@@ -29,6 +29,7 @@
         android:layout_marginBottom="16dp"
         app:srcCompat="@drawable/ic_add_black_24dp"
         app:tint="@color/white"
+        android:onClick="googlesignin"
         app:backgroundTint="@color/blue"
         app:layout_anchor="@id/rvSubject"
         app:layout_anchorGravity="bottom|right|end"
