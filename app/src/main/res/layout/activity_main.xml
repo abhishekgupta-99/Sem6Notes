@@ -27,6 +27,7 @@
         app:backgroundTint="#3F51B5"
         android:layout_margin="16dp"
         android:layout_gravity="bottom|end"
+        android:onClick="googlesignin"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         app:layout_anchor="@id/rvSubject"
