@@ -1,15 +1,23 @@
 package com.abhishek.SEM6;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,6 +29,11 @@ import com.abhishek.SEM6.models.Book;
 import com.abhishek.SEM6.models.Book_db;
 import com.abhishek.SEM6.models.Subject;
 import com.abhishek.SEM6.models.Subject_db;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -30,12 +43,18 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity {
 
+    private static final int RC_SIGN_IN = 321;
     private RecyclerView rvSubject;
     private SubjectAdapter subjectAdapter;
+
+    LayoutInflater inflater;
+    View v;
 
     private SubjectAdapter_db subjectAdapter_db;
     private ArrayList<Subject> subjects;
@@ -46,7 +65,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(R.style.AppTheme);
+        //setTheme(R.style.AppTheme);
 
 
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -62,7 +81,7 @@ public class HomeActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-         db = FirebaseFirestore.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         initComponents();
 
@@ -324,5 +343,171 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void add_dialog(GoogleSignInAccount account) {
+
+
+       // googlesignin();
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this,android.R.style.Theme_DeviceDefault_Light_Dialog_Alert);
+        // Get the layout inflater
+
+      //  builder.setCancelable(false);
+
+
+        inflater = getLayoutInflater();
+        v=inflater.inflate(R.layout.add_book_dialog, null);
+
+        initialize_spinners(v);
+        TextView signedin=v.findViewById(R.id.signedIn);
+        signedin.setText("Signed In As : "+account.getDisplayName());
+
+
+        //  builder.getContext().setTheme(R.style.AppTheme);
+        final AlertDialog  alert= builder.create();
+        //alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        // Inflate and set the layout for the dialog
+        // Pass null as the parent view because its going in the dialog layout
+
+        builder.setView(v)
+                // Add action buttons
+                .setPositiveButton("Upload", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        upload_to_firestore();
+
+//                        password_Et= v.findViewById(R.id.password_edit);
+//
+//                        // Log.d("correct_password_edit", passowrd.toString());
+//                        password_entered = password_Et.getText().toString();
+//                        showToast("Entered Password: "+password_entered);
+//                        Log.d("correct_password",password_entered);
+//                        String original= "1234";
+//
+//                        if (password_entered.equals("bmc_car"))
+//                        {
+//                            // Log.d("correct_password","heyyy");
+//                            dialog.cancel();
+//                            check_current_user();
+//
+//
+//                        }
+//                        else {
+//                            //Log.d(user_text,"string is empty");
+//                            String message = "The password you have entered is incorrect." + " \n \n" + "Please try again!";
+//                            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this,android.R.style.Theme_DeviceDefault_Light_Dialog_Alert);
+//                            builder.setTitle("Error");
+//                            builder.setMessage(message);
+//                            builder.setCancelable(false);
+//                            // builder.setPositiveButton("Cancel", null);
+//                            builder.setNegativeButton("Retry", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int id) {
+//                                    dialog();
+//                                }
+//                            });
+//                            builder.create().show();
+//
+//                        }
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+
+        // show it
+        alertDialog.show();
+    }
+
+    private void upload_to_firestore() {
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        Map<String, Object> book_details = new HashMap<>();
+      //  book_details.put("TimeStamp", tsLong);
+    }
+
+    public void googlesignin(View view) {
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+
+
+        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, 321);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN) {
+            // The Task returned from this call is always completed, no need to attach
+            // a listener.
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> task) {
+
+        try {
+            GoogleSignInAccount account = task.getResult(ApiException.class);
+
+            Toast.makeText(this, "Successful Sign In", Toast.LENGTH_SHORT).show();
+
+            add_dialog(account);
+
+            //updateUI(account);
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Toast.makeText(this, "Failed Sign In", Toast.LENGTH_SHORT).show();
+            //Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+        }
+    }
+
+    private void initialize_spinners(View v) {
+
+        Spinner dropdown = v.findViewById(R.id.role);
+//create a list of items for the spinner.
+        String[] items = new String[]{"Student","Teacher"};
+//create an adapter to describe how the items are displayed, adapters are used in several places in android.
+//There are multiple variations of this, but this is the basic variant.
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+//set the spinners adapter to the previously created one.
+        dropdown.setAdapter(adapter);
+
+
+
+        Spinner content_type = v.findViewById(R.id.content_type);
+//create a list of items for the spinner.
+        String[] type = new String[]{"Book Pdf","Ppt","Youtube Url"};
+//create an adapter to describe how the items are displayed, adapters are used in several places in android.
+//There are multiple variations of this, but this is the basic variant.
+        ArrayAdapter<String> adap = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, type);
+//set the spinners adapter to the previously created one.
+        content_type.setAdapter(adap);
+
+
+        Spinner subject = v.findViewById(R.id.subject);
+//create a list of items for the spinner.
+    //    String[] type = new String[]{"Book Pdf","Ppt","Youtube Url"};
+//create an adapter to describe how the items are displayed, adapters are used in several places in android.
+//There are multiple variations of this, but this is the basic variant.
+        ArrayAdapter<String> sub_adap = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, subject_names);
+//set the spinners adapter to the previously created one.
+        subject.setAdapter(sub_adap);
     }
 }
