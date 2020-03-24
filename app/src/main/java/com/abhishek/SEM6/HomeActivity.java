@@ -15,7 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.URLUtil;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +40,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -52,6 +55,7 @@ public class HomeActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 321;
     private RecyclerView rvSubject;
     private SubjectAdapter subjectAdapter;
+    Spinner type_user,content_type,subject;
 
     LayoutInflater inflater;
     View v;
@@ -345,7 +349,7 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    public void add_dialog(GoogleSignInAccount account) {
+    public void add_dialog(final GoogleSignInAccount account) {
 
 
        // googlesignin();
@@ -358,6 +362,8 @@ public class HomeActivity extends AppCompatActivity {
 
         inflater = getLayoutInflater();
         v=inflater.inflate(R.layout.add_book_dialog, null);
+
+
 
         initialize_spinners(v);
         TextView signedin=v.findViewById(R.id.signedIn);
@@ -376,7 +382,26 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
 
-                        upload_to_firestore();
+                         EditText title=v.findViewById(R.id.title);
+                         EditText url=v.findViewById(R.id.ref_url);
+
+                         if(!(title.getText().toString().isEmpty()) || !(url.getText().toString().isEmpty())) {
+
+                             if (URLUtil.isValidUrl(url.getText().toString())) {
+                                 upload_to_firestore(account, title.getText().toString(), url.getText().toString());
+                             } else {
+                                 Toast.makeText(HomeActivity.this, "Please enter a valid url ", Toast.LENGTH_SHORT).show();
+                             }
+                         }
+                         else
+                         {
+                             Toast.makeText(HomeActivity.this, "Fields can't be empty", Toast.LENGTH_SHORT).show();
+                         }
+
+
+
+
+
 
 //                        password_Et= v.findViewById(R.id.password_edit);
 //
@@ -426,12 +451,44 @@ public class HomeActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    private void upload_to_firestore() {
+    private void upload_to_firestore(GoogleSignInAccount account, String title, String url) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         Map<String, Object> book_details = new HashMap<>();
-      //  book_details.put("TimeStamp", tsLong);
+        book_details.put("uploader", account.getDisplayName());
+        book_details.put("name",title);
+        book_details.put("url",url);
+        book_details.put("content_type",String.valueOf(content_type.getSelectedItem()));
+        book_details.put("user_type",String.valueOf(type_user.getSelectedItem()));
+
+
+       String subject_db= String.valueOf(subject.getSelectedItem());
+        DocumentReference document = db.collection(subject_db).document(title);
+
+        document.set(book_details)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getApplicationContext(), "Book Uploaded to database", Toast.LENGTH_SHORT).show();
+
+
+                        //Toast.makeText(ctx, "The car is "+lab+" , with a confidence of "+  conf, Toast.LENGTH_LONG).show();
+                        // get_LatLong();
+
+                        //  Log.d(TAG, "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Log.w(TAG, "Error writing document", e);
+
+                        Toast.makeText(HomeActivity.this, "Failed Writing to database", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
     }
 
     public void googlesignin(View view) {
@@ -440,7 +497,7 @@ public class HomeActivity extends AppCompatActivity {
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-
+        
 
 
         GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
@@ -480,18 +537,18 @@ public class HomeActivity extends AppCompatActivity {
 
     private void initialize_spinners(View v) {
 
-        Spinner dropdown = v.findViewById(R.id.role);
+         type_user = v.findViewById(R.id.role);
 //create a list of items for the spinner.
         String[] items = new String[]{"Student","Teacher"};
 //create an adapter to describe how the items are displayed, adapters are used in several places in android.
 //There are multiple variations of this, but this is the basic variant.
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
 //set the spinners adapter to the previously created one.
-        dropdown.setAdapter(adapter);
+        type_user.setAdapter(adapter);
 
 
 
-        Spinner content_type = v.findViewById(R.id.content_type);
+         content_type = v.findViewById(R.id.content_type);
 //create a list of items for the spinner.
         String[] type = new String[]{"Book Pdf","Ppt","Youtube Url"};
 //create an adapter to describe how the items are displayed, adapters are used in several places in android.
@@ -500,7 +557,8 @@ public class HomeActivity extends AppCompatActivity {
 //set the spinners adapter to the previously created one.
         content_type.setAdapter(adap);
 
-        Spinner subject = v.findViewById(R.id.subject);
+
+         subject = v.findViewById(R.id.subject);
 //create a list of items for the spinner.
     //    String[] type = new String[]{"Book Pdf","Ppt","Youtube Url"};
 //create an adapter to describe how the items are displayed, adapters are used in several places in android.
