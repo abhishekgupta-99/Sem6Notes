@@ -53,6 +53,11 @@ public class SubjectAdapter_db extends RecyclerView.Adapter<SubjectAdapter_db.Vi
         return subjects.size();
     }
 
+    public void clear() {
+        subjects.clear();
+        notifyDataSetChanged();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         RecyclerView recyclerView;

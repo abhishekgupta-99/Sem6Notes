@@ -45,13 +45,21 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
     }
 
     @Override
-    public void onBindViewHolder(CustomViewHolder holder, final int position) {
-        Book_db book = books.get(position);
+    public void onBindViewHolder(final CustomViewHolder holder, final int position) {
+        final Book_db book = books.get(position);
         holder.tvChapterName.setText(book.name);
        holder.download_button.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(books.get(position).url)));
+               try {
+                   holder.uploader.setText(book.uploader);
+               }
+               catch (Exception e)
+               {
+                   holder.uploader.setText("Dhruv Khandelwal");
+
+               }
 
 
            }
@@ -64,12 +72,18 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
         return books.size();
     }
 
+    public void clear() {
+        books.clear();
+        notifyDataSetChanged();
+    }
+
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView ivChapter;
         public TextView tvChapterName;
         public CardView download_button;
+        public TextView uploader;
 
         public CustomViewHolder(View itemView) {
             super(itemView);
@@ -77,6 +91,7 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
             tvChapterName = (TextView) itemView.findViewById(R.id.tvChapterName);
             ivChapter = (ImageView) itemView.findViewById(R.id.ivBook);
             download_button=(CardView) itemView.findViewById(R.id.download_card);
+            uploader=itemView.findViewById(R.id.uploader);
         }
     }
 }

@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.abhishek.SEM6.adapters.SubjectAdapter;
 import com.abhishek.SEM6.adapters.SubjectAdapter_db;
@@ -60,6 +61,9 @@ public class HomeActivity extends AppCompatActivity {
     LayoutInflater inflater;
     View v;
 
+    private SwipeRefreshLayout swipeContainer;
+
+
     private SubjectAdapter_db subjectAdapter_db;
     private ArrayList<Subject> subjects;
     private FirebaseFirestore db;
@@ -85,14 +89,37 @@ public class HomeActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+
         db = FirebaseFirestore.getInstance();
 
         initComponents();
 
         subjects = prepareData();
 
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
 
-      //  set_recyclerView();
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                subject_names.clear();
+                subjectAdapter_db.clear();
+                subjects = prepareData();
+                swipeContainer.setRefreshing(false);
+
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+
+
+        //  set_recyclerView();
 
 //        subjectAdapter = new SubjectAdapter(subjects, HomeActivity.this);
 //        LinearLayoutManager manager = new LinearLayoutManager(HomeActivity.this);
@@ -283,7 +310,7 @@ public class HomeActivity extends AppCompatActivity {
 
                                     Book_db book = document.toObject(Book_db.class);
                                     subject.books.add(book);
-                                    Toast.makeText(HomeActivity.this, book.name+" hh", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(HomeActivity.this, book.uploader+" hh", Toast.LENGTH_SHORT).show();
                                    // Log.d("All Books",  " => " + book.name);
 
                                     Log.d("UnReached adapter",  " => " );

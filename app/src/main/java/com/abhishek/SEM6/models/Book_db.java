@@ -34,6 +34,17 @@ public class Book_db {
     public String name;
     public String url;
     public int views;
+    public String uploader;
+
+    public String getUploader() {
+        return uploader;
+    }
+
+    public void setUploader(String uploader) {
+        this.uploader = uploader;
+    }
+
+
 
 
 
