@@ -28,9 +28,10 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="fbfcfc" />
-                            <entry key="outputName" value="ic_add_black_24dp" />
-                            <entry key="sourceFile" value="C:\Users\rgit" />
+                            <entry key="outputName" value="ic_brands_and_logotypes" />
+                            <entry key="sourceFile" value="C:\Users\rgit\Downloads\brands-and-logotypes.svg" />
                           </map>
                         </option>
                       </PersistentState>

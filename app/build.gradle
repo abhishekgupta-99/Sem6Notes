@@ -10,6 +10,7 @@ android {
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true
 
     }
     buildTypes {
@@ -38,4 +39,7 @@ dependencies {
 //    implementation "com.firebaseui:firebase-ui-firestore:4.2.1"
 
     implementation 'com.android.support:multidex:1.0.3'
+    implementation 'com.google.android.gms:play-services-auth:17.0.0'
+
+
 }
