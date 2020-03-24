@@ -63,7 +63,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(R.style.AppTheme);
+        //setTheme(R.style.AppTheme);
 
 
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -79,7 +79,7 @@ public class HomeActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-         db = FirebaseFirestore.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         initComponents();
 
