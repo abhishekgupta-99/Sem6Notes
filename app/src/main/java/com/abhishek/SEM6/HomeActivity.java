@@ -7,9 +7,11 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,6 +27,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -41,6 +45,7 @@ public class HomeActivity extends AppCompatActivity {
     private ArrayList<Subject> subjects;
     private FirebaseFirestore db;
     List<String> subject_names = new ArrayList<>();
+
 
     ArrayList<Subject_db> subjects_db = new ArrayList<Subject_db>();
     @Override
@@ -69,7 +74,8 @@ public class HomeActivity extends AppCompatActivity {
         subjects = prepareData();
 
 
-      //  set_recyclerView();
+
+        //  set_recyclerView();
 
 //        subjectAdapter = new SubjectAdapter(subjects, HomeActivity.this);
 //        LinearLayoutManager manager = new LinearLayoutManager(HomeActivity.this);
@@ -246,7 +252,7 @@ public class HomeActivity extends AppCompatActivity {
              final Subject_db subject=new Subject_db();
              subject.subjectName=each_subject_from_db;
             subject.books=new ArrayList<Book_db>();
-            Toast.makeText(this, each_subject_from_db, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, each_subject_from_db, Toast.LENGTH_SHORT).show();
             db.collection(each_subject_from_db)
                     //.whereEqualTo("capital", true)
                     .get()
@@ -260,7 +266,7 @@ public class HomeActivity extends AppCompatActivity {
 
                                     Book_db book = document.toObject(Book_db.class);
                                     subject.books.add(book);
-                                    Toast.makeText(HomeActivity.this, book.name+" hh", Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(HomeActivity.this, book.name+" hh", Toast.LENGTH_SHORT).show();
                                    // Log.d("All Books",  " => " + book.name);
 
                                     Log.d("UnReached adapter",  " => " );

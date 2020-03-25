@@ -1,6 +1,7 @@
 package com.abhishek.SEM6.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.abhishek.SEM6.R;
 import com.abhishek.SEM6.models.Subject;
 import com.abhishek.SEM6.models.Subject_db;
+import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
 
@@ -44,7 +46,7 @@ public class SubjectAdapter_db extends RecyclerView.Adapter<SubjectAdapter_db.Vi
         holder.recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         holder.recyclerView.setHasFixedSize(true);
 
-        Toast.makeText(context, subjects.get(position).subjectName+" : BOOK", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, subjects.get(position).subjectName+" : BOOK", Toast.LENGTH_SHORT).show();
         holder.tvHeading.setText(subjects.get(position).subjectName);
     }
 

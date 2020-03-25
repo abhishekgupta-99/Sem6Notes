@@ -24,7 +24,10 @@
     </style>
 
 
-
+    <style name="CustomChipChoice" parent="@style/Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@drawable/background_color_chip_state_list</item>
+        <item name="android:textColor">@drawable/text_color_chip_state_list</item>
+    </style>
 
 
     <style name="darktheme" parent="Theme.AppCompat.Light.NoActionBar">
