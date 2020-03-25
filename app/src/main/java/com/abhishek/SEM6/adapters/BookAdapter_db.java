@@ -81,7 +81,7 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
         if (!direct.exists()) {
             direct.mkdirs();
         }
-        
+
         Uri uri = Uri.parse("https://cloudup.com/files/inYVmLryD4p/download");
         DownloadManager.Request request = new DownloadManager.Request(uri);
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);  // Tell on which network you want to download file.
