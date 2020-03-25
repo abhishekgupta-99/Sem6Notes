@@ -15,4 +15,9 @@
     <color name="chip_checked">#045282</color>
     <color name="chip_unchecked">@color/white</color>
 
+
+    <color name="blue400">#4A89F3</color>
+    <color name="lightblue">#22C0FF</color>
+
+
 </resources>

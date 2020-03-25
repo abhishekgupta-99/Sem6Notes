@@ -42,7 +42,7 @@ public class SubjectAdapter_db extends RecyclerView.Adapter<SubjectAdapter_db.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.recyclerView.setAdapter(new BookAdapter_db(context, subjects.get(position).books));
+        holder.recyclerView.setAdapter(new BookAdapter_db(context, subjects.get(position).books,subjects.get(position).subjectName));
         holder.recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         holder.recyclerView.setHasFixedSize(true);
 
