@@ -48,18 +48,17 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
     public void onBindViewHolder(final CustomViewHolder holder, final int position) {
         final Book_db book = books.get(position);
         holder.tvChapterName.setText(book.name);
+        holder.uploader.setText(book.uploader);
        holder.download_button.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(books.get(position).url)));
-               try {
-                   holder.uploader.setText(book.uploader);
-               }
-               catch (Exception e)
-               {
-                   holder.uploader.setText("Dhruv Khandelwal");
 
-               }
+
+
+                  /// holder.uploader.setText("Dhruv Khandelwal");
+
+
 
 
            }
