@@ -523,6 +523,8 @@ public class HomeActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
 
+
+
         GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
