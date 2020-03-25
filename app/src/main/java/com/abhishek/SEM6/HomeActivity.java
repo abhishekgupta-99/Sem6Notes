@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.CompoundButton;
 import android.webkit.URLUtil;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -42,6 +43,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -68,6 +72,9 @@ public class HomeActivity extends AppCompatActivity {
     private ArrayList<Subject> subjects;
     private FirebaseFirestore db;
     List<String> subject_names = new ArrayList<>();
+
+    private FloatingActionButton floatingActionButton;
+
 
     ArrayList<Subject_db> subjects_db = new ArrayList<Subject_db>();
     @Override
@@ -119,6 +126,8 @@ public class HomeActivity extends AppCompatActivity {
 
 
 
+
+        //  set_recyclerView();
         //  set_recyclerView();
 
 //        subjectAdapter = new SubjectAdapter(subjects, HomeActivity.this);
@@ -133,10 +142,21 @@ public class HomeActivity extends AppCompatActivity {
         LinearLayoutManager manager = new LinearLayoutManager(HomeActivity.this);
         rvSubject.setLayoutManager(manager);
         rvSubject.setAdapter(subjectAdapter_db);
+
+        rvSubject.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0)
+                    floatingActionButton.hide();
+                else if (dy < 0)
+                    floatingActionButton.show();
+            }
+        });
     }
 
     private void initComponents() {
         rvSubject = findViewById(R.id.rvSubject);
+        floatingActionButton = findViewById(R.id.imgFour);
     }
 
     private ArrayList<Subject> prepareData() {
@@ -296,7 +316,7 @@ public class HomeActivity extends AppCompatActivity {
              final Subject_db subject=new Subject_db();
              subject.subjectName=each_subject_from_db;
             subject.books=new ArrayList<Book_db>();
-            Toast.makeText(this, each_subject_from_db, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, each_subject_from_db, Toast.LENGTH_SHORT).show();
             db.collection(each_subject_from_db)
                     //.whereEqualTo("capital", true)
                     .get()
@@ -310,6 +330,7 @@ public class HomeActivity extends AppCompatActivity {
 
                                     Book_db book = document.toObject(Book_db.class);
                                     subject.books.add(book);
+                                    //Toast.makeText(HomeActivity.this, book.name+" hh", Toast.LENGTH_SHORT).show();
                                     Toast.makeText(HomeActivity.this, book.uploader+" hh", Toast.LENGTH_SHORT).show();
                                    // Log.d("All Books",  " => " + book.name);
 

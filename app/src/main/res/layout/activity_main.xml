@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    android:padding="12dp"
+    android:fitsSystemWindows="true"
+    android:id="@+id/relative_layout_main"
     tools:context="com.abhishek.SEM6.HomeActivity">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -15,6 +16,56 @@
         android:layout_height="wrap_content">
 
 
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        app:singleLine="true"
+        app:singleSelection="true">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Book"
+            android:layout_marginEnd="8dp"
+            style="@style/CustomChipChoice"
+            android:checkable="true"
+            android:clickable="true"
+            android:focusable="true"
+            app:chipStrokeColor="@color/grey300"
+            app:chipStrokeWidth="1dp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            style="@style/CustomChipChoice"
+            android:checkable="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="PPT"
+            app:chipStrokeColor="@color/grey300"
+            app:chipStrokeWidth="1dp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            style="@style/CustomChipChoice"
+            android:checkable="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="Notes"
+            app:chipStrokeColor="@color/grey300"
+            app:chipStrokeWidth="1dp" />
+
+    </com.google.android.material.chip.ChipGroup>
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -25,6 +76,10 @@
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
+        android:layout_below="@id/chip_group"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/imgFour"

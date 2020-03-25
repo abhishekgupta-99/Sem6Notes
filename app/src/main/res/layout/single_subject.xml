@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:style="http://schemas.android.com/tools"
 
 
     android:orientation="vertical">
@@ -22,43 +23,6 @@
             android:layout_margin="10dp"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.chip.Chip
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Book"
-                android:layout_marginEnd="8dp"
-                app:chipBackgroundColor="@color/white"
-                app:chipStrokeColor="@color/grey300"
-                app:chipStrokeWidth="1dp"/>
-
-            <com.google.android.material.chip.Chip
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:text="PPT"
-                app:chipBackgroundColor="@color/white"
-                app:chipStrokeColor="@color/grey300"
-                app:chipStrokeWidth="1dp"/>
-
-            <com.google.android.material.chip.Chip
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:text="Notes"
-                app:chipBackgroundColor="@color/white"
-                app:chipStrokeColor="@color/grey300"
-                app:chipStrokeWidth="1dp"/>
-
-        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvChapters"
