@@ -4,9 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -49,6 +51,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.karan.churi.PermissionManager.PermissionManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -71,6 +74,7 @@ public class HomeActivity extends AppCompatActivity {
     private SubjectAdapter_db subjectAdapter_db;
     private ArrayList<Subject> subjects;
     private FirebaseFirestore db;
+    private static final int WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 54654;
     List<String> subject_names = new ArrayList<>();
 
     private FloatingActionButton floatingActionButton;
@@ -96,6 +100,15 @@ public class HomeActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        PermissionManager permissionManager = new PermissionManager() {
+        };
+        permissionManager.checkAndRequestPermissions(this);
+
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE_REQUEST_CODE);
+//            return;
+//        }
+//        DirectoryHelper.createDirectory(this);
 
         db = FirebaseFirestore.getInstance();
 
@@ -612,5 +625,16 @@ public class HomeActivity extends AppCompatActivity {
         ArrayAdapter<String> sub_adap = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, subject_names);
 //set the spinners adapter to the previously created one.
         subject.setAdapter(sub_adap);
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == WRITE_EXTERNAL_STORAGE_REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                DirectoryHelper.createDirectory(this);
+        }
     }
 }

@@ -15,6 +15,8 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.abhishek.SEM6.DirectoryHelper;
+import com.abhishek.SEM6.DownloadService;
 import com.abhishek.SEM6.R;
 import com.abhishek.SEM6.models.Book;
 import com.abhishek.SEM6.models.Book_db;
@@ -55,11 +57,13 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
        holder.download_button.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
-              // context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(books.get(position).url)));
+               context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(books.get(position).url)));
 
-               file_download(books.get(position).url,book.name);
+             //  file_download(books.get(position).url,book.name);
 
                   /// holder.uploader.setText("Dhruv Khandelwal");
+
+            //   context.startService(DownloadService.getDownloadService(context, books.get(position).url, DirectoryHelper.ROOT_DIRECTORY_NAME.concat("/")));
 
 
 
@@ -72,26 +76,35 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
 
     public void file_download(String url, String title) {
         File direct = new File(Environment.getExternalStorageDirectory()
-                + "/book_downloads");
+                + "/DownloadManager");
 
         if (!direct.exists()) {
             direct.mkdirs();
         }
 
-        DownloadManager mgr = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+     //   DownloadManager mgr = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
 
-        Uri downloadUri = Uri.parse(url);
-        DownloadManager.Request request = new DownloadManager.Request(
-                downloadUri);
+//        Uri downloadUri = Uri.parse(url);
+//        DownloadManager.Request request = new DownloadManager.Request(
+//                downloadUri);
+//
+//        request.setAllowedNetworkTypes(
+//                DownloadManager.Request.NETWORK_WIFI
+//                        | DownloadManager.Request.NETWORK_MOBILE)
+//                .setAllowedOverRoaming(false).setTitle("Demo")
+//                .setDescription("Something useful. No, really.")
+//                .setDestinationInExternalPublicDir("/book_downloads", title);
+//
+//        mgr.enqueue(request);
 
-        request.setAllowedNetworkTypes(
-                DownloadManager.Request.NETWORK_WIFI
-                        | DownloadManager.Request.NETWORK_MOBILE)
-                .setAllowedOverRoaming(false).setTitle("Demo")
-                .setDescription("Something useful. No, really.")
-                .setDestinationInExternalPublicDir("/book_downloads", title+".pdf");
-
-        mgr.enqueue(request);
+        Uri uri = Uri.parse("https://cloudup.com/files/inYVmLryD4p/download");
+        DownloadManager.Request request = new DownloadManager.Request(uri);
+        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);  // Tell on which network you want to download file.
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);  // This will show notification on top when downloading the file.
+        request.setTitle("Downloading a file"); // Title for notification.
+        request.setVisibleInDownloadsUi(true);
+        request.setDestinationInExternalPublicDir("/DownloadManager/", title+".mp3");  // Storage directory path
+        ((DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE)).enqueue(request); // This will start downloading
 
     }
 
