@@ -39,11 +39,11 @@
         app:singleSelection="true">
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chip1"
+            android:id="@+id/bookpdf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Book"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="3dp"
             style="@style/CustomChipChoice"
             android:checkable="true"
             android:clickable="true"
@@ -52,10 +52,10 @@
             app:chipStrokeWidth="1dp" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chip2"
+            android:id="@+id/ppt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="3dp"
             style="@style/CustomChipChoice"
             android:checkable="true"
             android:clickable="true"
@@ -65,15 +65,41 @@
             app:chipStrokeWidth="1dp" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chip3"
+            android:id="@+id/notes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="3dp"
             style="@style/CustomChipChoice"
             android:checkable="true"
             android:clickable="true"
             android:focusable="true"
             android:text="Notes"
+            app:chipStrokeColor="@color/grey300"
+            app:chipStrokeWidth="1dp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/youtube"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="3dp"
+            style="@style/CustomChipChoice"
+            android:checkable="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="Video Links"
+            app:chipStrokeColor="@color/grey300"
+            app:chipStrokeWidth="1dp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/papers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="3dp"
+            style="@style/CustomChipChoice"
+            android:checkable="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="Papers"
             app:chipStrokeColor="@color/grey300"
             app:chipStrokeWidth="1dp" />
 
