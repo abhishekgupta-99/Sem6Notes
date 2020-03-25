@@ -134,24 +134,24 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
     }
 
 
-    public void file_download(String url, String title) {
-        File direct = new File(Environment.getExternalStorageDirectory()
-                + "/DownloadManager");
-
-        if (!direct.exists()) {
-            direct.mkdirs();
-        }
-
-        Uri uri = Uri.parse("https://cloudup.com/files/inYVmLryD4p/download");
-        DownloadManager.Request request = new DownloadManager.Request(uri);
-        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);  // Tell on which network you want to download file.
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);  // This will show notification on top when downloading the file.
-        request.setTitle("Downloading a file"); // Title for notification.
-        request.setVisibleInDownloadsUi(true);
-        request.setDestinationInExternalPublicDir("/DownloadManager/", title+".mp3");  // Storage directory path
-        ((DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE)).enqueue(request); // This will start downloading
-
-    }
+//    public void file_download(String url, String title) {
+//        File direct = new File(Environment.getExternalStorageDirectory()
+//                + "/DownloadManager");
+//
+//        if (!direct.exists()) {
+//            direct.mkdirs();
+//        }
+//
+//        Uri uri = Uri.parse("https://cloudup.com/files/inYVmLryD4p/download");
+//        DownloadManager.Request request = new DownloadManager.Request(uri);
+//        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);  // Tell on which network you want to download file.
+//        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);  // This will show notification on top when downloading the file.
+//        request.setTitle("Downloading a file"); // Title for notification.
+//        request.setVisibleInDownloadsUi(true);
+//        request.setDestinationInExternalPublicDir("/DownloadManager/", title+".mp3");  // Storage directory path
+//        ((DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE)).enqueue(request); // This will start downloading
+//
+//    }
 
     @Override
     public int getItemCount() {
