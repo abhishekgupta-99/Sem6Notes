@@ -391,7 +391,6 @@ public class HomeActivity extends AppCompatActivity {
         v=inflater.inflate(R.layout.add_book_dialog, null);
 
 
-
         initialize_spinners(v);
         TextView signedin=v.findViewById(R.id.signedIn);
         signedin.setText("Signed In As : "+account.getDisplayName());
@@ -521,11 +520,8 @@ public class HomeActivity extends AppCompatActivity {
     public void googlesignin(View view) {
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-        
-
 
         GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
