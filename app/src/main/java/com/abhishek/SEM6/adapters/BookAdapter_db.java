@@ -1,8 +1,10 @@
 package com.abhishek.SEM6.adapters;
 
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import com.abhishek.SEM6.models.Book;
 import com.abhishek.SEM6.models.Book_db;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -52,9 +55,9 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
        holder.download_button.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
-               context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(books.get(position).url)));
+              // context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(books.get(position).url)));
 
-
+               file_download(books.get(position).url,book.name);
 
                   /// holder.uploader.setText("Dhruv Khandelwal");
 
@@ -64,6 +67,32 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
            }
        });
        // Picasso.get().load(book.url).into(holder.ivChapter);
+    }
+
+
+    public void file_download(String url, String title) {
+        File direct = new File(Environment.getExternalStorageDirectory()
+                + "/book_downloads");
+
+        if (!direct.exists()) {
+            direct.mkdirs();
+        }
+
+        DownloadManager mgr = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+
+        Uri downloadUri = Uri.parse(url);
+        DownloadManager.Request request = new DownloadManager.Request(
+                downloadUri);
+
+        request.setAllowedNetworkTypes(
+                DownloadManager.Request.NETWORK_WIFI
+                        | DownloadManager.Request.NETWORK_MOBILE)
+                .setAllowedOverRoaming(false).setTitle("Demo")
+                .setDescription("Something useful. No, really.")
+                .setDestinationInExternalPublicDir("/book_downloads", title+".pdf");
+
+        mgr.enqueue(request);
+
     }
 
     @Override

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.abhishek.SEM6">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+
 
     <application
 
@@ -11,7 +13,8 @@
         android:label="SEM 6"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:label">
         <activity android:name="com.abhishek.SEM6.HomeActivity"
             android:label="Sem 6">
             <intent-filter>
@@ -23,5 +26,6 @@
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
 </manifest>

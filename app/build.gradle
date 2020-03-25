@@ -44,4 +44,8 @@ dependencies {
 //swipe to refresh
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
+
+    // Permission Manager
+    implementation 'com.github.karanchuri:PermissionManager:0.1.0'
+
 }
