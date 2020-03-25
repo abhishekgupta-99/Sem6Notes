@@ -29,6 +29,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -45,6 +46,8 @@ public class HomeActivity extends AppCompatActivity {
     private ArrayList<Subject> subjects;
     private FirebaseFirestore db;
     List<String> subject_names = new ArrayList<>();
+
+    private FloatingActionButton floatingActionButton;
 
 
     ArrayList<Subject_db> subjects_db = new ArrayList<Subject_db>();
@@ -89,10 +92,21 @@ public class HomeActivity extends AppCompatActivity {
         LinearLayoutManager manager = new LinearLayoutManager(HomeActivity.this);
         rvSubject.setLayoutManager(manager);
         rvSubject.setAdapter(subjectAdapter_db);
+
+        rvSubject.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0)
+                    floatingActionButton.hide();
+                else if (dy < 0)
+                    floatingActionButton.show();
+            }
+        });
     }
 
     private void initComponents() {
         rvSubject = findViewById(R.id.rvSubject);
+        floatingActionButton = findViewById(R.id.imgFour);
     }
 
     private ArrayList<Subject> prepareData() {
