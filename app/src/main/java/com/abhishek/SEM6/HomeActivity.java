@@ -354,6 +354,7 @@ public class HomeActivity extends AppCompatActivity {
 
         final int[] count = {0};
         Query query = null;
+        //
 
         for(String each_subject_from_db: subject_names)
         {
