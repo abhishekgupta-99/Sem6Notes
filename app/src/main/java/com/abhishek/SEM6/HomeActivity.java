@@ -153,7 +153,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-
         //  set_recyclerView();
         //  set_recyclerView();
 
