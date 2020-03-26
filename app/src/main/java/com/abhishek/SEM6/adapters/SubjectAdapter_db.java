@@ -27,10 +27,12 @@ public class SubjectAdapter_db extends RecyclerView.Adapter<SubjectAdapter_db.Vi
     public ArrayList<Subject_db> subjects;
     private Context context;
     private LayoutInflater layoutInflater;
+    String chiptype;
 
-    public SubjectAdapter_db(ArrayList<Subject_db> subjects, Context context) {
+    public SubjectAdapter_db(ArrayList<Subject_db> subjects, Context context,String chiptype) {
         this.subjects = subjects;
         this.context = context;
+        this.chiptype = chiptype;
         this.layoutInflater = LayoutInflater.from(context);
     }
 

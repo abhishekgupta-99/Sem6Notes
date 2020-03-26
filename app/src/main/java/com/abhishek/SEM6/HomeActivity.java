@@ -64,6 +64,10 @@ public class HomeActivity extends AppCompatActivity {
     private RecyclerView rvSubject;
     private SubjectAdapter subjectAdapter;
     Spinner type_user,content_type,subject;
+    String chiptype;
+
+    private ChipGroup chipGroup;
+    private Chip chip1;
 
     LayoutInflater inflater;
     View v;
@@ -137,7 +141,17 @@ public class HomeActivity extends AppCompatActivity {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
+        chipGroup = findViewById(R.id.chip_group);
+        chip1 = findViewById(R.id.bookpdf);
 
+        chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(ChipGroup group, int checkedId) {
+                chiptype = group.findViewById(checkedId).toString();
+                chiptype = chiptype.substring(chiptype.indexOf('/')+1,chiptype.indexOf('}'));
+                //Log.d("chip",chiptype);
+            }
+        });
 
 
         //  set_recyclerView();
@@ -151,7 +165,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void set_recyclerView(ArrayList<Subject_db> subjects_db) {
-        subjectAdapter_db = new SubjectAdapter_db(subjects_db, HomeActivity.this);
+        subjectAdapter_db = new SubjectAdapter_db(subjects_db, HomeActivity.this,chiptype);
         LinearLayoutManager manager = new LinearLayoutManager(HomeActivity.this);
         rvSubject.setLayoutManager(manager);
         rvSubject.setAdapter(subjectAdapter_db);
@@ -330,6 +344,7 @@ public class HomeActivity extends AppCompatActivity {
              subject.subjectName=each_subject_from_db;
             subject.books=new ArrayList<Book_db>();
             //Toast.makeText(this, each_subject_from_db, Toast.LENGTH_SHORT).show();
+            Log.d("subject_curr",each_subject_from_db);
             db.collection(each_subject_from_db)
                     //.whereEqualTo("capital", true)
                     .get()
@@ -344,10 +359,10 @@ public class HomeActivity extends AppCompatActivity {
                                     Book_db book = document.toObject(Book_db.class);
                                     subject.books.add(book);
                                     //Toast.makeText(HomeActivity.this, book.name+" hh", Toast.LENGTH_SHORT).show();
-                                    Toast.makeText(HomeActivity.this, book.uploader+" hh", Toast.LENGTH_SHORT).show();
-                                   // Log.d("All Books",  " => " + book.name);
+                                    //Toast.makeText(HomeActivity.this, book.uploader+" hh", Toast.LENGTH_SHORT).show();
+                                    Log.d("Books",  " => " + book.name);
 
-                                    Log.d("UnReached adapter",  " => " );
+                                    //Log.d("UnReached adapter",  " => " );
 
 
                                 }
