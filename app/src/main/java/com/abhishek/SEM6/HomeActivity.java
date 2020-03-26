@@ -49,6 +49,7 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.karan.churi.PermissionManager.PermissionManager;
@@ -71,6 +72,14 @@ public class HomeActivity extends AppCompatActivity {
 
     LayoutInflater inflater;
     View v;
+
+    int filter_query=1;
+            int all_books_query=0;
+
+
+    boolean filter_flag=false;
+    String filter_query_string="";
+
 
     private SwipeRefreshLayout swipeContainer;
 
@@ -130,7 +139,7 @@ public class HomeActivity extends AppCompatActivity {
                 // once the network request has completed successfully.
                 subject_names.clear();
                 subjectAdapter_db.clear();
-                subjects = prepareData();
+                getAllSubject(filter_flag,filter_query_string);
                 swipeContainer.setRefreshing(false);
 
             }
@@ -142,7 +151,7 @@ public class HomeActivity extends AppCompatActivity {
                 android.R.color.holo_red_light);
 
         chipGroup = findViewById(R.id.chip_group);
-        chip1 = findViewById(R.id.bookpdf);
+
 
         chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
             @Override
@@ -150,6 +159,14 @@ public class HomeActivity extends AppCompatActivity {
                 chiptype = group.findViewById(checkedId).toString();
                 chiptype = chiptype.substring(chiptype.indexOf('/')+1,chiptype.indexOf('}'));
                 //Log.d("chip",chiptype);
+                filter_flag=true;
+                filter_query_string=chiptype;
+                Toast.makeText(HomeActivity.this, chiptype, Toast.LENGTH_SHORT).show();
+                subject_names.clear();
+                subjectAdapter_db.clear();
+                getAllSubject(filter_flag,filter_query_string);
+
+
             }
         });
 
@@ -188,7 +205,7 @@ public class HomeActivity extends AppCompatActivity {
     private ArrayList<Subject> prepareData() {
 
 
-        getAllSubject();
+        getAllSubject(filter_flag,filter_query_string);
        // getAllBooks();
 
         ArrayList<Subject> subjects = new ArrayList<Subject>();
@@ -333,9 +350,10 @@ public class HomeActivity extends AppCompatActivity {
         return subjects;
     }
 
-    private void getAllBooks() {
+    private void getAllBooks(boolean filter_flag,String filter_query_string) {
 
         final int[] count = {0};
+        Query query = null;
 
         for(String each_subject_from_db: subject_names)
         {
@@ -344,8 +362,22 @@ public class HomeActivity extends AppCompatActivity {
             subject.books=new ArrayList<Book_db>();
             //Toast.makeText(this, each_subject_from_db, Toast.LENGTH_SHORT).show();
             Log.d("subject_curr",each_subject_from_db);
-            db.collection(each_subject_from_db)
-                    //.whereEqualTo("capital", true)
+
+            if(filter_flag)
+            {
+                 query = db.collection(each_subject_from_db).whereEqualTo("content_type", filter_query_string.replace("_"," "));
+            }
+            else if (filter_flag == false)
+            {
+                query = db.collection(each_subject_from_db);
+            }
+
+            // Create a query against the collection.
+
+
+            //db.collection(each_subject_from_db)
+                   // .whereEqualTo("content_type", "pdf")
+                   query
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
@@ -403,7 +435,7 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    private void getAllSubject() {
+    private void getAllSubject(final boolean filter_flag, final String filter_query_string) {
         db.collection("Subjects").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -413,7 +445,7 @@ public class HomeActivity extends AppCompatActivity {
                         subject_names.add(document.getId());
                     }
                     Log.d("subjects", subject_names.toString());
-                    getAllBooks();
+                    getAllBooks(filter_flag,filter_query_string);
                    // set_recyclerView(subjects_db);
 
                 } else {
@@ -623,7 +655,7 @@ public class HomeActivity extends AppCompatActivity {
 
          content_type = v.findViewById(R.id.content_type);
 //create a list of items for the spinner.
-        String[] type = new String[]{"Book Pdf","Ppt","Youtube Url"};
+        String[] type = new String[]{"Book Pdf","Ppt","Youtube Url","Notes","Papers"};
 //create an adapter to describe how the items are displayed, adapters are used in several places in android.
 //There are multiple variations of this, but this is the basic variant.
         ArrayAdapter<String> adap = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, type);

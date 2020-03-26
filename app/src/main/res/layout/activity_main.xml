@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -39,7 +41,7 @@
         app:singleSelection="true">
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/bookpdf"
+            android:id="@+id/Book_Pdf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Book"
@@ -52,7 +54,7 @@
             app:chipStrokeWidth="1dp" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/ppt"
+            android:id="@+id/Ppt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="3dp"
@@ -65,7 +67,7 @@
             app:chipStrokeWidth="1dp" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/notes"
+            android:id="@+id/Notes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="3dp"
@@ -78,7 +80,7 @@
             app:chipStrokeWidth="1dp" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/youtube"
+            android:id="@+id/Youtube_Url"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="3dp"
@@ -91,7 +93,7 @@
             app:chipStrokeWidth="1dp" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/papers"
+            android:id="@+id/Papers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="3dp"
