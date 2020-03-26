@@ -371,6 +371,7 @@ public class HomeActivity extends AppCompatActivity {
             else if (filter_flag == false)
             {
                 query = db.collection(each_subject_from_db);
+                //
             }
 
             // Create a query against the collection.
