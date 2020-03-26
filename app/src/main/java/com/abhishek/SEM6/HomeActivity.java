@@ -49,6 +49,7 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -125,6 +126,8 @@ public class HomeActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
+        firestore_cache();
+
         initComponents();
 
         subjects = prepareData();
@@ -160,7 +163,10 @@ public class HomeActivity extends AppCompatActivity {
                 chiptype = chiptype.substring(chiptype.indexOf('/')+1,chiptype.indexOf('}'));
                 //Log.d("chip",chiptype);
                 filter_flag=true;
-                filter_query_string=chiptype;
+                if(!chiptype.isEmpty())
+                {
+                    filter_query_string = chiptype;
+                }
                 Toast.makeText(HomeActivity.this, chiptype, Toast.LENGTH_SHORT).show();
                 subject_names.clear();
                 subjectAdapter_db.clear();
@@ -177,6 +183,15 @@ public class HomeActivity extends AppCompatActivity {
 //        LinearLayoutManager manager = new LinearLayoutManager(HomeActivity.this);
 //        rvSubject.setLayoutManager(manager);
 //        rvSubject.setAdapter(subjectAdapter);
+
+    }
+
+    private void firestore_cache() {
+
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setPersistenceEnabled(true)
+                .build();
+        db.setFirestoreSettings(settings);
 
     }
 
