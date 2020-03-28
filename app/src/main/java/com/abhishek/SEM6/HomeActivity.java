@@ -3,7 +3,6 @@ package com.abhishek.SEM6;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -24,17 +23,18 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.abhishek.SEM6.adapters.SubjectAdapter;
 import com.abhishek.SEM6.adapters.SubjectAdapter_db;
 import com.abhishek.SEM6.models.Book;
 import com.abhishek.SEM6.models.Book_db;
 import com.abhishek.SEM6.models.Subject;
 import com.abhishek.SEM6.models.Subject_db;
+import com.abhishek.SEM6.rssfeed.RssFeed;
+import com.abhishek.SEM6.rssfeed.RssItem;
+import com.abhishek.SEM6.rssfeed.RssReader;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -55,6 +55,10 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.karan.churi.PermissionManager.PermissionManager;
 
+import org.xml.sax.SAXException;
+
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -130,6 +134,8 @@ public class HomeActivity extends AppCompatActivity {
 
         initComponents();
 
+        new RetrieveFeedTask(this).execute();
+
         subjects = prepareData();
 
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
@@ -167,7 +173,7 @@ public class HomeActivity extends AppCompatActivity {
                 {
                     filter_query_string = chiptype;
                 }
-                Toast.makeText(HomeActivity.this, chiptype, Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(HomeActivity.this, chiptype, Toast.LENGTH_SHORT).show();
                 subject_names.clear();
                 subjectAdapter_db.clear();
                 getAllSubject(filter_flag,filter_query_string);
@@ -186,12 +192,16 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+
+
+
     private void firestore_cache() {
 
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
                 .setPersistenceEnabled(true)
                 .build();
         db.setFirestoreSettings(settings);
+
 
     }
 
@@ -408,7 +418,7 @@ public class HomeActivity extends AppCompatActivity {
                                     subject.books.add(book);
                                     //Toast.makeText(HomeActivity.this, book.name+" hh", Toast.LENGTH_SHORT).show();
                                     //Toast.makeText(HomeActivity.this, book.uploader+" hh", Toast.LENGTH_SHORT).show();
-                                    Log.d("Books",  " => " + book.name);
+                                //    Log.d("Books",  " => " + book.name);
 
                                     //Log.d("UnReached adapter",  " => " );
 
@@ -461,12 +471,12 @@ public class HomeActivity extends AppCompatActivity {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         subject_names.add(document.getId());
                     }
-                    Log.d("subjects", subject_names.toString());
+                  //  Log.d("subjects", subject_names.toString());
                     getAllBooks(filter_flag,filter_query_string);
                    // set_recyclerView(subjects_db);
 
                 } else {
-                    Log.d("subjects", "Error getting documents: ", task.getException());
+                  //  Log.d("subjects", "Error getting documents: ", task.getException());
                 }
             }
         });

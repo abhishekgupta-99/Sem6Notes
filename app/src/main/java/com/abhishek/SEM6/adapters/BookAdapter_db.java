@@ -76,7 +76,7 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
         holder.setItemLongClickListener(new ItemLongClickListener() {
             @Override
             public void onItemLongClicked(View v, int pos) {
-                Toast.makeText(context,books.get(pos).getName(),Toast.LENGTH_SHORT).show();
+               // Toast.makeText(context,books.get(pos).getName(),Toast.LENGTH_SHORT).show();
 
                 delete_alert_dialog(books.get(pos).getName());
             }
@@ -115,16 +115,16 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
                         //finish();
 
                         enterpassword(book_name);
-                        Toast.makeText(context,"you choose yes action for alertbox",
-                                Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context,"you choose yes action for alertbox",
+//                                Toast.LENGTH_SHORT).show();
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         //  Action for 'NO' Button
                         dialog.cancel();
-                        Toast.makeText(context,"you choose no action for alertbox",
-                                Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context,"you choose no action for alertbox",
+//                                Toast.LENGTH_SHORT).show();
                     }
                 });
         //Creating dialog box
@@ -232,7 +232,7 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
         if(String.valueOf(book.content_type).equals("Youtube Url"))
         {
 
-            Toast.makeText(context, "Youtube "+ book.content_type, Toast.LENGTH_SHORT).show();
+          //  Toast.makeText(context, "Youtube "+ book.content_type, Toast.LENGTH_SHORT).show();
             String ID=extractVideoIdFromUrl(book.url);
 
             String thumbnail_url = "https://img.youtube.com/vi/"+ID+"/0.jpg";   //maxresdefault.jpg for 720p image
