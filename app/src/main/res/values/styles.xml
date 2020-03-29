@@ -8,19 +8,21 @@
 <!--        <item name="colorAccent">@color/colorAccent</item>-->
 
 
-        <item name="colorPrimary">#2196F3</item>
-        <item name="colorPrimaryDark">#1976D2</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">#0179CA</item>
+        <item name="colorPrimaryDark">#0179CA</item>
+        <item name="colorAccent">#0179CA</item>
 
 
         <item name="backgroundcolor">#fcfcfc</item>
         <item name="cardbackgroundcolor">#ffffff</item>
         <item name="textcolor">#808080</item>
         <item name="tintcolor">#000000</item>
-        <item name="buttoncolor">#2196F3</item>
+        <item name="buttoncolor">#0179CA</item>
 
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
+        <item name="actionMenuTextColor">@color/white</item>
+
     </style>
 
 
@@ -28,6 +30,21 @@
         <item name="chipBackgroundColor">@drawable/background_color_chip_state_list</item>
         <item name="android:textColor">@drawable/text_color_chip_state_list</item>
     </style>
+
+    <style name="ToolbarIconColor" parent="AppTheme">
+        <item name="actionOverflowButtonStyle">@color/black</item>
+        <item name="android:homeAsUpIndicator">@color/white</item>
+    </style>
+
+    <style name="AppTheme.FullScreenDialog" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimaryDark">#0179CA</item>
+        <item name="colorAccent">#0179CA</item>
+        <item name="colorPrimary">#0179CA</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="actionMenuTextColor">#0179CA</item>
+    </style>
+
 
 
     <style name="darktheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -39,14 +56,14 @@
 
         <item name="colorPrimary">#212121</item>
         <item name="colorPrimaryDark">#000000</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">#0179CA</item>
 
 
         <item name="backgroundcolor">#303030</item>
         <item name="cardbackgroundcolor">#424242</item>
         <item name="textcolor">#ffffff</item>
         <item name="tintcolor">#ffffff</item>
-        <item name="buttoncolor">#2196F3</item>
+        <item name="buttoncolor">#0179CA</item>
 
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
