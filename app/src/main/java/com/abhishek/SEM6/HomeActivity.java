@@ -13,9 +13,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AutoCompleteTextView;
 import android.widget.CompoundButton;
 import android.webkit.URLUtil;
 import android.widget.ArrayAdapter;
@@ -23,6 +25,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -51,6 +55,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.karan.churi.PermissionManager.PermissionManager;
@@ -63,7 +68,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 public class HomeActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 321;
@@ -71,6 +75,9 @@ public class HomeActivity extends AppCompatActivity {
     private SubjectAdapter subjectAdapter;
     Spinner type_user,content_type,subject;
     String chiptype;
+    AlertDialog alertDialog;
+
+    Toolbar toolbar;
 
     private ChipGroup chipGroup;
     private Chip chip1;
@@ -79,7 +86,7 @@ public class HomeActivity extends AppCompatActivity {
     View v;
 
     int filter_query=1;
-            int all_books_query=0;
+    int all_books_query=0;
 
 
     boolean filter_flag=false;
@@ -106,7 +113,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-       // this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        // this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -117,6 +124,8 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_main);
+
+        TypefaceUtil.overrideFont(getApplicationContext(), "POPPINS", "fonts/poppins_regular.ttf");
 
         PermissionManager permissionManager = new PermissionManager() {
         };
@@ -148,7 +157,7 @@ public class HomeActivity extends AppCompatActivity {
                 // once the network request has completed successfully.
                 subject_names.clear();
                 subjectAdapter_db.clear();
-                getAllSubject(filter_flag,filter_query_string);
+                subjects = prepareData();
                 swipeContainer.setRefreshing(false);
 
             }
@@ -383,8 +392,8 @@ public class HomeActivity extends AppCompatActivity {
 
         for(String each_subject_from_db: subject_names)
         {
-             final Subject_db subject=new Subject_db();
-             subject.subjectName=each_subject_from_db;
+            final Subject_db subject=new Subject_db();
+            subject.subjectName=each_subject_from_db;
             subject.books=new ArrayList<Book_db>();
             //Toast.makeText(this, each_subject_from_db, Toast.LENGTH_SHORT).show();
             Log.d("subject_curr",each_subject_from_db);
@@ -424,7 +433,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
                                 }
-                            //    Log.d("All Books",  " => " + subject.books.get(0).getName());
+                                //    Log.d("All Books",  " => " + subject.books.get(0).getName());
                                 subjects_db.add(subject);
 
 
@@ -486,21 +495,33 @@ public class HomeActivity extends AppCompatActivity {
     public void add_dialog(final GoogleSignInAccount account) {
 
 
-       // googlesignin();
+        // googlesignin();
 
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this,android.R.style.Theme_DeviceDefault_Light_Dialog_Alert);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.AppTheme_FullScreenDialog);
         // Get the layout inflater
 
-      //  builder.setCancelable(false);
+        //  builder.setCancelable(false);
 
-
+        //v = View.inflate(this,R.layout.add_book_dialog,null);
         inflater = getLayoutInflater();
         v=inflater.inflate(R.layout.add_book_dialog, null);
 
+        toolbar = v.findViewById(R.id.toolbar);
+        toolbar.setTitle("Add new");
+        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        toolbar.inflateMenu(R.menu.dialog_menu);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Toast.makeText(HomeActivity.this, "save clicked", Toast.LENGTH_SHORT).show();
+                alertDialog.dismiss();
+                return true;
+            }
+        });
 
         initialize_spinners(v);
         TextView signedin=v.findViewById(R.id.signedIn);
-        signedin.setText("Signed In As : "+account.getDisplayName());
+        signedin.setText(account.getDisplayName());
 
 
         //  builder.getContext().setTheme(R.style.AppTheme);
@@ -509,27 +530,27 @@ public class HomeActivity extends AppCompatActivity {
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
 
-        builder.setView(v)
+        builder.setView(v);
                 // Add action buttons
-                .setPositiveButton("Upload", new DialogInterface.OnClickListener() {
+               /* .setPositiveButton("Upload", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
 
-                         EditText title=v.findViewById(R.id.title);
-                         EditText url=v.findViewById(R.id.ref_url);
+                        EditText title=v.findViewById(R.id.title);
+                       // EditText url=v.findViewById(R.id.ref_url);
 
-                         if(!(title.getText().toString().isEmpty()) || !(url.getText().toString().isEmpty())) {
-
-                             if (URLUtil.isValidUrl(url.getText().toString())) {
-                                 upload_to_firestore(account, title.getText().toString(), url.getText().toString());
-                             } else {
-                                 Toast.makeText(HomeActivity.this, "Please enter a valid url ", Toast.LENGTH_SHORT).show();
-                             }
-                         }
-                         else
-                         {
-                             Toast.makeText(HomeActivity.this, "Fields can't be empty", Toast.LENGTH_SHORT).show();
-                         }
+//                        if(!(title.getText().toString().isEmpty()) || !(url.getText().toString().isEmpty())) {
+//
+//                            if (URLUtil.isValidUrl(url.getText().toString())) {
+//                                upload_to_firestore(account, title.getText().toString(), url.getText().toString());
+//                            } else {
+//                                Toast.makeText(HomeActivity.this, "Please enter a valid url ", Toast.LENGTH_SHORT).show();
+//                            }
+//                        }
+//                        else
+//                        {
+//                            Toast.makeText(HomeActivity.this, "Fields can't be empty", Toast.LENGTH_SHORT).show();
+//                        }
 
 
 
@@ -576,9 +597,9 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
 
             }
-        });
+        });*/
 
-        AlertDialog alertDialog = builder.create();
+        alertDialog = builder.create();
 
         // show it
         alertDialog.show();
@@ -596,7 +617,7 @@ public class HomeActivity extends AppCompatActivity {
         book_details.put("user_type",String.valueOf(type_user.getSelectedItem()));
 
 
-       String subject_db= String.valueOf(subject.getSelectedItem());
+        String subject_db= String.valueOf(subject.getSelectedItem());
         DocumentReference document = db.collection(subject_db).document(title);
 
         document.set(book_details)
@@ -629,7 +650,6 @@ public class HomeActivity extends AppCompatActivity {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
-
 
 
         GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
@@ -669,35 +689,57 @@ public class HomeActivity extends AppCompatActivity {
 
     private void initialize_spinners(View v) {
 
-         type_user = v.findViewById(R.id.role);
+      //  type_user = v.findViewById(R.id.role);
 //create a list of items for the spinner.
-        String[] items = new String[]{"Student","Teacher"};
+      //  String[] items = new String[]{"Student","Teacher"};
 //create an adapter to describe how the items are displayed, adapters are used in several places in android.
 //There are multiple variations of this, but this is the basic variant.
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+       // ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
 //set the spinners adapter to the previously created one.
-        type_user.setAdapter(adapter);
+       // type_user.setAdapter(adapter);
 
 
 
-         content_type = v.findViewById(R.id.content_type);
+        //content_type = v.findViewById(R.id.content_type);
 //create a list of items for the spinner.
-        String[] type = new String[]{"Book Pdf","Ppt","Youtube Url","Notes","Papers"};
+       // String[] type = new String[]{"Book Pdf","Ppt","Youtube Url","Notes","Papers"};
 //create an adapter to describe how the items are displayed, adapters are used in several places in android.
 //There are multiple variations of this, but this is the basic variant.
-        ArrayAdapter<String> adap = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, type);
+       // ArrayAdapter<String> adap = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, type);
 //set the spinners adapter to the previously created one.
-        content_type.setAdapter(adap);
+       // content_type.setAdapter(adap);
 
 
-         subject = v.findViewById(R.id.subject);
+      //  subject = v.findViewById(R.id.subject);
 //create a list of items for the spinner.
-    //    String[] type = new String[]{"Book Pdf","Ppt","Youtube Url"};
+        //    String[] type = new String[]{"Book Pdf","Ppt","Youtube Url"};
 //create an adapter to describe how the items are displayed, adapters are used in several places in android.
 //There are multiple variations of this, but this is the basic variant.
-        ArrayAdapter<String> sub_adap = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, subject_names);
+        //ArrayAdapter<String> sub_adap = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, subject_names);
 //set the spinners adapter to the previously created one.
-        subject.setAdapter(sub_adap);
+        //subject.setAdapter(sub_adap);
+
+        String[] year = new String[] {"FE", "SE", "TE", "BE"};
+
+        ArrayAdapter<String> adapter_year =
+                new ArrayAdapter<>(
+                        this,
+                        R.layout.dropdown_menu_popup_item,
+                        year);
+
+        ArrayAdapter<String> adapter_sub =
+                new ArrayAdapter<>(
+                        this,
+                        R.layout.dropdown_menu_popup_item,
+                        subject_names);
+
+        AutoCompleteTextView editTextFilledExposedDropdown1 =
+                v.findViewById(R.id.filled_exposed_dropdown_year);
+        editTextFilledExposedDropdown1.setAdapter(adapter_year);
+
+        AutoCompleteTextView editTextFilledExposedDropdown2 =
+                v.findViewById(R.id.filled_exposed_dropdown_sub);
+        editTextFilledExposedDropdown2.setAdapter(adapter_sub);
     }
 
 
