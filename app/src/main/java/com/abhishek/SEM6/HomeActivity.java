@@ -902,8 +902,8 @@ public class HomeActivity extends AppCompatActivity {
 //
 
 
-                                    JSONObject saleInfo = item.getJSONObject("saleInfo");
-                                    JSONObject listPrice = saleInfo.getJSONObject("listPrice");
+                          //          JSONObject saleInfo = item.getJSONObject("saleInfo");
+                            //        JSONObject listPrice = saleInfo.getJSONObject("listPrice");
 //                                    price = listPrice.getString("amount") + " " +listPrice.getString("currencyCode");
 //                                    description = volumeInfo.getString("description");
 //                                    buy = saleInfo.getString("buyLink");
