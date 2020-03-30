@@ -188,6 +188,21 @@
                 android:textColorHint="#424242"
                 android:textSize="30sp" />
 
+            <ImageView
+
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:onClick="search"
+                android:src="@drawable/ic_star_black_24dp">
+
+            </ImageView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/load_images_googleplay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="24dp" />
+
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/ref_url"
                 android:layout_width="match_parent"

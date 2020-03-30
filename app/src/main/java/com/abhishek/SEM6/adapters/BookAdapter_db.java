@@ -72,6 +72,10 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
         holder.tvChapterName.setText(book.name);
         holder.uploader.setText(book.uploader);
 
+
+      if(!book.thumbnail.isEmpty()) {
+          Picasso.get().load(book.thumbnail.replace("http","https")).into(holder.ivChapter);
+      }
         check_content_type(book,holder);
         holder.setItemLongClickListener(new ItemLongClickListener() {
             @Override
@@ -99,7 +103,7 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
 
            }
        });
-       // Picasso.get().load(book.url).into(holder.ivChapter);
+
     }
 
     private void delete_alert_dialog(final String book_name) {
