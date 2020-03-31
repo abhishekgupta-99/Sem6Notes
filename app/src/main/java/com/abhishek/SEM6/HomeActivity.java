@@ -584,7 +584,6 @@ public class HomeActivity extends AppCompatActivity {
         TextView signedin=v.findViewById(R.id.signedIn);
         signedin.setText(account.getDisplayName());
 
-
         //  builder.getContext().setTheme(R.style.AppTheme);
         final AlertDialog  alert= builder.create();
         //alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
