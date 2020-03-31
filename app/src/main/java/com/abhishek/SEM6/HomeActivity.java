@@ -22,6 +22,7 @@ import android.widget.CompoundButton;
 import android.webkit.URLUtil;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,6 +60,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.karan.churi.PermissionManager.PermissionManager;
+import com.squareup.picasso.Picasso;
 
 import org.xml.sax.SAXException;
 
@@ -78,6 +80,7 @@ public class HomeActivity extends AppCompatActivity {
     AlertDialog alertDialog;
 
     Toolbar toolbar;
+    ImageView pl;
 
     private ChipGroup chipGroup;
     private Chip chip1;
@@ -517,6 +520,9 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        pl = v.findViewById(R.id.placeholder);
+        Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(pl);
 
         initialize_spinners(v);
         TextView signedin=v.findViewById(R.id.signedIn);
