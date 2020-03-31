@@ -577,8 +577,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        pl = v.findViewById(R.id.placeholder);
-        Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(pl);
 
         initialize_spinners(v);
         TextView signedin=v.findViewById(R.id.signedIn);
