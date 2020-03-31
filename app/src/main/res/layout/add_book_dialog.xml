@@ -167,6 +167,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/book_details"
             android:layout_marginTop="16dp"
             android:orientation="vertical"
             android:layout_below="@id/layer1"
@@ -272,6 +273,13 @@
             </LinearLayout>
 
         </LinearLayout>
+
+            <ImageView
+                android:id="@+id/placeholder"
+                android:layout_below="@id/book_details"
+                android:layout_margin="16dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"/>
 
         </RelativeLayout>
 
