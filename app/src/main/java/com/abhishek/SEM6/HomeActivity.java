@@ -266,6 +266,7 @@ public class HomeActivity extends AppCompatActivity {
         rv_playbooks.setLayoutManager(manager);
         rv_playbooks.setAdapter(subjectAdapter_db_dialog);
 
+        Log.d("entered","Entered");
 //        rvSubject.addOnScrollListener(new RecyclerView.OnScrollListener() {
 //            @Override
 //            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -973,10 +974,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void search(View view) {
-
         EditText search_title = v.findViewById(R.id.title);
         search(search_title.getText().toString());
-
 
     }
 }

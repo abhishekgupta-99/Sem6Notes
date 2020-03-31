@@ -26,6 +26,7 @@ import com.abhishek.SEM6.DownloadService;
 import com.abhishek.SEM6.R;
 import com.abhishek.SEM6.models.Book;
 import com.abhishek.SEM6.models.Book_db;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -73,9 +74,11 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
         holder.uploader.setText(book.uploader);
 
 
-      if(!book.thumbnail.isEmpty()) {
-          Picasso.get().load(book.thumbnail.replace("http","https")).into(holder.ivChapter);
-      }
+////      if(!book.thumbnail.isEmpty()) {
+////         // Picasso.get().load(book.thumbnail.replace("http","https")).into(holder.ivChapter);
+////
+////          Glide.with(context).load(book.thumbnail).into(holder.ivChapter);
+////      }
         check_content_type(book,holder);
         holder.setItemLongClickListener(new ItemLongClickListener() {
             @Override
