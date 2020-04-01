@@ -36,8 +36,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager.widget.ViewPager;
+
 import com.abhishek.SEM6.adapters.SubjectAdapter;
 import com.abhishek.SEM6.adapters.SubjectAdapter_db;
+import com.abhishek.SEM6.adapters.TabAdapter;
 import com.abhishek.SEM6.booksearch.BookClient;
 import com.abhishek.SEM6.models.Book;
 import com.abhishek.SEM6.models.Book_db;
@@ -61,6 +64,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -101,6 +105,10 @@ public class HomeActivity extends AppCompatActivity {
     Toolbar toolbar;
     ImageView pl;
 
+    private TabAdapter adapter;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+
     private ChipGroup chipGroup;
     private Chip chip1;
 
@@ -120,7 +128,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private SubjectAdapter_db subjectAdapter_db,subjectAdapter_db_dialog;
     private ArrayList<Subject> subjects;
-    private FirebaseFirestore db;
+    private static FirebaseFirestore db;
     private static final int WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 54654;
     List<String> subject_names = new ArrayList<>();
 
@@ -166,75 +174,32 @@ public class HomeActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        firestore_cache();
+        //firestore_cache();
 
-        initComponents();
+        //initComponents();
 
         new RetrieveFeedTask(this).execute();
        // fetchBooks("xa");
         mRequestQueue = Volley.newRequestQueue(this);
        // search("Proakis");
 
-        subjects = prepareData();
 
-        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        adapter = new TabAdapter(getSupportFragmentManager());
+        adapter.addFragment(new BookFragment(), "Bookstore");
+        adapter.addFragment(new AcademicFragment(), "Academics");
 
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                // Your code to refresh the list here.
-                // Make sure you call swipeContainer.setRefreshing(false)
-                // once the network request has completed successfully.
-                subject_names.clear();
-                subjectAdapter_db.clear();
-                subjects = prepareData();
-                swipeContainer.setRefreshing(false);
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
 
-            }
-        });
-        // Configure the refreshing colors
-        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
-
-        chipGroup = findViewById(R.id.chip_group);
-
-
-        chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(ChipGroup group, int checkedId) {
-                chiptype = group.findViewById(checkedId).toString();
-                chiptype = chiptype.substring(chiptype.indexOf('/')+1,chiptype.indexOf('}'));
-                //Log.d("chip",chiptype);
-                filter_flag=true;
-                if(!chiptype.isEmpty())
-                {
-                    filter_query_string = chiptype;
-                }
-              //  Toast.makeText(HomeActivity.this, chiptype, Toast.LENGTH_SHORT).show();
-                subject_names.clear();
-                subjectAdapter_db.clear();
-                getAllSubject(filter_flag,filter_query_string);
-
-
-            }
-        });
-
-        //  set_recyclerView();
-        //  set_recyclerView();
-
-//        subjectAdapter = new SubjectAdapter(subjects, HomeActivity.this);
-//        LinearLayoutManager manager = new LinearLayoutManager(HomeActivity.this);
-//        rvSubject.setLayoutManager(manager);
-//        rvSubject.setAdapter(subjectAdapter);
 
     }
 
 
 
 
-    private void firestore_cache() {
+    public static void firestore_cache() {
 
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
                 .setPersistenceEnabled(true)
@@ -244,7 +209,7 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    private void set_recyclerView(ArrayList<Subject_db> subjects_db) {
+    /*private void set_recyclerView(ArrayList<Subject_db> subjects_db) {
         subjectAdapter_db = new SubjectAdapter_db(subjects_db, HomeActivity.this,chiptype);
         LinearLayoutManager manager = new LinearLayoutManager(HomeActivity.this);
         rvSubject.setLayoutManager(manager);
@@ -259,7 +224,7 @@ public class HomeActivity extends AppCompatActivity {
                     floatingActionButton.show();
             }
         });
-    }
+    }*/
 
 
     private void set_recyclerView_dialogbox (ArrayList<Subject_db> subjects_db, View v) {
@@ -280,158 +245,6 @@ public class HomeActivity extends AppCompatActivity {
  //       });
     }
 
-    private void initComponents() {
-        rvSubject = findViewById(R.id.rvSubject);
-        floatingActionButton = findViewById(R.id.imgFour);
-    }
-
-    private ArrayList<Subject> prepareData() {
-
-
-        getAllSubject(filter_flag,filter_query_string);
-       // getAllBooks();
-
-        ArrayList<Subject> subjects = new ArrayList<Subject>();
-
-        Subject physics = new Subject();
-        physics.id = 1;
-        physics.subjectName = "Physics";
-        physics.books = new ArrayList<Book>();
-
-        Book book1 = new Book();
-        book1.id = 1;
-        book1.chapterName = "Atomic power";
-        book1.imageUrl = "http://ashishkudale.com/images/phy/atoms.png";
-
-        Book book2 = new Book();
-        book2.id = 2;
-        book2.chapterName = "Theory of relativity";
-        book2.imageUrl = "http://ashishkudale.com/images/phy/sigma.png";
-
-        Book book3 = new Book();
-        book3.id = 3;
-        book3.chapterName = "Magnetic field";
-        book3.imageUrl = "http://ashishkudale.com/images/phy/magnet.png";
-
-        Book book4 = new Book();
-        book4.id = 4;
-        book4.chapterName = "Practical 1";
-        book4.imageUrl = "http://ashishkudale.com/images/phy/caliper.png";
-
-        Book book5 = new Book();
-        book5.id = 5;
-        book5.chapterName = "Practical 2";
-        book5.imageUrl = "http://ashishkudale.com/images/phy/micrometer.png";
-
-        physics.books.add(book1);
-        physics.books.add(book2);
-        physics.books.add(book3);
-        physics.books.add(book4);
-        physics.books.add(book5);
-
-        Subject chem = new Subject();
-        chem.id = 2;
-        chem.subjectName = "Chemistry";
-        chem.books = new ArrayList<Book>();
-
-        Book book6 = new Book();
-        book6.id = 6;
-        book6.chapterName = "Chemical bonds";
-        book6.imageUrl = "http://ashishkudale.com/images/chem/bonds.png";
-
-        Book book7 = new Book();
-        book7.id = 7;
-        book7.chapterName = "Sodium";
-        book7.imageUrl = "http://ashishkudale.com/images/chem/sodium.png";
-
-        Book book8 = new Book();
-        book8.id = 8;
-        book8.chapterName = "Periodic table";
-        book8.imageUrl = "http://ashishkudale.com/images/chem/periodic_table.png";
-
-        Book book9 = new Book();
-        book9.id = 9;
-        book9.chapterName = "Acid and Base";
-        book9.imageUrl = "http://ashishkudale.com/images/chem/chem.png";
-
-        chem.books.add(book6);
-        chem.books.add(book7);
-        chem.books.add(book8);
-        chem.books.add(book9);
-
-        Subject bio = new Subject();
-        bio.id = 3;
-        bio.subjectName = "Biology";
-        bio.books = new ArrayList<Book>();
-
-        Book book10 = new Book();
-        book10.id = 10;
-        book10.chapterName = "Bacteria";
-        book10.imageUrl = "http://ashishkudale.com/images/bio/bacteria.png";
-
-        Book book11 = new Book();
-        book11.id = 11;
-        book11.chapterName = "DNA and RNA";
-        book11.imageUrl = "http://ashishkudale.com/images/bio/dna.png";
-
-        Book book12 = new Book();
-        book12.id = 12;
-        book12.chapterName = "Study of microscope";
-        book12.imageUrl = "http://ashishkudale.com/images/bio/microscope.png";
-
-        Book book13 = new Book();
-        book13.id = 13;
-        book13.chapterName = "Protein and fibers";
-        book13.imageUrl = "http://ashishkudale.com/images/bio/protein.png";
-
-        bio.books.add(book10);
-        bio.books.add(book11);
-        bio.books.add(book12);
-        bio.books.add(book13);
-
-        Subject maths = new Subject();
-        maths.id = 4;
-        maths.subjectName = "Maths";
-        maths.books = new ArrayList<Book>();
-
-        Book book14 = new Book();
-        book14.id = 14;
-        book14.chapterName = "Circle";
-        book14.imageUrl = "http://ashishkudale.com/images/maths/circle.png";
-
-        Book book15 = new Book();
-        book15.id = 15;
-        book15.chapterName = "Geometry";
-        book15.imageUrl = "http://ashishkudale.com/images/maths/geometry.png";
-
-        Book book16 = new Book();
-        book16.id = 16;
-        book16.chapterName = "Linear equations";
-        book16.imageUrl = "http://ashishkudale.com/images/maths/linear.png";
-
-        Book book17 = new Book();
-        book17.id = 17;
-        book17.chapterName = "Graph";
-        book17.imageUrl = "http://ashishkudale.com/images/maths/plot.png";
-
-        Book book18 = new Book();
-        book18.id = 18;
-        book18.chapterName = "Trigonometry";
-        book18.imageUrl = "http://ashishkudale.com/images/maths/trigonometry.png";
-
-        maths.books.add(book14);
-        maths.books.add(book18);
-        maths.books.add(book15);
-        maths.books.add(book16);
-        maths.books.add(book17);
-
-        subjects.add(physics);
-        subjects.add(chem);
-        subjects.add(maths);
-        subjects.add(bio);
-
-        return subjects;
-    }
 
     private void getAllBooks(boolean filter_flag,String filter_query_string) {
 
@@ -496,7 +309,7 @@ public class HomeActivity extends AppCompatActivity {
 
                     if(count[0] ==subject_names.size())
                     {
-                        set_recyclerView(subjects_db);
+                        //set_recyclerView(subjects_db);
 
                     }
 
@@ -520,7 +333,7 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    private void getAllSubject(final boolean filter_flag, final String filter_query_string) {
+    /*private void getAllSubject(final boolean filter_flag, final String filter_query_string) {
         db.collection("Subjects").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -539,7 +352,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-    }
+    }*/
 
     public void add_dialog(final GoogleSignInAccount account) {
 
