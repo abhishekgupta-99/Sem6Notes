@@ -5,12 +5,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -32,6 +37,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.abhishek.SEM6.adapters.SubjectAdapter;
 import com.abhishek.SEM6.adapters.SubjectAdapter_db;
+import com.abhishek.SEM6.booksearch.BookClient;
 import com.abhishek.SEM6.models.Book;
 import com.abhishek.SEM6.models.Book_db;
 import com.abhishek.SEM6.models.Subject;
@@ -39,6 +45,12 @@ import com.abhishek.SEM6.models.Subject_db;
 import com.abhishek.SEM6.rssfeed.RssFeed;
 import com.abhishek.SEM6.rssfeed.RssItem;
 import com.abhishek.SEM6.rssfeed.RssReader;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -59,7 +71,11 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.karan.churi.PermissionManager.PermissionManager;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
@@ -68,10 +84,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import cz.msebera.android.httpclient.Header;
+
 public class HomeActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 321;
-    private RecyclerView rvSubject;
+    private RecyclerView rvSubject,rv_playbooks;
     private SubjectAdapter subjectAdapter;
     Spinner type_user,content_type,subject;
     String chiptype;
@@ -96,7 +115,7 @@ public class HomeActivity extends AppCompatActivity {
     private SwipeRefreshLayout swipeContainer;
 
 
-    private SubjectAdapter_db subjectAdapter_db;
+    private SubjectAdapter_db subjectAdapter_db,subjectAdapter_db_dialog;
     private ArrayList<Subject> subjects;
     private FirebaseFirestore db;
     private static final int WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 54654;
@@ -106,6 +125,12 @@ public class HomeActivity extends AppCompatActivity {
 
 
     ArrayList<Subject_db> subjects_db = new ArrayList<Subject_db>();
+    private BookClient client;
+
+    private RequestQueue mRequestQueue;
+
+    private static  final  String BASE_URL="https://www.googleapis.com/books/v1/volumes?q=";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -143,6 +168,9 @@ public class HomeActivity extends AppCompatActivity {
         initComponents();
 
         new RetrieveFeedTask(this).execute();
+       // fetchBooks("xa");
+        mRequestQueue = Volley.newRequestQueue(this);
+       // search("Proakis");
 
         subjects = prepareData();
 
@@ -228,6 +256,19 @@ public class HomeActivity extends AppCompatActivity {
                     floatingActionButton.show();
             }
         });
+    }
+
+
+    private void set_recyclerView_dialogbox (ArrayList<Subject_db> subjects_db, View v) {
+
+        subjectAdapter_db_dialog = new SubjectAdapter_db(subjects_db, HomeActivity.this,chiptype);
+        LinearLayoutManager manager = new LinearLayoutManager(HomeActivity.this);
+        rv_playbooks.setLayoutManager(manager);
+        rv_playbooks.setAdapter(subjectAdapter_db_dialog);
+
+
+        Log.d("entered","Entered");
+
     }
 
     private void initComponents() {
@@ -509,10 +550,19 @@ public class HomeActivity extends AppCompatActivity {
         toolbar.setTitle("Add new");
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         toolbar.inflateMenu(R.menu.dialog_menu);
+        toolbar.setNavigationOnClickListener(new Toolbar.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(HomeActivity.this, "Dialog box closed", Toast.LENGTH_SHORT).show();
+                alertDialog.dismiss();
+            }
+        });
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                Toast.makeText(HomeActivity.this, "save clicked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(HomeActivity.this, "Save clicked", Toast.LENGTH_SHORT).show();
                 alertDialog.dismiss();
                 return true;
             }
@@ -750,5 +800,177 @@ public class HomeActivity extends AppCompatActivity {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 DirectoryHelper.createDirectory(this);
         }
+    }
+
+
+    // Executes an API call to the OpenLibrary search endpoint, parses the results
+    // Converts them into an array of book objects and adds them to the adapter
+    private void fetchBooks(String query) {
+        query="Andrew sloss ";
+        client = new BookClient();
+        client.getBooks(query, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    JSONArray docs;
+                    if(response != null) {
+                        // Get the docs json array
+                        docs = response.getJSONArray("docs");
+                        // Parse json array into array of model objects
+                        final ArrayList<com.abhishek.SEM6.booksearch.Book> books = com.abhishek.SEM6.booksearch.Book.fromJson(docs);
+                        // Remove all books from the adapter
+                        //bookAdapter.clear();
+                        // Load model objects into the adapter
+                        for (com.abhishek.SEM6.booksearch.Book book : books) {
+                            Log.d("BOOKs url openlibrary ",book.getCoverUrl());
+                           // bookAdapter.add(book); // add book through the adapter
+                        }
+                        //bookAdapter.notifyDataSetChanged();
+                        //hideProgress();
+                    }
+                } catch (JSONException e) {
+                    // Invalid JSON format, show appropriate error.
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+            }
+        });
+    }
+
+
+    private void parseJson(String key) {
+
+        ArrayList<Subject_db> fetched_books_playbooks = new ArrayList<Subject_db>();
+        fetched_books_playbooks.clear();
+        final Subject_db fetched_books = new Subject_db();
+
+        fetched_books.id = 1;
+        fetched_books.subjectName = "Select A Thumbnail for the required book and author";
+        fetched_books.books = new ArrayList<Book_db>();
+
+
+        final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, key.toString(), null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        String title ="";
+                        String author ="";
+//                        String publishedDate = "NoT Available";
+//                        String description = "No Description";
+//                        int pageCount = 1000;
+//                        String categories = "No categories Available ";
+//                        String buy ="";
+
+  //                      String price = "NOT_FOR_SALE";
+                        try {
+                            JSONArray items = response.getJSONArray("items");
+
+                            for (int i = 0 ; i< items.length() ;i++){
+                                Book_db book1 = new Book_db();
+                                JSONObject item = items.getJSONObject(i);
+                                JSONObject volumeInfo = item.getJSONObject("volumeInfo");
+
+
+
+                                try{
+                                    title = volumeInfo.getString("title");
+                                    book1.name=title;
+
+
+                                    JSONArray authors = volumeInfo.getJSONArray("authors");
+                                    if(authors.length() == 1){
+                                        author = authors.getString(0);
+                                        book1.uploader=author;
+                                    }else {
+                                        author = authors.getString(0) + "|" +authors.getString(1);
+                                        book1.uploader=author;
+                                    }
+
+
+//                                    publishedDate = volumeInfo.getString("publishedDate");
+//                                    pageCount = volumeInfo.getInt("pageCount");
+//
+
+
+                          //          JSONObject saleInfo = item.getJSONObject("saleInfo");
+                            //        JSONObject listPrice = saleInfo.getJSONObject("listPrice");
+//                                    price = listPrice.getString("amount") + " " +listPrice.getString("currencyCode");
+//                                    description = volumeInfo.getString("description");
+//                                    buy = saleInfo.getString("buyLink");
+//                                    categories = volumeInfo.getJSONArray("categories").getString(0);
+
+                                }catch (Exception e){
+
+                                }
+                                String thumbnail = volumeInfo.getJSONObject("imageLinks").getString("thumbnail");
+                                book1.thumbnail=thumbnail;
+                                Log.d("Thumbnail ",thumbnail);
+
+//                                String previewLink = volumeInfo.getString("previewLink");
+//                                String url = volumeInfo.getString("infoLink");
+
+
+//                                mBooks.add(new Book(title , author , publishedDate , description ,categories
+//                                        ,thumbnail,buy,previewLink,price,pageCount,url));
+//
+//
+//                                mAdapter = new RecyclerViewAdapter(MainActivity.this , mBooks);
+//                                mRecyclerView.setAdapter(mAdapter);
+                                fetched_books.books.add(book1);
+                            }
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.e("TAG" , e.toString());
+
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        mRequestQueue.add(request);
+
+        fetched_books_playbooks.add(fetched_books);
+        set_recyclerView_dialogbox(fetched_books_playbooks,v);
+    }
+
+
+    private boolean Read_network_state(Context context)
+    {    boolean is_connected;
+        ConnectivityManager cm =(ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo info = cm.getActiveNetworkInfo();
+        is_connected=info!=null&&info.isConnectedOrConnecting();
+        return is_connected;
+    }
+
+    private void search(String search_query)
+    {
+
+        if(search_query.equals(""))
+        {
+            Toast.makeText(this,"Please enter your query",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String final_query=search_query.replace(" ","+");
+        Uri uri=Uri.parse(BASE_URL+final_query);
+        Uri.Builder buider = uri.buildUpon();
+        parseJson(buider.toString());
+    }
+
+    public void search(View view) {
+
+        rv_playbooks=v.findViewById(R.id.load_images_googleplay);
+        EditText search_title = v.findViewById(R.id.title);
+        search(search_title.getText().toString());
+
     }
 }
