@@ -5,7 +5,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.abhishek.SEM6"
-        minSdkVersion 17
+        minSdkVersion 21
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -47,8 +47,16 @@ dependencies {
 //swipe to refresh
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
+    //openlibrary
+    implementation 'com.codepath.libraries:asynchttpclient:0.0.8'
+    implementation 'com.loopj.android:android-async-http:1.4.9'
+
 
     // Permission Manager
     implementation 'com.github.karanchuri:PermissionManager:0.1.0'
 
+    //volley
+    implementation 'com.android.volley:volley:1.1.0'
+
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 }

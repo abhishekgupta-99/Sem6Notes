@@ -49,7 +49,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_gravity="center_horizontal"
                 android:background="@color/white"
-                app:cardCornerRadius="40dp"
+                app:cardCornerRadius="30dp"
                 app:strokeColor="@color/grey300"
                 app:strokeWidth="1dp">
 
@@ -60,8 +60,8 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:src="@drawable/googlelogo" />
 
                     <TextView
@@ -87,7 +87,7 @@
                     android:id="@+id/chip_group"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
                     app:singleLine="true"
                     app:singleSelection="true">
@@ -167,58 +167,92 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/book_details"
             android:layout_marginTop="16dp"
             android:orientation="vertical"
             android:layout_below="@id/layer1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginRight="4dp"
-                android:layout_marginBottom="16dp"
-                android:fontFamily="@font/poppins_regular"
-                android:hint="Title"
-                android:inputType="text"
-                android:textColor="#000000"
-                android:textColorHint="#424242"
-                android:textSize="30sp" />
-
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/ref_url"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginRight="4dp"
-                android:layout_marginBottom="16dp"
-                android:fontFamily="@font/poppins_regular"
-                android:hint="Reference Url"
-                android:inputType="textUri"
-                android:textColor="#000000"
-                android:textColorHint="#424242" />
-
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="100dp"
+                    android:layout_height="150dp"
+                    app:cardBackgroundColor="@color/grey300"
+                    app:cardCornerRadius="8dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:onClick="search"
+                        android:text="Browse image"
+                        android:textSize="12sp" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <LinearLayout
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginRight="4dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:hint="Title"
+                        android:inputType="text"
+                        android:textColor="#000000"
+                        android:textColorHint="#424242"
+                        android:textSize="24sp" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/ref_url"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginRight="4dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:hint="Reference Url"
+                        android:inputType="textUri"
+                        android:textColor="#000000"
+                        android:textColorHint="#424242" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    app:boxCornerRadiusTopStart="5dp"
-                    app:boxCornerRadiusBottomEnd="5dp"
-                    app:boxCornerRadiusBottomStart="5dp"
-                    app:boxCornerRadiusTopEnd="5dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
                     android:backgroundTint="@color/white"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+                    app:boxCornerRadiusBottomEnd="5dp"
+                    app:boxCornerRadiusBottomStart="5dp"
+                    app:boxCornerRadiusTopEnd="5dp"
+                    app:boxCornerRadiusTopStart="5dp">
 
                     <AutoCompleteTextView
                         android:id="@+id/filled_exposed_dropdown_year"
@@ -232,16 +266,16 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    app:boxCornerRadiusTopStart="5dp"
-                    app:boxCornerRadiusBottomEnd="5dp"
-                    app:boxCornerRadiusBottomStart="5dp"
-                    app:boxCornerRadiusTopEnd="5dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="16dp"
                     android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+                    app:boxCornerRadiusBottomEnd="5dp"
+                    app:boxCornerRadiusBottomStart="5dp"
+                    app:boxCornerRadiusTopEnd="5dp"
+                    app:boxCornerRadiusTopStart="5dp">
 
                     <AutoCompleteTextView
                         android:id="@+id/filled_exposed_dropdown_sub"
@@ -255,6 +289,21 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
+
+            <ImageView
+
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:onClick="search"
+                android:src="@drawable/ic_star_black_24dp">
+
+            </ImageView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/load_images_googleplay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="24dp" />
 
         </LinearLayout>
 

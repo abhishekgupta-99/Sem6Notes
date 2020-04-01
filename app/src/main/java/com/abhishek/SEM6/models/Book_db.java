@@ -36,6 +36,16 @@ public class Book_db {
     public int views;
     public String uploader;
 
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
+    public String thumbnail="";
+
     public String getContent_type() {
         return content_type;
     }
