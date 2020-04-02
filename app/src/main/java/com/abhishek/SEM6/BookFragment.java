@@ -207,7 +207,7 @@ public class BookFragment extends Fragment {
         return subjects;
     }
 
-    private void set_recyclerView(ArrayList<Subject_db> subjects_db) {
+    public void set_recyclerView(ArrayList<Subject_db> subjects_db) {
         subjectAdapter_db = new SubjectAdapter_db(subjects_db, getContext(),chiptype);
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         rvSubject.setLayoutManager(manager);
@@ -348,10 +348,23 @@ public class BookFragment extends Fragment {
         chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(ChipGroup group, int checkedId) {
-                chiptype = group.findViewById(checkedId).toString();
-                chiptype = chiptype.substring(chiptype.indexOf('/')+1,chiptype.indexOf('}'));
-                //Log.d("chip",chiptype);
-                filter_flag=true;
+
+                Log.d("checkedid",checkedId+"");
+if((checkedId+"").equals("-1")) {
+
+    filter_flag=false;
+
+}
+else{
+
+    chiptype = group.findViewById(checkedId).toString();
+
+    chiptype = chiptype.substring(chiptype.indexOf('/') + 1, chiptype.indexOf('}'));
+
+    Log.d("chip",chiptype);
+    filter_flag = true;
+
+}
                 if(!chiptype.isEmpty())
                 {
                     filter_query_string = chiptype;

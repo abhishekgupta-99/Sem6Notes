@@ -187,6 +187,12 @@
                     app:cardBackgroundColor="@color/grey300"
                     app:cardCornerRadius="8dp">
 
+                    <ImageView
+                        android:id="@+id/selected_book"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"

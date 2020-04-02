@@ -29,6 +29,7 @@ import android.webkit.URLUtil;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import androidx.appcompat.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -78,15 +79,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.karan.churi.PermissionManager.PermissionManager;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.squareup.picasso.Picasso;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.xml.sax.SAXException;
-
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -142,6 +137,7 @@ public class HomeActivity extends AppCompatActivity {
     private RequestQueue mRequestQueue;
 
     private static  final  String BASE_URL="https://www.googleapis.com/books/v1/volumes?q=";
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,16 +187,53 @@ public class HomeActivity extends AppCompatActivity {
         adapter.addFragment(new BookFragment(), "Bookstore");
         adapter.addFragment(new AcademicFragment(), "Academics");
 
+        searchView = findViewById(R.id.searchView);
+
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
+
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                ArrayList<Subject_db> filtered_subjects = new ArrayList<Subject_db>();
+                Subject_db filter_subject=new Subject_db();
+                for(Subject_db subject: subjects_db)
+                {
+
+                    for(Book_db book: subject.books)
+                    {
+
+                        if (book.name.contains(query))
+                        {
+
+                          //  Subject_db filter_subject=new Subject_db();
+                            filter_subject.subjectName=subject.subjectName;
+                            filter_subject.books.add(book);
+
+                        }
+                    }
+                    filtered_subjects.add(filter_subject);
+                }
+
+                BookFragment fragment = new BookFragment();
+                fragment.set_recyclerView(filtered_subjects);
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
 
 
     }
 
 
-
-
-    public static void firestore_cache() {
+        public static void firestore_cache() {
 
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
                 .setPersistenceEnabled(true)
@@ -302,6 +335,7 @@ public class HomeActivity extends AppCompatActivity {
                                 }
                                 //    Log.d("All Books",  " => " + subject.books.get(0).getName());
                                 subjects_db.add(subject);
+
 
 
                             } else {
