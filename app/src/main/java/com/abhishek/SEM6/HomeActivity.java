@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.CompoundButton;
 import android.webkit.URLUtil;
@@ -233,6 +234,9 @@ public class HomeActivity extends AppCompatActivity {
         LinearLayoutManager manager = new LinearLayoutManager(HomeActivity.this);
         rv_playbooks.setLayoutManager(manager);
         rv_playbooks.setAdapter(subjectAdapter_db_dialog);
+        Toast.makeText(this, "Entered recycler", Toast.LENGTH_SHORT).show();
+       // subjectAdapter_db_dialog.notifyDataSetChanged();
+
 
         Log.d("entered","Entered");
 //        rvSubject.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -667,12 +671,12 @@ public class HomeActivity extends AppCompatActivity {
 
     private void parseJson(String key) {
 
-        ArrayList<Subject_db> fetched_books_playbooks = new ArrayList<Subject_db>();
+        final ArrayList<Subject_db> fetched_books_playbooks = new ArrayList<Subject_db>();
         fetched_books_playbooks.clear();
         final Subject_db fetched_books = new Subject_db();
 
         fetched_books.id = 1;
-        fetched_books.subjectName = "Select A Thumbnail for the required book and author";
+        fetched_books.subjectName = "Select A Thumbnail";
         fetched_books.books = new ArrayList<Book_db>();
 
 
@@ -744,7 +748,20 @@ public class HomeActivity extends AppCompatActivity {
 //                                mAdapter = new RecyclerViewAdapter(MainActivity.this , mBooks);
 //                                mRecyclerView.setAdapter(mAdapter);
                                 fetched_books.books.add(book1);
+
+
+                                if(i==5 || (i==items.length()-1))
+                                {
+                                    Toast.makeText(HomeActivity.this, i+"", Toast.LENGTH_SHORT).show();
+                                    fetched_books_playbooks.add(fetched_books);
+                                    set_recyclerView_dialogbox(fetched_books_playbooks,v);
+
+                                }
+
                             }
+
+
+
 
 
                         } catch (JSONException e) {
@@ -762,8 +779,7 @@ public class HomeActivity extends AppCompatActivity {
         });
         mRequestQueue.add(request);
 
-        fetched_books_playbooks.add(fetched_books);
-        set_recyclerView_dialogbox(fetched_books_playbooks,v);
+
     }
 
 
@@ -792,6 +808,21 @@ public class HomeActivity extends AppCompatActivity {
     public void search(View view) {
         EditText search_title = v.findViewById(R.id.title);
         search(search_title.getText().toString());
+      //  set_recyclerView_dialogbox(fetched_books_playbooks,v);
+     //   showSoftKeyboard(search_title);
 
+    }
+
+    public void hideSoftKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+    }
+
+    public void showSoftKeyboard(View view) {
+        if (view.requestFocus()) {
+            InputMethodManager imm = (InputMethodManager)
+                    getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+        }
     }
 }

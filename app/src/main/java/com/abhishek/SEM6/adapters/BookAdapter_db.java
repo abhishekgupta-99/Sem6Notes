@@ -26,12 +26,13 @@ import com.abhishek.SEM6.DownloadService;
 import com.abhishek.SEM6.R;
 import com.abhishek.SEM6.models.Book;
 import com.abhishek.SEM6.models.Book_db;
-import com.bumptech.glide.Glide;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -69,6 +70,9 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
     @Override
 
     public void onBindViewHolder (final CustomViewHolder holder, final int position) {
+
+       // Toast.makeText(context, "BINDVIEWHOLDER", Toast.LENGTH_SHORT).show();
+        Log.d("BINDVIEWHOLDER","BINDVIEWHOLDER");
         final Book_db book = books.get(position);
         holder.tvChapterName.setText(book.name);
         holder.uploader.setText(book.uploader);
