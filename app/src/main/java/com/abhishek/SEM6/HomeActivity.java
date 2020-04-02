@@ -100,6 +100,7 @@ public class HomeActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     ImageView pl;
+    private static Context context;
 
     private TabAdapter adapter;
     private TabLayout tabLayout;
@@ -157,6 +158,7 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_main);
+        HomeActivity.context = getApplicationContext();
 
         TypefaceUtil.overrideFont(getApplicationContext(), "POPPINS", "fonts/poppins_regular.ttf");
 
@@ -218,7 +220,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
 
                 BookFragment fragment = new BookFragment();
-                fragment.set_recyclerView(filtered_subjects);
+                fragment.set_recyclerView_on_search(filtered_subjects);
 
                 return false;
             }
@@ -241,6 +243,10 @@ public class HomeActivity extends AppCompatActivity {
         db.setFirestoreSettings(settings);
 
 
+    }
+
+    public static Context getAppContext() {
+        return HomeActivity.context;
     }
 
     /*private void set_recyclerView(ArrayList<Subject_db> subjects_db) {
