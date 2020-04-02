@@ -43,6 +43,8 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.CustomViewHold
         Book book = books.get(position);
         holder.tvChapterName.setText(book.chapterName);
         Picasso.get().load(book.imageUrl).into(holder.ivChapter);
+
+
     }
 
     @Override
