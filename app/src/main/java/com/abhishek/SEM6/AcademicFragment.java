@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.abhishek.SEM6.adapters.SubjectAdapter_db;
+import com.abhishek.SEM6.adapters.WebAdapter;
 import com.abhishek.SEM6.models.Book;
 import com.abhishek.SEM6.models.Book_db;
 import com.abhishek.SEM6.models.Subject;
@@ -36,7 +37,8 @@ import java.util.List;
 public class AcademicFragment extends Fragment {
     private SwipeRefreshLayout swipeContainer;
     List<String> subject_names = new ArrayList<>();
-    private SubjectAdapter_db subjectAdapter_db,subjectAdapter_db_dialog;
+    //private SubjectAdapter_db subjectAdapter_db,subjectAdapter_db_dialog;
+    private WebAdapter webAdapter;
     private ArrayList<Subject> subjects;
     private ChipGroup chipGroup;
     String chiptype;
@@ -45,6 +47,7 @@ public class AcademicFragment extends Fragment {
     private FirebaseFirestore db;
     ArrayList<Subject_db> subjects_db = new ArrayList<Subject_db>();
     private RecyclerView rvSubject,rv_playbooks;
+    int i = 0;
 
     public AcademicFragment() {
         // Required empty public constructor
@@ -205,26 +208,29 @@ public class AcademicFragment extends Fragment {
         return subjects;
     }
 
-    private void set_recyclerView(ArrayList<Subject_db> subjects_db) {
-        subjectAdapter_db = new SubjectAdapter_db(subjects_db, getContext(),chiptype);
+    private void set_recyclerView(ArrayList<Book_db> subjects) {
+        //subjectAdapter_db = new SubjectAdapter_db(subjects_db, getContext(),chiptype);
+       // Log.d("sub11",subjects.toString());
+        webAdapter = new WebAdapter( getContext(),subjects,chiptype);
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         rvSubject.setLayoutManager(manager);
-        rvSubject.setAdapter(subjectAdapter_db);
+        rvSubject.setAdapter(webAdapter);
     }
 
     private void getAllBooks(boolean filter_flag,String filter_query_string) {
 
         final int[] count = {0};
         Query query = null;
-        //
+      //  Log.d("getallbooks",subject_names.toString());
 
         for(String each_subject_from_db: subject_names)
         {
+           // Log.d("infor","infor");
             final Subject_db subject=new Subject_db();
             subject.subjectName=each_subject_from_db;
             subject.books=new ArrayList<Book_db>();
             //Toast.makeText(this, each_subject_from_db, Toast.LENGTH_SHORT).show();
-            Log.d("subject_curr",each_subject_from_db);
+           // Log.d("acad_sub",each_subject_from_db);
 
             if(filter_flag)
             {
@@ -258,7 +264,8 @@ public class AcademicFragment extends Fragment {
                                     //    Log.d("Books",  " => " + book.name);
 
                                     //Log.d("UnReached adapter",  " => " );
-
+                                   // Log.d("acad_bok",subject.books.get(i).getName());
+                                    //i++;
 
                                 }
                                 //    Log.d("All Books",  " => " + subject.books.get(0).getName());
@@ -273,9 +280,9 @@ public class AcademicFragment extends Fragment {
                 @Override
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
-                    if(count[0] ==subject_names.size())
+                    if(count[0] == subject_names.size())
                     {
-                        set_recyclerView(subjects_db);
+                        set_recyclerView(subject.books);
 
                     }
 
@@ -300,7 +307,7 @@ public class AcademicFragment extends Fragment {
     }
 
     private void getAllSubject(final boolean filter_flag, final String filter_query_string) {
-        db.collection("Subjects").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("Acad").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
@@ -308,7 +315,7 @@ public class AcademicFragment extends Fragment {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         subject_names.add(document.getId());
                     }
-                    //  Log.d("subjects", subject_names.toString());
+                      Log.d("acd_subjects", subject_names.toString());
                     getAllBooks(filter_flag,filter_query_string);
                     // set_recyclerView(subjects_db);
 
@@ -334,17 +341,29 @@ public class AcademicFragment extends Fragment {
         chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(ChipGroup group, int checkedId) {
-                chiptype = group.findViewById(checkedId).toString();
-                chiptype = chiptype.substring(chiptype.indexOf('/')+1,chiptype.indexOf('}'));
-                //Log.d("chip",chiptype);
-                filter_flag=true;
+                if((checkedId+"").equals("-1")) {
+
+                    filter_flag=false;
+
+                }
+                else{
+
+                    chiptype = group.findViewById(checkedId).toString();
+
+                    chiptype = chiptype.substring(chiptype.indexOf('/') + 1, chiptype.indexOf('}'));
+
+                    Log.d("chip",chiptype);
+                    filter_flag = true;
+
+                }
+
                 if(!chiptype.isEmpty())
                 {
                     filter_query_string = chiptype;
                 }
                 //  Toast.makeText(HomeActivity.this, chiptype, Toast.LENGTH_SHORT).show();
                 subject_names.clear();
-                subjectAdapter_db.clear();
+                //subjectAdapter_db.clear();
                 getAllSubject(filter_flag,filter_query_string);
 
 
@@ -360,7 +379,7 @@ public class AcademicFragment extends Fragment {
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
                 subject_names.clear();
-                subjectAdapter_db.clear();
+                //subjectAdapter_db.clear();
                 subjects = prepareData();
                 swipeContainer.setRefreshing(false);
 

@@ -16,7 +16,7 @@
         app:singleSelection="true">
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/bookpdf"
+            android:id="@+id/announcements"
             style="@style/CustomChipChoice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -25,12 +25,12 @@
             android:clickable="true"
             android:focusable="true"
             android:fontFamily="@font/poppins_regular"
-            android:text="Book"
+            android:text="Announcements"
             app:chipStrokeColor="@color/grey300"
             app:chipStrokeWidth="1dp" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/ppt"
+            android:id="@+id/exam"
             style="@style/CustomChipChoice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,49 +39,7 @@
             android:clickable="true"
             android:focusable="true"
             android:fontFamily="@font/poppins_regular"
-            android:text="PPT"
-            app:chipStrokeColor="@color/grey300"
-            app:chipStrokeWidth="1dp" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/notes"
-            style="@style/CustomChipChoice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="3dp"
-            android:checkable="true"
-            android:clickable="true"
-            android:focusable="true"
-            android:fontFamily="@font/poppins_regular"
-            android:text="Notes"
-            app:chipStrokeColor="@color/grey300"
-            app:chipStrokeWidth="1dp" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/youtube"
-            style="@style/CustomChipChoice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="3dp"
-            android:checkable="true"
-            android:clickable="true"
-            android:focusable="true"
-            android:fontFamily="@font/poppins_regular"
-            android:text="Video Links"
-            app:chipStrokeColor="@color/grey300"
-            app:chipStrokeWidth="1dp" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/papers"
-            style="@style/CustomChipChoice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="3dp"
-            android:checkable="true"
-            android:clickable="true"
-            android:focusable="true"
-            android:fontFamily="@font/poppins_regular"
-            android:text="Papers"
+            android:text="Exam"
             app:chipStrokeColor="@color/grey300"
             app:chipStrokeWidth="1dp" />
 

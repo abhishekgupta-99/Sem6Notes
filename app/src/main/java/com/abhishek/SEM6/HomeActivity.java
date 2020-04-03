@@ -29,6 +29,8 @@ import android.webkit.URLUtil;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -57,6 +59,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -98,6 +101,9 @@ public class HomeActivity extends AppCompatActivity {
     String chiptype;
     AlertDialog alertDialog;
 
+    ImageView selected_book;
+    TextView browse;
+
     Toolbar toolbar;
     ImageView pl;
 
@@ -109,7 +115,7 @@ public class HomeActivity extends AppCompatActivity {
     private Chip chip1;
 
     LayoutInflater inflater;
-    View v;
+    View v,view;
 
     int filter_query=1;
     int all_books_query=0;
@@ -143,7 +149,11 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setTheme(R.style.AppTheme);
-
+        view = View.inflate(this,R.layout.add_book_dialog,null);
+        selected_book = view.findViewById(R.id.selected_book);
+        browse = view.findViewById(R.id.browse);
+        selected_book.setBackgroundResource(R.drawable.andrew);
+        browse.setText("hello");
 
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         // this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -188,6 +198,7 @@ public class HomeActivity extends AppCompatActivity {
         adapter.addFragment(new AcademicFragment(), "Academics");
 
         searchView = findViewById(R.id.searchView);
+        //searchView.setBackgroundColor(getResources().getColor(R.color.white));
 
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
@@ -260,10 +271,15 @@ public class HomeActivity extends AppCompatActivity {
         });
     }*/
 
+    public void setImage(View v)
+    {
+        //Log.d("settingimg",browse.getVisibility()+"");
+    }
+
 
     private void set_recyclerView_dialogbox (ArrayList<Subject_db> subjects_db, View v) {
         rv_playbooks=v.findViewById(R.id.load_images_googleplay);
-        subjectAdapter_db_dialog = new SubjectAdapter_db(subjects_db, HomeActivity.this,chiptype);
+        subjectAdapter_db_dialog = new SubjectAdapter_db(subjects_db, HomeActivity.this,chiptype,1,v);
         LinearLayoutManager manager = new LinearLayoutManager(HomeActivity.this);
         rv_playbooks.setLayoutManager(manager);
         rv_playbooks.setAdapter(subjectAdapter_db_dialog);
@@ -407,6 +423,11 @@ public class HomeActivity extends AppCompatActivity {
         inflater = getLayoutInflater();
         v=inflater.inflate(R.layout.add_book_dialog, null);
 
+//        selected_book = v.findViewById(R.id.selected_book);
+//        browse = v.findViewById(R.id.browse);
+//        selected_book.setBackgroundResource(R.drawable.andrew);
+//        browse.setText("hello");
+
         toolbar = v.findViewById(R.id.toolbar);
         toolbar.setTitle("Add new");
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
@@ -424,6 +445,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 Toast.makeText(HomeActivity.this, "Save clicked", Toast.LENGTH_SHORT).show();
+                //upload_to_firestore(account, title.getText().toString(), url.getText().toString());
                 alertDialog.dismiss();
                 return true;
             }

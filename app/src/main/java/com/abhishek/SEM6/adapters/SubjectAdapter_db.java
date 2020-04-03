@@ -28,11 +28,24 @@ public class SubjectAdapter_db extends RecyclerView.Adapter<SubjectAdapter_db.Vi
     private Context context;
     private LayoutInflater layoutInflater;
     String chiptype;
+    int num;
+    View v;
 
-    public SubjectAdapter_db(ArrayList<Subject_db> subjects, Context context,String chiptype) {
+    public SubjectAdapter_db(ArrayList<Subject_db> subjects, Context context,String chiptype,int num,View v) {
         this.subjects = subjects;
         this.context = context;
         this.chiptype = chiptype;
+        this.num = num;
+        this.v = v;
+        this.layoutInflater = LayoutInflater.from(context);
+    }
+
+    public SubjectAdapter_db(ArrayList<Subject_db> subjects, Context context,String chiptype,int num) {
+        this.subjects = subjects;
+        this.context = context;
+        this.chiptype = chiptype;
+        this.num = num;
+        this.v = v;
         this.layoutInflater = LayoutInflater.from(context);
     }
 
@@ -44,7 +57,7 @@ public class SubjectAdapter_db extends RecyclerView.Adapter<SubjectAdapter_db.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.recyclerView.setAdapter(new BookAdapter_db(context, subjects.get(position).books,subjects.get(position).subjectName));
+        holder.recyclerView.setAdapter(new BookAdapter_db(context, subjects.get(position).books,subjects.get(position).subjectName,num,v));
         holder.recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         holder.recyclerView.setHasFixedSize(true);
 
