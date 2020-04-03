@@ -9,6 +9,7 @@
     <color name="blue">#0179CA</color>
     <color name="grey300">#E0E0E0</color>
     <color name="transparent">#00FFFFFF</color>
+    <color name="card_stroke">#336D6D6D</color>
 
     <color name="text_color_checked">@color/white</color>
     <color name="text_color_unchecked">@color/black</color>

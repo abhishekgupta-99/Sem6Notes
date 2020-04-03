@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.abhishek.SEM6.DirectoryHelper;
 import com.abhishek.SEM6.DownloadService;
+import com.abhishek.SEM6.HomeActivity;
 import com.abhishek.SEM6.R;
 import com.abhishek.SEM6.models.Book;
 import com.abhishek.SEM6.models.Book_db;
@@ -49,15 +50,20 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
     private ArrayList<Book_db> books;
     private LayoutInflater inflater;
     private String subjectname;
+    int num;
+    ImageView selected_book;
+    TextView browse;
+    View v;
 
     AlertDialog.Builder builder;
 
-    public BookAdapter_db(Context context, ArrayList<Book_db> books, String subjectName) {
+    public BookAdapter_db(Context context, ArrayList<Book_db> books, String subjectName,int num,View v) {
         this.context = context;
         this.books = books;
         this.inflater = LayoutInflater.from(context);
         this.subjectname=subjectName;
-
+        this.num = num;
+        this.v = v;
     }
 
     @Override
@@ -84,12 +90,34 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
           Glide.with(context).load(book.thumbnail).into(holder.ivChapter);
       }
         check_content_type(book,holder);
+
+
         holder.setItemLongClickListener(new ItemLongClickListener() {
             @Override
-            public void onItemLongClicked(View v, int pos) {
-               // Toast.makeText(context,books.get(pos).getName(),Toast.LENGTH_SHORT).show();
+            public void onItemLongClicked(View view, int pos) {
+                // Toast.makeText(context,books.get(pos).getName(),Toast.LENGTH_SHORT).show();
+                Log.d("numnum",num+"");
+                if(num==1)
+                {
+                    Log.d("setimg","setimg");
+                    //View view = View.inflate(context,R.layout.add_book_dialog,null);
+                    /*selected_book = view.findViewById(R.id.selected_book);
+                    browse = view.findViewById(R.id.browse);
+                    browse.setVisibility(View.GONE);*/
+                    //HomeActivity h = new HomeActivity();
+                    //h.setImage(v);
+                    selected_book = v.findViewById(R.id.selected_book);
+                    browse = v.findViewById(R.id.browse);
+                    browse.setVisibility(View.GONE);
+                    Glide.with(context).load(book.thumbnail).into(selected_book);
+                    selected_book.setVisibility(View.VISIBLE);
 
-                delete_alert_dialog(books.get(pos).getName());
+                }
+                else{
+                    delete_alert_dialog(books.get(pos).getName());
+                }
+
+
             }
         });
 

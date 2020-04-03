@@ -1,10 +1,8 @@
 package com.abhishek.SEM6;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.abhishek.SEM6.adapters.SubjectAdapter_db;
@@ -50,7 +47,6 @@ public class BookFragment extends Fragment {
     ArrayList<Subject_db> subjects_db = new ArrayList<Subject_db>();
     private RecyclerView rvSubject,rv_playbooks;
     private FloatingActionButton floatingActionButton;
-    private SearchView searchView;
 
     public BookFragment() {
         // Required empty public constructor
@@ -61,8 +57,6 @@ public class BookFragment extends Fragment {
         super.onCreate(savedInstanceState);
         db = FirebaseFirestore.getInstance();
         HomeActivity.firestore_cache();
-
-
     }
 
     private ArrayList<Subject> prepareData() {
@@ -214,8 +208,7 @@ public class BookFragment extends Fragment {
     }
 
     public void set_recyclerView(ArrayList<Subject_db> subjects_db) {
-
-        subjectAdapter_db = new SubjectAdapter_db(subjects_db,getContext(),chiptype);
+        subjectAdapter_db = new SubjectAdapter_db(subjects_db, getContext(),chiptype,0);
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         rvSubject.setLayoutManager(manager);
         rvSubject.setAdapter(subjectAdapter_db);
@@ -230,33 +223,6 @@ public class BookFragment extends Fragment {
             }
         });
     }
-
-    public void set_recyclerView_on_search(ArrayList<Subject_db> subjects_db) {
-        SubjectAdapter_db  subjectAdapter_db = new SubjectAdapter_db(subjects_db, HomeActivity.getAppContext(),chiptype);
-        LinearLayoutManager manager = new LinearLayoutManager(getContext());
-
-        LayoutInflater vi = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = vi.inflate(R.layout.fragment_book, null);
-
-
-//        LayoutInflater inflater=getLayoutInflater();
-//        View view = inflater.inflate(R.layout.fragment_book, null, false);
-        RecyclerView rvSubject = view.findViewById(R.id.rvSubject);
-        rvSubject.setLayoutManager(manager);
-        rvSubject.setAdapter(subjectAdapter_db);
-//
-//        rvSubject.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-//                if (dy > 0)
-//                    floatingActionButton.hide();
-//                else if (dy < 0)
-//                    floatingActionButton.show();
-//            }
-//        });
-    }
-
-
 
     private void getAllBooks(boolean filter_flag,String filter_query_string) {
 
@@ -384,21 +350,21 @@ public class BookFragment extends Fragment {
             public void onCheckedChanged(ChipGroup group, int checkedId) {
 
                 Log.d("checkedid",checkedId+"");
-if((checkedId+"").equals("-1")) {
+                if((checkedId+"").equals("-1")) {
 
-    filter_flag=false;
+                    filter_flag=false;
 
-}
-else{
+                }
+                else{
 
-    chiptype = group.findViewById(checkedId).toString();
+                    chiptype = group.findViewById(checkedId).toString();
 
-    chiptype = chiptype.substring(chiptype.indexOf('/') + 1, chiptype.indexOf('}'));
+                    chiptype = chiptype.substring(chiptype.indexOf('/') + 1, chiptype.indexOf('}'));
 
-    Log.d("chip",chiptype);
-    filter_flag = true;
+                    Log.d("chip",chiptype);
+                    filter_flag = true;
 
-}
+                }
                 if(!chiptype.isEmpty())
                 {
                     filter_query_string = chiptype;
