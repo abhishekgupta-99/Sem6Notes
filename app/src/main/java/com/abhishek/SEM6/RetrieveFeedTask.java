@@ -89,7 +89,7 @@ public class RetrieveFeedTask extends AsyncTask<String, Void, RssFeed> {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(ctx, "Book Uploaded to database", Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(ctx, "Book Uploaded to database", Toast.LENGTH_SHORT).show();
 
 
 

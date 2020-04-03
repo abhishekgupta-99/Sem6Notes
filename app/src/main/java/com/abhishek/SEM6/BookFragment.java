@@ -1,8 +1,11 @@
 package com.abhishek.SEM6;
 
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.abhishek.SEM6.adapters.SubjectAdapter_db;
@@ -31,10 +35,12 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class BookFragment extends Fragment {
+public class BookFragment extends Fragment  {
 
+    private static RecyclerView rvsubject_search;
     private SwipeRefreshLayout swipeContainer;
     List<String> subject_names = new ArrayList<>();
     private SubjectAdapter_db subjectAdapter_db,subjectAdapter_db_dialog;
@@ -45,8 +51,30 @@ public class BookFragment extends Fragment {
     String filter_query_string="";
     private FirebaseFirestore db;
     ArrayList<Subject_db> subjects_db = new ArrayList<Subject_db>();
-    private RecyclerView rvSubject,rv_playbooks;
+    public RecyclerView rvSubject;
+    public RecyclerView rv_playbooks;
+
+    public static ArrayList<Subject_db> getSubjects_db_clone() {
+        return subjects_db_clone;
+    }
+
+    public static void setSubjects_db_clone(ArrayList<Subject_db> subjects_db_clone) {
+        BookFragment.subjects_db_clone = subjects_db_clone;
+    }
+
+    public static ArrayList<Subject_db> subjects_db_clone = new ArrayList<Subject_db>();
+
+
+
+
+    public static RecyclerView getRvsubject_search() {
+        return rvsubject_search;
+    }
+
+
     private FloatingActionButton floatingActionButton;
+    private ProgressBar progressBar;
+    private SearchView searchView;
 
     public BookFragment() {
         // Required empty public constructor
@@ -57,6 +85,7 @@ public class BookFragment extends Fragment {
         super.onCreate(savedInstanceState);
         db = FirebaseFirestore.getInstance();
         HomeActivity.firestore_cache();
+
     }
 
     private ArrayList<Subject> prepareData() {
@@ -208,7 +237,7 @@ public class BookFragment extends Fragment {
     }
 
     public void set_recyclerView(ArrayList<Subject_db> subjects_db) {
-        subjectAdapter_db = new SubjectAdapter_db(subjects_db, getContext(),chiptype,0);
+        subjectAdapter_db = new SubjectAdapter_db(subjects_db, getActivity(),chiptype,0);
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         rvSubject.setLayoutManager(manager);
         rvSubject.setAdapter(subjectAdapter_db);
@@ -222,6 +251,22 @@ public class BookFragment extends Fragment {
                     floatingActionButton.show();
             }
         });
+
+        progressBar.setVisibility(View.GONE);
+    }
+
+    public void set_recyclerView_search(ArrayList<Subject_db> subjects_db) {
+
+        Log.d("Search books",subjects_db.size()+"");
+        SubjectAdapter_db subjectAdapter_db_search = new SubjectAdapter_db(subjects_db, HomeActivity.getAppContext(), chiptype, 0);
+        LinearLayoutManager manager = new LinearLayoutManager(getContext());
+
+//        LayoutInflater inflater=getLayoutInflater();
+//        View view = inflater.inflate(R.layout.fragment_book,null);
+//        rvsubject_search=view.findViewById(R.id.rvSubject);
+
+        getRvsubject_search().setLayoutManager(manager);
+        getRvsubject_search().setAdapter(subjectAdapter_db_search);
     }
 
     private void getAllBooks(boolean filter_flag,String filter_query_string) {
@@ -229,6 +274,8 @@ public class BookFragment extends Fragment {
         final int[] count = {0};
         Query query = null;
         //
+
+        java.util.Collections.sort(subject_names, Collections.reverseOrder());
 
         for(String each_subject_from_db: subject_names)
         {
@@ -287,6 +334,8 @@ public class BookFragment extends Fragment {
 
                     if(count[0] ==subject_names.size())
                     {
+
+                        setSubjects_db_clone(subjects_db);
                         set_recyclerView(subjects_db);
 
                     }
@@ -312,6 +361,8 @@ public class BookFragment extends Fragment {
     }
 
     private void getAllSubject(final boolean filter_flag, final String filter_query_string) {
+
+        progressBar.setVisibility(View.VISIBLE);
         db.collection("Subjects").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -338,11 +389,21 @@ public class BookFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_book, container, false);
 
-        subjects = prepareData();
+
 
         chipGroup = view.findViewById(R.id.chip_group);
         rvSubject = view.findViewById(R.id.rvSubject);
+        this.rvsubject_search=rvSubject;
         floatingActionButton = view.findViewById(R.id.imgFour);
+
+        progressBar = view.findViewById(R.id.progressBar_cyclic);
+        progressBar.setProgress(80);
+        progressBar.setIndeterminate(true);
+
+        Log.d("Progress ",progressBar+"");
+        subjects = prepareData();
+
+
 
 
         chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
@@ -400,4 +461,5 @@ public class BookFragment extends Fragment {
                 android.R.color.holo_red_light);
         return view;
     }
+
 }

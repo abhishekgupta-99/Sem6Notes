@@ -37,6 +37,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -139,6 +141,9 @@ public class HomeActivity extends AppCompatActivity {
 
 
     ArrayList<Subject_db> subjects_db = new ArrayList<Subject_db>();
+
+
+
     private BookClient client;
 
     private RequestQueue mRequestQueue;
@@ -195,7 +200,10 @@ public class HomeActivity extends AppCompatActivity {
 
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+
         adapter = new TabAdapter(getSupportFragmentManager());
+        FragmentManager fm=getSupportFragmentManager();
+        Fragment bookfrag= new BookFragment();
         adapter.addFragment(new BookFragment(), "Bookstore");
         adapter.addFragment(new AcademicFragment(), "Academics");
 
@@ -209,29 +217,45 @@ public class HomeActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+               // Toast.makeText(HomeActivity.this, "Seach Initiated", Toast.LENGTH_SHORT).show();
 
                 ArrayList<Subject_db> filtered_subjects = new ArrayList<Subject_db>();
-                Subject_db filter_subject=new Subject_db();
-                for(Subject_db subject: subjects_db)
-                {
+               // Subject_db filter_subject=new Subject_db();
+
+                Toast.makeText(HomeActivity.this, BookFragment.getSubjects_db_clone().size()+" __", Toast.LENGTH_SHORT).show();
+                for(Subject_db subject: BookFragment.getSubjects_db_clone())
+                {  Subject_db filter_subject=new Subject_db();
+                    filter_subject.subjectName=subject.subjectName;
+                    filter_subject.books = new ArrayList<Book_db>();
 
                     for(Book_db book: subject.books)
                     {
 
+                        Log.d("All BOOKS NAME",book.name);
+
                         if (book.name.contains(query))
                         {
 
-                          //  Subject_db filter_subject=new Subject_db();
-                            filter_subject.subjectName=subject.subjectName;
                             filter_subject.books.add(book);
 
                         }
                     }
-                    filtered_subjects.add(filter_subject);
+                    if(filter_subject.books.size()!=0)
+                    {
+                        filtered_subjects.add(filter_subject);
+                    }
+
                 }
 
-//                BookFragment fragment = new BookFragment();
-//                fragment.set_recyclerView_on_search(filtered_subjects);
+
+
+                   // Toast.makeText(HomeActivity.this, filtered_subjects.size()+" __", Toast.LENGTH_SHORT).show();
+
+
+
+               BookFragment fragment = new BookFragment();
+                fragment.set_recyclerView_search(filtered_subjects);
+
 
                 return false;
             }
