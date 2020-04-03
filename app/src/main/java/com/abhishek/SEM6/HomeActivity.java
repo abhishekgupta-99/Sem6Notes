@@ -609,7 +609,6 @@ public class HomeActivity extends AppCompatActivity {
        // type_user.setAdapter(adapter);
 
 
-
         //content_type = v.findViewById(R.id.content_type);
 //create a list of items for the spinner.
        // String[] type = new String[]{"Book Pdf","Ppt","Youtube Url","Notes","Papers"};
