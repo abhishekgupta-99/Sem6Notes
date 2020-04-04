@@ -94,6 +94,8 @@ import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
 
+import static android.view.View.GONE;
+
 public class HomeActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 321;
@@ -215,6 +217,8 @@ public class HomeActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
 
+
+      //  Toast.makeText(HomeActivity.this, tabLayout.getSelectedTabPosition()+"", Toast.LENGTH_SHORT).show();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -490,6 +494,13 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        if((tabLayout.getSelectedTabPosition()+"").equals("1"))
+        {
+            chipGroup.setVisibility(GONE);
+
+
+        }
+
 
         chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
             @Override
@@ -735,6 +746,7 @@ public class HomeActivity extends AppCompatActivity {
 
             Toast.makeText(this, "Successful Sign In", Toast.LENGTH_SHORT).show();
 
+
             add_dialog(account);
 
             //updateUI(account);
@@ -747,6 +759,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void initialize_spinners(View v) {
+
+
 
         String[] year = new String[] {"FE", "SE", "TE", "BE"};
 
@@ -773,6 +787,17 @@ public class HomeActivity extends AppCompatActivity {
         AutoCompleteTextView editTextFilledExposedDropdown2 =
                 v.findViewById(R.id.filled_exposed_dropdown_sub);
         editTextFilledExposedDropdown2.setAdapter(adapter_sub);
+
+
+        if((tabLayout.getSelectedTabPosition()+"").equals("1"))
+        {
+            editTextFilledExposedDropdown1.setVisibility(GONE);
+            editTextFilledExposedDropdown2.setVisibility(GONE);
+
+
+
+        }
+
     }
 
 
