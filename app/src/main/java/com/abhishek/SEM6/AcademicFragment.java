@@ -35,6 +35,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+import pl.droidsonroids.gif.GifImageView;
+
 
 public class AcademicFragment extends Fragment {
     private SwipeRefreshLayout swipeContainer;
@@ -51,7 +53,8 @@ public class AcademicFragment extends Fragment {
     private RecyclerView rvSubject,rv_playbooks;
     int i = 0;
     private Chip claas_chip;
-    private ProgressBar progressBar;
+    //private ProgressBar progressBar;
+    private GifImageView gifImageView;
 
     public AcademicFragment() {
         // Required empty public constructor
@@ -220,12 +223,14 @@ public class AcademicFragment extends Fragment {
         rvSubject.setLayoutManager(manager);
         rvSubject.setAdapter(webAdapter);
 
-        progressBar.setVisibility(View.GONE);
+        //progressBar.setVisibility(View.GONE);
+        gifImageView.setVisibility(View.GONE);
     }
 
     private void getAllBooks(boolean filter_flag,String filter_query_string) {
 
-        progressBar.setVisibility(View.VISIBLE);
+       // progressBar.setVisibility(View.VISIBLE);
+        gifImageView.setVisibility(View.VISIBLE);
 
         final int[] count = {0};
         Query query = null;
@@ -320,15 +325,16 @@ public class AcademicFragment extends Fragment {
         claas_chip=view.findViewById(R.id.Class);
 
 
-        progressBar = view.findViewById(R.id.progressBar_cyclic);
-        progressBar.setProgress(80);
-        progressBar.setIndeterminate(true);
+       // progressBar = view.findViewById(R.id.progressBar_cyclic);
+       // progressBar.setProgress(80);
+       // progressBar.setIndeterminate(true);
 
-        Log.d("Progress ",progressBar+"");
-
+       // Log.d("Progress ",progressBar+"");
+        gifImageView = view.findViewById(R.id.book_smile);
         //default
         claas_chip.setSelected(true);
-        progressBar.setVisibility(View.VISIBLE);
+        //progressBar.setVisibility(View.VISIBLE);
+        gifImageView.setVisibility(View.VISIBLE);
         getAllBooks(true,"Class");
 
 
@@ -340,6 +346,7 @@ public class AcademicFragment extends Fragment {
                 Log.d("Selected chip",checkedId+"");
                 if((checkedId+"").equals("-1")) {
                     claas_chip.setSelected(true);
+                    //subject_names.clear();
                     getAllBooks(true,"Class");
 
                    // filter_flag=false;

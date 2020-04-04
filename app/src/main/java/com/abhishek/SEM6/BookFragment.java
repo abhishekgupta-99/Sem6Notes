@@ -38,6 +38,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import pl.droidsonroids.gif.GifImageView;
+
 public class BookFragment extends Fragment  {
 
     private static RecyclerView rvsubject_search;
@@ -83,7 +85,8 @@ public class BookFragment extends Fragment  {
 
 
     private FloatingActionButton floatingActionButton;
-    private ProgressBar progressBar;
+    //private ProgressBar progressBar;
+    private GifImageView gifImageView;
     private SearchView searchView;
 
     public BookFragment() {
@@ -262,7 +265,8 @@ public class BookFragment extends Fragment  {
             }
         });
 
-        progressBar.setVisibility(View.GONE);
+       // progressBar.setVisibility(View.GONE);
+        gifImageView.setVisibility(View.GONE);
     }
 
     public void set_recyclerView_search(ArrayList<Subject_db> subjects_db) {
@@ -372,7 +376,8 @@ public class BookFragment extends Fragment  {
 
     private void getAllSubject(final boolean filter_flag, final String filter_query_string) {
 
-        progressBar.setVisibility(View.VISIBLE);
+       // progressBar.setVisibility(View.VISIBLE);
+        gifImageView.setVisibility(View.VISIBLE);
         db.collection("Subjects").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -408,11 +413,13 @@ public class BookFragment extends Fragment  {
         this.rvsubject_search=rvSubject;
         floatingActionButton = view.findViewById(R.id.imgFour);
 
-        progressBar = view.findViewById(R.id.progressBar_cyclic);
-        progressBar.setProgress(80);
-        progressBar.setIndeterminate(true);
+       // progressBar = view.findViewById(R.id.progressBar_cyclic);
+       // progressBar.setProgress(80);
+       // progressBar.setIndeterminate(true);
 
-        Log.d("Progress ",progressBar+"");
+        gifImageView = view.findViewById(R.id.book_smile);
+
+       // Log.d("Progress ",progressBar+"");
         subjects = prepareData();
 
 
