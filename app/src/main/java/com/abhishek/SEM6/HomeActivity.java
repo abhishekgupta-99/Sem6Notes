@@ -595,7 +595,6 @@ public class HomeActivity extends AppCompatActivity {
 
 
 
-
 //                        password_Et= v.findViewById(R.id.password_edit);
 //
 //                        // Log.d("correct_password_edit", passowrd.toString());
