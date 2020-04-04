@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.abhishek.SEM6.adapters.SubjectAdapter_db;
@@ -24,6 +25,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -48,6 +50,8 @@ public class AcademicFragment extends Fragment {
     ArrayList<Subject_db> subjects_db = new ArrayList<Subject_db>();
     private RecyclerView rvSubject,rv_playbooks;
     int i = 0;
+    private Chip claas_chip;
+    private ProgressBar progressBar;
 
     public AcademicFragment() {
         // Required empty public constructor
@@ -215,38 +219,23 @@ public class AcademicFragment extends Fragment {
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         rvSubject.setLayoutManager(manager);
         rvSubject.setAdapter(webAdapter);
+
+        progressBar.setVisibility(View.GONE);
     }
 
     private void getAllBooks(boolean filter_flag,String filter_query_string) {
 
+        progressBar.setVisibility(View.VISIBLE);
+
         final int[] count = {0};
         Query query = null;
-      //  Log.d("getallbooks",subject_names.toString());
 
-        for(String each_subject_from_db: subject_names)
-        {
-           // Log.d("infor","infor");
             final Subject_db subject=new Subject_db();
-            subject.subjectName=each_subject_from_db;
+            subject.subjectName=filter_query_string;
             subject.books=new ArrayList<Book_db>();
-            //Toast.makeText(this, each_subject_from_db, Toast.LENGTH_SHORT).show();
-           // Log.d("acad_sub",each_subject_from_db);
 
-            if(filter_flag)
-            {
-                query = db.collection(each_subject_from_db).whereEqualTo("content_type", filter_query_string.replace("_"," "));
-            }
-            else if (filter_flag == false)
-            {
-                query = db.collection(each_subject_from_db);
-                //
-            }
+            query = db.collection(filter_query_string+"");
 
-            // Create a query against the collection.
-
-
-            //db.collection(each_subject_from_db)
-            // .whereEqualTo("content_type", "pdf")
             query
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -259,32 +248,24 @@ public class AcademicFragment extends Fragment {
 
                                     Book_db book = document.toObject(Book_db.class);
                                     subject.books.add(book);
-                                    //Toast.makeText(HomeActivity.this, book.name+" hh", Toast.LENGTH_SHORT).show();
-                                    //Toast.makeText(HomeActivity.this, book.uploader+" hh", Toast.LENGTH_SHORT).show();
-                                    //    Log.d("Books",  " => " + book.name);
 
-                                    //Log.d("UnReached adapter",  " => " );
-                                   // Log.d("acad_bok",subject.books.get(i).getName());
-                                    //i++;
 
                                 }
-                                //    Log.d("All Books",  " => " + subject.books.get(0).getName());
                                 subjects_db.add(subject);
 
 
                             } else {
-                                Log.d("Book", "Error getting documents: ", task.getException());
+
                             }
                         }
                     }).addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                 @Override
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
-                    if(count[0] == subject_names.size())
-                    {
+
                         set_recyclerView(subject.books);
 
-                    }
+
 
 
 
@@ -298,7 +279,7 @@ public class AcademicFragment extends Fragment {
                 }
             });
 
-        }
+
 
         Log.d("Reached adapter",  " => " );
 
@@ -315,7 +296,7 @@ public class AcademicFragment extends Fragment {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         subject_names.add(document.getId());
                     }
-                      Log.d("acd_subjects", subject_names.toString());
+                    //  Log.d("acd_subjects", subject_names.toString());
                     getAllBooks(filter_flag,filter_query_string);
                     // set_recyclerView(subjects_db);
 
@@ -332,18 +313,36 @@ public class AcademicFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_academic, container, false);
 
-        subjects = prepareData();
+       // subjects = prepareData();
 
         chipGroup = view.findViewById(R.id.chip_group);
         rvSubject = view.findViewById(R.id.rvSubject);
+        claas_chip=view.findViewById(R.id.Class);
+
+
+        progressBar = view.findViewById(R.id.progressBar_cyclic);
+        progressBar.setProgress(80);
+        progressBar.setIndeterminate(true);
+
+        Log.d("Progress ",progressBar+"");
+
+        //default
+        claas_chip.setSelected(true);
+        progressBar.setVisibility(View.VISIBLE);
+        getAllBooks(true,"Class");
+
 
 
         chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(ChipGroup group, int checkedId) {
-                if((checkedId+"").equals("-1")) {
 
-                    filter_flag=false;
+                Log.d("Selected chip",checkedId+"");
+                if((checkedId+"").equals("-1")) {
+                    claas_chip.setSelected(true);
+                    getAllBooks(true,"Class");
+
+                   // filter_flag=false;
 
                 }
                 else{
@@ -364,7 +363,8 @@ public class AcademicFragment extends Fragment {
                 //  Toast.makeText(HomeActivity.this, chiptype, Toast.LENGTH_SHORT).show();
                 subject_names.clear();
                 //subjectAdapter_db.clear();
-                getAllSubject(filter_flag,filter_query_string);
+                //getAllSubject(filter_flag,filter_query_string);
+                getAllBooks(filter_flag,filter_query_string);
 
 
             }
@@ -380,7 +380,7 @@ public class AcademicFragment extends Fragment {
                 // once the network request has completed successfully.
                 subject_names.clear();
                 //subjectAdapter_db.clear();
-                subjects = prepareData();
+               // subjects = prepareData();
                 swipeContainer.setRefreshing(false);
 
             }

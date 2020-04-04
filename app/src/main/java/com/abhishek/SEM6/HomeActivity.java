@@ -205,7 +205,7 @@ public class HomeActivity extends AppCompatActivity {
         FragmentManager fm=getSupportFragmentManager();
         Fragment bookfrag= new BookFragment();
         adapter.addFragment(new BookFragment(), "Bookstore");
-        adapter.addFragment(new AcademicFragment(), "Academics");
+        adapter.addFragment(new AcademicFragment(), "Announcements");
 
         searchView = findViewById(R.id.searchView);
         //searchView.setBackgroundColor(getResources().getColor(R.color.white));

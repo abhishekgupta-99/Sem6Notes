@@ -84,7 +84,6 @@ public class RetrieveFeedTask extends AsyncTask<String, Void, RssFeed> {
 
         String subject_db= "Academics";
         DocumentReference document = db.collection("Academic Announcements").document(title);
-
         document.set(book_details)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
