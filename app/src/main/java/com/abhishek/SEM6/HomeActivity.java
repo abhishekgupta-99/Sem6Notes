@@ -150,6 +150,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private static  final  String BASE_URL="https://www.googleapis.com/books/v1/volumes?q=";
     private SearchView searchView;
+    private Chip book_chip;
+    private ImageView dialog_image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -459,8 +461,13 @@ public class HomeActivity extends AppCompatActivity {
 //        browse.setText("hello");
 
         toolbar = v.findViewById(R.id.toolbar);
+
         toolbar.setTitle("Add new");
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        chipGroup=v.findViewById(R.id.chip_group);
+        book_chip=v.findViewById(R.id.Book_Pdf);
+        //book_chip.setSelected(true);
+        dialog_image=v.findViewById(R.id.selected_book);
         toolbar.inflateMenu(R.menu.dialog_menu);
         toolbar.setNavigationOnClickListener(new Toolbar.OnClickListener()
         {
@@ -474,13 +481,72 @@ public class HomeActivity extends AppCompatActivity {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                Toast.makeText(HomeActivity.this, "Save clicked", Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(HomeActivity.this, "Save clicked", Toast.LENGTH_SHORT).show();
+
+                check_validity_details(v);
                 //upload_to_firestore(account, title.getText().toString(), url.getText().toString());
-                alertDialog.dismiss();
+             //   alertDialog.dismiss();
                 return true;
             }
         });
 
+
+        chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(ChipGroup group, int checkedId) {
+
+
+
+
+                if((checkedId+"").equals("-1")) {
+                    chiptype="";
+                    filter_flag=false;
+
+                }
+                else{
+
+                    chiptype = group.findViewById(checkedId).toString();
+                    chiptype = chiptype.substring(chiptype.indexOf('/') + 1, chiptype.indexOf('}'));
+
+
+                    switch (chiptype+"")
+                    {
+                        case "Book_Pdf":
+                            Toast.makeText(HomeActivity.this, chiptype+" Selected", Toast.LENGTH_SHORT).show();
+                            break;
+                        case "ppt":
+                            dialog_image.setImageResource(R.drawable.pptx);
+                            Toast.makeText(HomeActivity.this, chiptype+" Selected", Toast.LENGTH_SHORT).show();
+                            break;
+                        case "notes":
+                            Toast.makeText(HomeActivity.this, chiptype+" Selected", Toast.LENGTH_SHORT).show();
+                            break;
+                        case "Youtube_Url":
+                            Toast.makeText(HomeActivity.this, chiptype+" Selected", Toast.LENGTH_SHORT).show();
+                            break;
+                        case "papers":
+                            Toast.makeText(HomeActivity.this, chiptype+" Selected", Toast.LENGTH_SHORT).show();
+                            break;
+
+
+                    }
+
+                    Log.d("chip",chiptype);
+                    filter_flag = true;
+
+                }
+                if(!chiptype.isEmpty())
+                {
+                    filter_query_string = chiptype;
+                }
+                //  Toast.makeText(HomeActivity.this, chiptype, Toast.LENGTH_SHORT).show();
+             //   subject_names.clear();
+               // subjectAdapter_db.clear();
+               // getAllSubject(filter_flag,filter_query_string);
+
+
+            }
+        });
 
         initialize_spinners(v);
         TextView signedin=v.findViewById(R.id.signedIn);
@@ -567,6 +633,37 @@ public class HomeActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
+    private void check_validity_details(View v) {
+
+
+        Toast.makeText(HomeActivity.this, chiptype+"", Toast.LENGTH_SHORT).show();
+        EditText title=v.findViewById(R.id.title);
+        EditText url= v.findViewById(R.id.ref_url);
+        AutoCompleteTextView year =
+                v.findViewById(R.id.filled_exposed_dropdown_year);
+        AutoCompleteTextView subject =
+                v.findViewById(R.id.filled_exposed_dropdown_sub);
+
+        if(year.getText().toString().isEmpty() || subject.getText().toString().isEmpty())
+        {
+            Toast.makeText(HomeActivity.this, "Please Select an option from the drop down", Toast.LENGTH_SHORT).show();
+        }
+
+
+        if (title.getText().toString().isEmpty() || url.getText().toString().isEmpty())
+        {
+            Toast.makeText(HomeActivity.this, "Fields cannot be empty", Toast.LENGTH_SHORT).show();
+        }
+
+        if((chiptype+"").equals("-1")||(chiptype+"").equals("null") ||(chiptype+"").isEmpty() )
+        {
+            Toast.makeText(HomeActivity.this, "Please Select a Chip", Toast.LENGTH_SHORT).show();
+        }
+
+
+
+    }
+
     private void upload_to_firestore(GoogleSignInAccount account, String title, String url) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -651,36 +748,9 @@ public class HomeActivity extends AppCompatActivity {
 
     private void initialize_spinners(View v) {
 
-      //  type_user = v.findViewById(R.id.role);
-//create a list of items for the spinner.
-      //  String[] items = new String[]{"Student","Teacher"};
-//create an adapter to describe how the items are displayed, adapters are used in several places in android.
-//There are multiple variations of this, but this is the basic variant.
-       // ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
-//set the spinners adapter to the previously created one.
-       // type_user.setAdapter(adapter);
-
-
-        //content_type = v.findViewById(R.id.content_type);
-//create a list of items for the spinner.
-       // String[] type = new String[]{"Book Pdf","Ppt","Youtube Url","Notes","Papers"};
-//create an adapter to describe how the items are displayed, adapters are used in several places in android.
-//There are multiple variations of this, but this is the basic variant.
-       // ArrayAdapter<String> adap = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, type);
-//set the spinners adapter to the previously created one.
-       // content_type.setAdapter(adap);
-
-
-      //  subject = v.findViewById(R.id.subject);
-//create a list of items for the spinner.
-        //    String[] type = new String[]{"Book Pdf","Ppt","Youtube Url"};
-//create an adapter to describe how the items are displayed, adapters are used in several places in android.
-//There are multiple variations of this, but this is the basic variant.
-        //ArrayAdapter<String> sub_adap = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, subject_names);
-//set the spinners adapter to the previously created one.
-        //subject.setAdapter(sub_adap);
-
         String[] year = new String[] {"FE", "SE", "TE", "BE"};
+
+
 
         ArrayAdapter<String> adapter_year =
                 new ArrayAdapter<>(
@@ -692,11 +762,13 @@ public class HomeActivity extends AppCompatActivity {
                 new ArrayAdapter<>(
                         this,
                         R.layout.dropdown_menu_popup_item,
-                        subject_names);
+                        BookFragment.getSubject_names_clone());
 
         AutoCompleteTextView editTextFilledExposedDropdown1 =
                 v.findViewById(R.id.filled_exposed_dropdown_year);
         editTextFilledExposedDropdown1.setAdapter(adapter_year);
+
+
 
         AutoCompleteTextView editTextFilledExposedDropdown2 =
                 v.findViewById(R.id.filled_exposed_dropdown_sub);

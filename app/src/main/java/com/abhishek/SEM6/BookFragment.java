@@ -54,6 +54,16 @@ public class BookFragment extends Fragment  {
     public RecyclerView rvSubject;
     public RecyclerView rv_playbooks;
 
+    public static List<String> getSubject_names_clone() {
+        return subject_names_clone;
+    }
+
+    public static void setSubject_names_clone(List<String> subject_names_clone) {
+        BookFragment.subject_names_clone = subject_names_clone;
+    }
+
+    public  static List<String> subject_names_clone= new ArrayList<>();;
+
     public static ArrayList<Subject_db> getSubjects_db_clone() {
         return subjects_db_clone;
     }
@@ -371,6 +381,8 @@ public class BookFragment extends Fragment  {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         subject_names.add(document.getId());
                     }
+
+                    setSubject_names_clone(subject_names);
                     //  Log.d("subjects", subject_names.toString());
                     getAllBooks(filter_flag,filter_query_string);
                     // set_recyclerView(subjects_db);
