@@ -89,6 +89,8 @@
 
     </com.google.android.material.chip.ChipGroup>
 
+
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_below="@id/chip_group"
         android:layout_marginTop="16dp"

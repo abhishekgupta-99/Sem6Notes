@@ -3,6 +3,8 @@ package com.abhishek.SEM6.adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -215,7 +217,7 @@ public class WebAdapter extends RecyclerView.Adapter<WebAdapter.ViewHolder> {
 
 
     @Override
-    public void onBindViewHolder(@NonNull WebAdapter.ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull WebAdapter.ViewHolder viewHolder, final int i) {
 
         final Book_db book = books.get(i);
         viewHolder.webtext.setText(book.name);
@@ -227,14 +229,24 @@ public class WebAdapter extends RecyclerView.Adapter<WebAdapter.ViewHolder> {
             Glide.with(context).load(book.thumbnail).into(viewHolder.web_image);
         }
 
+
         viewHolder.setItemLongClickListener(new ItemLongClickListener() {
             @Override
             public void onItemLongClicked(View v, int pos) {
-               // BookAdapter_db bookAdapter_db=new BookAdapter_db();
 
                 delete_alert_dialog(books.get(pos).getName());
             }
         });
+
+        viewHolder.web_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(books.get(i).url)));
+
+            }
+        });
+
     }
 
 
