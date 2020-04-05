@@ -43,6 +43,16 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
     private String subjectname;
     int num;
     ImageView selected_book;
+
+    public static String getThumbnail_url() {
+        return thumbnail_url;
+    }
+
+    public void setThumbnail_url(String thumbnail_url) {
+        this.thumbnail_url = thumbnail_url;
+    }
+
+    public static String thumbnail_url;
     TextView browse;
     View v;
 
@@ -83,7 +93,7 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
         check_content_type(book,holder);
 
 
-        holder.setItemLongClickListener(new ItemLongClickListener() {
+                holder.setItemLongClickListener(new ItemLongClickListener() {
             @Override
             public void onItemLongClicked(View view, int pos) {
                 // Toast.makeText(context,books.get(pos).getName(),Toast.LENGTH_SHORT).show();
@@ -101,6 +111,7 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
                     browse = v.findViewById(R.id.browse);
                     browse.setVisibility(View.GONE);
                     Glide.with(context).load(book.thumbnail).into(selected_book);
+                    setThumbnail_url(book.thumbnail);
                     selected_book.setVisibility(View.VISIBLE);
 
                 }

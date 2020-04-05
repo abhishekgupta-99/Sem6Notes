@@ -326,7 +326,12 @@ public class BookFragment extends Fragment  {
 
                                 }
                                 //    Log.d("All Books",  " => " + subject.books.get(0).getName());
-                                subjects_db.add(subject);
+
+                                if(!subject.books.isEmpty())
+                                {
+                                    subjects_db.add(subject);
+                                }
+
 
 
                             } else {

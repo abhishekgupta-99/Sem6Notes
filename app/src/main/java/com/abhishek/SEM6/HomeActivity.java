@@ -26,6 +26,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.appcompat.widget.SearchView;
+
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +40,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
+import com.abhishek.SEM6.adapters.BookAdapter_db;
 import com.abhishek.SEM6.adapters.SubjectAdapter;
 import com.abhishek.SEM6.adapters.SubjectAdapter_db;
 import com.abhishek.SEM6.adapters.TabAdapter;
@@ -472,19 +475,14 @@ public class HomeActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
               //  Toast.makeText(HomeActivity.this, "Save clicked", Toast.LENGTH_SHORT).show();
 
-                check_validity_details(v);
+                check_validity_details(v,account);
                 //upload_to_firestore(account, title.getText().toString(), url.getText().toString());
              //   alertDialog.dismiss();
                 return true;
             }
         });
 
-        if((tabLayout.getSelectedTabPosition()+"").equals("1"))
-        {
-            chipGroup.setVisibility(GONE);
 
-
-        }
 
 
         chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
@@ -637,7 +635,39 @@ public class HomeActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    private void check_validity_details(View v) {
+
+
+    private void check_validity_details_announcement(View v, GoogleSignInAccount account) {
+
+        boolean all_fields_appropriate=true;
+
+
+        Toast.makeText(HomeActivity.this, chiptype+"", Toast.LENGTH_SHORT).show();
+        EditText title=v.findViewById(R.id.title);
+        EditText url= v.findViewById(R.id.ref_url);
+
+
+
+
+        if (title.getText().toString().isEmpty() || url.getText().toString().isEmpty())
+        {
+            all_fields_appropriate=false;
+            Toast.makeText(HomeActivity.this, "Fields cannot be empty", Toast.LENGTH_SHORT).show();
+        }
+
+
+        if(all_fields_appropriate)
+        {
+            upload_to_firestore(account,title.getText().toString(), url.getText().toString(),"Class");
+
+            //   Toast.makeText(HomeActivity.this, BookAdapter_db.getThumbnail_url(), Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private void check_validity_details(View v, GoogleSignInAccount account) {
+
+        boolean all_fields_appropriate=true;
 
 
         Toast.makeText(HomeActivity.this, chiptype+"", Toast.LENGTH_SHORT).show();
@@ -650,25 +680,33 @@ public class HomeActivity extends AppCompatActivity {
 
         if(year.getText().toString().isEmpty() || subject.getText().toString().isEmpty())
         {
+            all_fields_appropriate=false;
             Toast.makeText(HomeActivity.this, "Please Select an option from the drop down", Toast.LENGTH_SHORT).show();
         }
 
 
         if (title.getText().toString().isEmpty() || url.getText().toString().isEmpty())
         {
+            all_fields_appropriate=false;
             Toast.makeText(HomeActivity.this, "Fields cannot be empty", Toast.LENGTH_SHORT).show();
         }
 
         if((chiptype+"").equals("-1")||(chiptype+"").equals("null") ||(chiptype+"").isEmpty() )
         {
+            all_fields_appropriate=false;
             Toast.makeText(HomeActivity.this, "Please Select a Chip", Toast.LENGTH_SHORT).show();
         }
 
+        if(all_fields_appropriate)
+        {
+            upload_to_firestore(account,title.getText().toString(), url.getText().toString(),subject.getText().toString());
 
+         //   Toast.makeText(HomeActivity.this, BookAdapter_db.getThumbnail_url(), Toast.LENGTH_SHORT).show();
+        }
 
     }
 
-    private void upload_to_firestore(GoogleSignInAccount account, String title, String url) {
+    private void upload_to_firestore(GoogleSignInAccount account, String title, String url,String subject) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -676,11 +714,27 @@ public class HomeActivity extends AppCompatActivity {
         book_details.put("uploader", account.getDisplayName());
         book_details.put("name",title);
         book_details.put("url",url);
-        book_details.put("content_type",String.valueOf(content_type.getSelectedItem()));
-        book_details.put("user_type",String.valueOf(type_user.getSelectedItem()));
+
+        //book_details.put("user_type",String.valueOf(type_user.getSelectedItem()));
+
+        String subject_db;
+
+        if((tabLayout.getSelectedTabPosition()+"").equals("1"))
+        {
+
+            subject_db="Class";
+
+        }
+        else
+        {
+
+            book_details.put("thumbnail", BookAdapter_db.getThumbnail_url());
+            book_details.put("content_type",String.valueOf(chiptype+""));
+            subject_db= subject;
+
+        }
 
 
-        String subject_db= String.valueOf(subject.getSelectedItem());
         DocumentReference document = db.collection(subject_db).document(title);
 
         document.set(book_details)
@@ -740,7 +794,17 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText(this, "Successful Sign In", Toast.LENGTH_SHORT).show();
 
 
-            add_dialog(account);
+            if((tabLayout.getSelectedTabPosition()+"").equals("1"))
+            {
+               // chipGroup.setVisibility(GONE);
+                add_dialog_announcement(account);
+
+
+            }
+            else {
+
+                add_dialog(account);
+            }
 
             //updateUI(account);
         } catch (ApiException e) {
@@ -749,6 +813,55 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText(this, "Failed Sign In", Toast.LENGTH_SHORT).show();
             //Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
         }
+    }
+
+    private void add_dialog_announcement(final GoogleSignInAccount account) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.AppTheme_FullScreenDialog);
+        inflater = getLayoutInflater();
+        v=inflater.inflate(R.layout.add_book_dialog, null);
+        LinearLayout layout_spinner = v.findViewById(R.id.spinners);
+        layout_spinner.setVisibility(GONE);
+        toolbar = v.findViewById(R.id.toolbar);
+        toolbar.setTitle("Add new");
+        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        chipGroup=v.findViewById(R.id.chip_group);
+
+        dialog_image=v.findViewById(R.id.selected_book);
+        browse_text = v.findViewById(R.id.browse);
+        toolbar.inflateMenu(R.menu.dialog_menu);
+        toolbar.setNavigationOnClickListener(new Toolbar.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(HomeActivity.this, "Dialog box closed", Toast.LENGTH_SHORT).show();
+                alertDialog.dismiss();
+            }
+        });
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                 Toast.makeText(HomeActivity.this, "Save clicked", Toast.LENGTH_SHORT).show();
+
+
+                check_validity_details_announcement(v,account);
+
+                return true;
+            }
+        });
+
+
+        chipGroup.setVisibility(GONE);
+        TextView signedin=v.findViewById(R.id.signedIn);
+        signedin.setText(account.getDisplayName());
+
+        builder.setView(v);
+
+
+        alertDialog = builder.create();
+
+        // show it
+        alertDialog.show();
     }
 
     private void initialize_spinners(View v) {
@@ -781,15 +894,6 @@ public class HomeActivity extends AppCompatActivity {
                 v.findViewById(R.id.filled_exposed_dropdown_sub);
         editTextFilledExposedDropdown2.setAdapter(adapter_sub);
 
-
-        if((tabLayout.getSelectedTabPosition()+"").equals("1"))
-        {
-            editTextFilledExposedDropdown1.setVisibility(GONE);
-            editTextFilledExposedDropdown2.setVisibility(GONE);
-
-
-
-        }
 
     }
 
