@@ -51,7 +51,7 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
     }
 
     public void setThumbnail_url(String thumbnail_url) {
-        this.thumbnail_url = thumbnail_url;
+        BookAdapter_db.thumbnail_url = thumbnail_url;
     }
 
     public static String thumbnail_url;
@@ -121,6 +121,7 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
 
                         break;
                     case "papers":
+                        Glide.with(context).load(R.drawable.paper).centerCrop().into(holder.ivChapter);
 
                         break;
                 }

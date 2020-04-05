@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:label">
+        tools:replace="android:label"
+        android:fullBackupContent="@xml/backup_descriptor">
         <activity android:name="com.abhishek.SEM6.HomeActivity"
             android:windowSoftInputMode="adjustResize"
             android:label="Sem 6">

@@ -244,6 +244,7 @@ public class BookFragment extends Fragment  {
         subjectAdapter_db = new SubjectAdapter_db(subjects_db, getActivity(),chiptype,0);
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         rvSubject.setLayoutManager(manager);
+        //Collections.sort(subjectAdapter_db.subjects, subjects_db.StuRollno);
         rvSubject.setAdapter(subjectAdapter_db);
 
         rvSubject.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -323,6 +324,7 @@ public class BookFragment extends Fragment  {
                                 }
                                 //    Log.d("All Books",  " => " + subject.books.get(0).getName());
 
+
                                 if(!subject.books.isEmpty())
                                 {
                                     subjects_db.add(subject);
@@ -379,6 +381,7 @@ public class BookFragment extends Fragment  {
                         subject_names.add(document.getId());
                     }
 
+                    Collections.reverse(subject_names);
                     setSubject_names_clone(subject_names);
                     //  Log.d("subjects", subject_names.toString());
                     getAllBooks(filter_flag,filter_query_string);
