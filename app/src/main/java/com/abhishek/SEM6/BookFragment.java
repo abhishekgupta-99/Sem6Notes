@@ -1,21 +1,16 @@
 package com.abhishek.SEM6;
-
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.Toast;
-
 import com.abhishek.SEM6.adapters.SubjectAdapter_db;
 import com.abhishek.SEM6.models.Book;
 import com.abhishek.SEM6.models.Book_db;
@@ -31,11 +26,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import pl.droidsonroids.gif.GifImageView;
 
 public class BookFragment extends Fragment  {
