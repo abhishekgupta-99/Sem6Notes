@@ -1,7 +1,5 @@
 package com.abhishek.SEM6;
 
-import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -62,7 +60,7 @@ public class BookFragment extends Fragment  {
         BookFragment.subject_names_clone = subject_names_clone;
     }
 
-    public  static List<String> subject_names_clone= new ArrayList<>();;
+    public  static List<String> subject_names_clone= new ArrayList<>();
 
     public static ArrayList<Subject_db> getSubjects_db_clone() {
         return subjects_db_clone;
@@ -405,7 +403,7 @@ public class BookFragment extends Fragment  {
 
         chipGroup = view.findViewById(R.id.chip_group);
         rvSubject = view.findViewById(R.id.rvSubject);
-        this.rvsubject_search=rvSubject;
+        rvsubject_search=rvSubject;
         floatingActionButton = view.findViewById(R.id.imgFour);
 
         progressBar = view.findViewById(R.id.progressBar_cyclic);
@@ -451,7 +449,7 @@ public class BookFragment extends Fragment  {
             }
         });
 
-        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+        swipeContainer = view.findViewById(R.id.swipeContainer);
 
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

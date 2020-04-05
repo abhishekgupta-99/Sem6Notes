@@ -1,20 +1,16 @@
 package com.abhishek.SEM6.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.abhishek.SEM6.R;
-import com.abhishek.SEM6.models.Subject;
 import com.abhishek.SEM6.models.Subject_db;
-import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
 
@@ -83,8 +79,8 @@ public class SubjectAdapter_db extends RecyclerView.Adapter<SubjectAdapter_db.Vi
         public ViewHolder(View itemView) {
             super(itemView);
 
-            recyclerView = (RecyclerView) itemView.findViewById(R.id.rvChapters);
-            tvHeading = (TextView) itemView.findViewById(R.id.tvSubjectName);
+            recyclerView = itemView.findViewById(R.id.rvChapters);
+            tvHeading = itemView.findViewById(R.id.tvSubjectName);
         }
     }
 }

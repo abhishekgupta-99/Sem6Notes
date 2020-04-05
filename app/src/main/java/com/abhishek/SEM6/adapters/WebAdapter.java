@@ -1,9 +1,6 @@
 package com.abhishek.SEM6.adapters;
 
-import android.app.Activity;
 import android.content.Context;
-import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.abhishek.SEM6.R;
 import com.abhishek.SEM6.models.Book_db;
 import com.bumptech.glide.Glide;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -44,10 +40,10 @@ public class WebAdapter extends RecyclerView.Adapter<WebAdapter.ViewHolder> {
         ViewHolder(View view)
         {
             super(view);
-            web_card = (CardView) view.findViewById(R.id.web_card_view);
-            webtext = (TextView) view.findViewById(R.id.web_text);
-            uploader = (TextView) view.findViewById(R.id.pub_date);
-            web_image = (ImageView) view.findViewById(R.id.web_image);
+            web_card = view.findViewById(R.id.web_card_view);
+            webtext = view.findViewById(R.id.web_text);
+            uploader = view.findViewById(R.id.pub_date);
+            web_image = view.findViewById(R.id.web_image);
 
             //Log.d("myactivitysee",activity.toString()+"...");
             //Log.d("myactivitysee2","hehe "+activity.toString());

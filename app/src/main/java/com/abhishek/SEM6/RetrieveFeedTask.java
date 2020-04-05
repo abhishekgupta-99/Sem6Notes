@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import com.abhishek.SEM6.rssfeed.RssFeed;
 import com.abhishek.SEM6.rssfeed.RssItem;
 import com.abhishek.SEM6.rssfeed.RssReader;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;

@@ -1,17 +1,14 @@
 package com.abhishek.SEM6.adapters;
 
 import android.app.AlertDialog;
-import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,21 +18,15 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.abhishek.SEM6.DirectoryHelper;
-import com.abhishek.SEM6.DownloadService;
-import com.abhishek.SEM6.HomeActivity;
 import com.abhishek.SEM6.R;
-import com.abhishek.SEM6.models.Book;
 import com.abhishek.SEM6.models.Book_db;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 import com.bumptech.glide.Glide;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -361,9 +352,9 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
         public CustomViewHolder(View itemView) {
             super(itemView);
 
-            tvChapterName = (TextView) itemView.findViewById(R.id.tvChapterName);
-            ivChapter = (ImageView) itemView.findViewById(R.id.ivBook);
-            download_button=(CardView) itemView.findViewById(R.id.download_card);
+            tvChapterName = itemView.findViewById(R.id.tvChapterName);
+            ivChapter = itemView.findViewById(R.id.ivBook);
+            download_button= itemView.findViewById(R.id.download_card);
             uploader=itemView.findViewById(R.id.uploader);
 
             itemView.setOnLongClickListener(this);

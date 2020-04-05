@@ -61,8 +61,8 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.CustomViewHold
         public CustomViewHolder(View itemView) {
             super(itemView);
 
-            tvChapterName = (TextView) itemView.findViewById(R.id.tvChapterName);
-            ivChapter = (ImageView) itemView.findViewById(R.id.ivBook);
+            tvChapterName = itemView.findViewById(R.id.tvChapterName);
+            ivChapter = itemView.findViewById(R.id.ivBook);
         }
     }
 }

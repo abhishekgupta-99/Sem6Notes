@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.abhishek.SEM6.adapters.SubjectAdapter_db;
 import com.abhishek.SEM6.adapters.WebAdapter;
 import com.abhishek.SEM6.models.Book;
 import com.abhishek.SEM6.models.Book_db;
@@ -370,7 +369,7 @@ public class AcademicFragment extends Fragment {
             }
         });
 
-        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+        swipeContainer = view.findViewById(R.id.swipeContainer);
 
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

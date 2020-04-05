@@ -4,17 +4,13 @@ import android.content.Context;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.abhishek.SEM6.R;
 import com.abhishek.SEM6.models.Subject;
-import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
 
@@ -63,8 +59,8 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
         public ViewHolder(View itemView) {
             super(itemView);
 
-            recyclerView = (RecyclerView) itemView.findViewById(R.id.rvChapters);
-            tvHeading = (TextView) itemView.findViewById(R.id.tvSubjectName);
+            recyclerView = itemView.findViewById(R.id.rvChapters);
+            tvHeading = itemView.findViewById(R.id.tvSubjectName);
         }
     }
 }

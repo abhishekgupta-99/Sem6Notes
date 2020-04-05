@@ -3,10 +3,9 @@ package com.abhishek.SEM6;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import android.Manifest;
+
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -15,22 +14,17 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
-import android.widget.CompoundButton;
-import android.webkit.URLUtil;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -48,20 +42,15 @@ import com.abhishek.SEM6.adapters.SubjectAdapter;
 import com.abhishek.SEM6.adapters.SubjectAdapter_db;
 import com.abhishek.SEM6.adapters.TabAdapter;
 import com.abhishek.SEM6.booksearch.BookClient;
-import com.abhishek.SEM6.models.Book;
 import com.abhishek.SEM6.models.Book_db;
 import com.abhishek.SEM6.models.Subject;
 import com.abhishek.SEM6.models.Subject_db;
-import com.abhishek.SEM6.rssfeed.RssFeed;
-import com.abhishek.SEM6.rssfeed.RssItem;
-import com.abhishek.SEM6.rssfeed.RssReader;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -78,7 +67,6 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -202,8 +190,8 @@ public class HomeActivity extends AppCompatActivity {
        // search("Proakis");
 
 
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
-        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        viewPager = findViewById(R.id.viewPager);
+        tabLayout = findViewById(R.id.tabLayout);
 
         adapter = new TabAdapter(getSupportFragmentManager());
         FragmentManager fm=getSupportFragmentManager();
@@ -306,11 +294,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }*/
-
-    public void setImage(View v)
-    {
-        //Log.d("settingimg",browse.getVisibility()+"");
-    }
 
 
     private void set_recyclerView_dialogbox (ArrayList<Subject_db> subjects_db, View v) {
@@ -862,7 +845,7 @@ public class HomeActivity extends AppCompatActivity {
         fetched_books.books = new ArrayList<Book_db>();
 
 
-        final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, key.toString(), null,
+        final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, key, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
