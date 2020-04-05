@@ -142,6 +142,7 @@ public class HomeActivity extends AppCompatActivity {
     private SearchView searchView;
     private Chip book_chip;
     private ImageView dialog_image;
+    private TextView browse_text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -455,6 +456,7 @@ public class HomeActivity extends AppCompatActivity {
         book_chip=v.findViewById(R.id.Book_Pdf);
         //book_chip.setSelected(true);
         dialog_image=v.findViewById(R.id.selected_book);
+        browse_text = v.findViewById(R.id.browse);
         toolbar.inflateMenu(R.menu.dialog_menu);
         toolbar.setNavigationOnClickListener(new Toolbar.OnClickListener()
         {
@@ -506,20 +508,29 @@ public class HomeActivity extends AppCompatActivity {
                     switch (chiptype+"")
                     {
                         case "Book_Pdf":
-                            Toast.makeText(HomeActivity.this, chiptype+" Selected", Toast.LENGTH_SHORT).show();
+                            browse_text.setVisibility(View.VISIBLE);
+                            dialog_image.setImageResource(R.color.grey300);
+                            //Toast.makeText(HomeActivity.this, chiptype+" Selected", Toast.LENGTH_SHORT).show();
                             break;
                         case "ppt":
-                            dialog_image.setImageResource(R.drawable.pptx);
-                            Toast.makeText(HomeActivity.this, chiptype+" Selected", Toast.LENGTH_SHORT).show();
+                            browse_text.setVisibility(View.INVISIBLE);
+                            dialog_image.setImageResource(R.drawable.ppt);
+                            dialog_image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                            //Toast.makeText(HomeActivity.this, chiptype+" Selected", Toast.LENGTH_SHORT).show();
                             break;
                         case "notes":
-                            Toast.makeText(HomeActivity.this, chiptype+" Selected", Toast.LENGTH_SHORT).show();
+                            browse_text.setVisibility(View.INVISIBLE);
+                            dialog_image.setImageResource(R.drawable.note2);
+                            dialog_image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                            //Toast.makeText(HomeActivity.this, chiptype+" Selected", Toast.LENGTH_SHORT).show();
                             break;
                         case "Youtube_Url":
-                            Toast.makeText(HomeActivity.this, chiptype+" Selected", Toast.LENGTH_SHORT).show();
+                            browse_text.setVisibility(GONE);
+                            dialog_image.setImageResource(R.color.grey300);
+                            //Toast.makeText(HomeActivity.this, chiptype+" Selected", Toast.LENGTH_SHORT).show();
                             break;
                         case "papers":
-                            Toast.makeText(HomeActivity.this, chiptype+" Selected", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(HomeActivity.this, chiptype+" Selected", Toast.LENGTH_SHORT).show();
                             break;
 
 
@@ -573,7 +584,6 @@ public class HomeActivity extends AppCompatActivity {
 //                        {
 //                            Toast.makeText(HomeActivity.this, "Fields can't be empty", Toast.LENGTH_SHORT).show();
 //                        }
-
 
 
 
