@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static android.view.View.GONE;
+
 /**
  * * Created by abhishek on 3/2020.
  */
@@ -79,18 +81,63 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
     public void onBindViewHolder (final CustomViewHolder holder, final int position) {
 
        // Toast.makeText(context, "BINDVIEWHOLDER", Toast.LENGTH_SHORT).show();
-        Log.d("BINDVIEWHOLDER","BINDVIEWHOLDER");
+
         final Book_db book = books.get(position);
+        Log.d("BINDVIEWHOLDER",book.name);
         holder.tvChapterName.setText(book.name);
         holder.uploader.setText(book.uploader);
 
+        try {
+            if(!(book.content_type.isEmpty() )|| !(book.content_type==null))
+            {
+                switch (book.content_type)
+                {
+                    case "Book_Pdf":
+                        if(!book.thumbnail.isEmpty()) {
 
-      if(!book.thumbnail.isEmpty()) {
-         // Picasso.get().load(book.thumbnail.replace("http","https")).into(holder.ivChapter);
 
-          Glide.with(context).load(book.thumbnail).into(holder.ivChapter);
-      }
-        check_content_type(book,holder);
+                            Glide.with(context).load(book.thumbnail).centerCrop().into(holder.ivChapter);
+                        }
+
+
+                        break;
+                    case "ppt":
+                        Glide.with(context).load(R.drawable.ppt).centerCrop().into(holder.ivChapter);
+
+
+                        break;
+                    case "notes":
+                        Glide.with(context).load(R.drawable.note2).centerCrop().into(holder.ivChapter);
+
+                        break;
+                    case "Youtube_Url":
+                        check_content_type(book,holder);
+
+                        break;
+
+                    case "Youtube Url":
+
+                        check_content_type(book,holder);
+
+                        break;
+                    case "papers":
+
+                        break;
+                }
+            }
+        }
+        catch (Exception e)
+        {  Glide.with(context).load(R.drawable.andrew).centerCrop().into(holder.ivChapter);
+
+        }
+
+
+
+
+
+
+
+
 
 
                 holder.setItemLongClickListener(new ItemLongClickListener() {
@@ -278,7 +325,9 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
 
             String thumbnail_url = "https://img.youtube.com/vi/"+ID+"/0.jpg";   //maxresdefault.jpg for 720p image
 
-            Picasso.get().load(thumbnail_url).into(holder.ivChapter);
+//            Picasso.get().load(thumbnail_url).into(holder.ivChapter);
+
+            Glide.with(context).load(thumbnail_url).centerCrop().into(holder.ivChapter);
 
         }
     }

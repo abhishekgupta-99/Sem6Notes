@@ -729,7 +729,7 @@ public class HomeActivity extends AppCompatActivity {
         {
 
             book_details.put("thumbnail", BookAdapter_db.getThumbnail_url());
-            book_details.put("content_type",String.valueOf(chiptype+""));
+            book_details.put("content_type",String.valueOf(chiptype+"").replace("_"," "));
             subject_db= subject;
 
         }
