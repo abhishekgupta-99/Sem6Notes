@@ -16,11 +16,11 @@
 
 package com.abhishek.SEM6.rssfeed;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 public class RssHandler extends DefaultHandler {
 	
@@ -69,11 +69,11 @@ public class RssHandler extends DefaultHandler {
 				    Method method = rssFeed.getClass().getMethod(methodName, String.class);
 				    method.invoke(rssFeed, stringBuilder.toString());
 				}
-			} catch (SecurityException e) {
-			} catch (NoSuchMethodException e) {
-			} catch (IllegalArgumentException e) {
-			} catch (IllegalAccessException e) {
-			} catch (InvocationTargetException e) {
+			} catch (SecurityException ignored) {
+			} catch (NoSuchMethodException ignored) {
+			} catch (IllegalArgumentException ignored) {
+			} catch (IllegalAccessException ignored) {
+			} catch (InvocationTargetException ignored) {
 			}
 			
 		} else if (rssItem != null) {
@@ -85,11 +85,11 @@ public class RssHandler extends DefaultHandler {
 				String methodName = "set" + qName.substring(0, 1).toUpperCase() + qName.substring(1);
 				Method method = rssItem.getClass().getMethod(methodName, String.class);
 				method.invoke(rssItem, stringBuilder.toString());
-			} catch (SecurityException e) {
-			} catch (NoSuchMethodException e) {
-			} catch (IllegalArgumentException e) {
-			} catch (IllegalAccessException e) {
-			} catch (InvocationTargetException e) {
+			} catch (SecurityException ignored) {
+			} catch (NoSuchMethodException ignored) {
+			} catch (IllegalArgumentException ignored) {
+			} catch (IllegalAccessException ignored) {
+			} catch (InvocationTargetException ignored) {
 			}
 		}
 		

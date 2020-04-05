@@ -1,9 +1,5 @@
 package com.abhishek.SEM6;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -20,18 +16,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AutoCompleteTextView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
-
-import androidx.appcompat.widget.SearchView;
-
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -63,11 +60,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
@@ -75,9 +72,11 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.karan.churi.PermissionManager.PermissionManager;
 import com.loopj.android.http.JsonHttpResponseHandler;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -91,7 +90,7 @@ import static android.view.View.GONE;
 public class HomeActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 321;
-    private RecyclerView rvSubject,rv_playbooks;
+    private RecyclerView rvSubject;
     private SubjectAdapter subjectAdapter;
     Spinner type_user,content_type,subject;
     String chiptype;
@@ -104,9 +103,7 @@ public class HomeActivity extends AppCompatActivity {
     ImageView pl;
     private static Context context;
 
-    private TabAdapter adapter;
     private TabLayout tabLayout;
-    private ViewPager viewPager;
 
     private ChipGroup chipGroup;
     private Chip chip1;
@@ -124,7 +121,7 @@ public class HomeActivity extends AppCompatActivity {
     private SwipeRefreshLayout swipeContainer;
 
 
-    private SubjectAdapter_db subjectAdapter_db,subjectAdapter_db_dialog;
+    private SubjectAdapter_db subjectAdapter_db;
     private ArrayList<Subject> subjects;
     private static FirebaseFirestore db;
     private static final int WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 54654;
@@ -136,14 +133,9 @@ public class HomeActivity extends AppCompatActivity {
     ArrayList<Subject_db> subjects_db = new ArrayList<Subject_db>();
 
 
-
-    private BookClient client;
-
     private RequestQueue mRequestQueue;
 
     private static  final  String BASE_URL="https://www.googleapis.com/books/v1/volumes?q=";
-    private SearchView searchView;
-    private Chip book_chip;
     private ImageView dialog_image;
     private TextView browse_text;
 
@@ -194,16 +186,16 @@ public class HomeActivity extends AppCompatActivity {
        // search("Proakis");
 
 
-        viewPager = findViewById(R.id.viewPager);
+        ViewPager viewPager = findViewById(R.id.viewPager);
         tabLayout = findViewById(R.id.tabLayout);
 
-        adapter = new TabAdapter(getSupportFragmentManager());
+        TabAdapter adapter = new TabAdapter(getSupportFragmentManager());
         FragmentManager fm=getSupportFragmentManager();
         Fragment bookfrag= new BookFragment();
         adapter.addFragment(new BookFragment(), "Bookstore");
         adapter.addFragment(new AcademicFragment(), "Announcements");
 
-        searchView = findViewById(R.id.searchView);
+        SearchView searchView = findViewById(R.id.searchView);
         //searchView.setBackgroundColor(getResources().getColor(R.color.white));
 
         viewPager.setAdapter(adapter);
@@ -301,8 +293,8 @@ public class HomeActivity extends AppCompatActivity {
 
 
     private void set_recyclerView_dialogbox (ArrayList<Subject_db> subjects_db, View v) {
-        rv_playbooks=v.findViewById(R.id.load_images_googleplay);
-        subjectAdapter_db_dialog = new SubjectAdapter_db(subjects_db, HomeActivity.this,chiptype,1,v);
+        RecyclerView rv_playbooks = v.findViewById(R.id.load_images_googleplay);
+        SubjectAdapter_db subjectAdapter_db_dialog = new SubjectAdapter_db(subjects_db, HomeActivity.this, chiptype, 1, v);
         LinearLayoutManager manager = new LinearLayoutManager(HomeActivity.this);
         rv_playbooks.setLayoutManager(manager);
         rv_playbooks.setAdapter(subjectAdapter_db_dialog);
@@ -341,7 +333,7 @@ public class HomeActivity extends AppCompatActivity {
             {
                  query = db.collection(each_subject_from_db).whereEqualTo("content_type", filter_query_string.replace("_"," "));
             }
-            else if (filter_flag == false)
+            else if (!filter_flag)
             {
                 query = db.collection(each_subject_from_db);
                 //
@@ -456,7 +448,7 @@ public class HomeActivity extends AppCompatActivity {
         toolbar.setTitle("Add new");
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         chipGroup=v.findViewById(R.id.chip_group);
-        book_chip=v.findViewById(R.id.Book_Pdf);
+        Chip book_chip = v.findViewById(R.id.Book_Pdf);
         //book_chip.setSelected(true);
         dialog_image=v.findViewById(R.id.selected_book);
         browse_text = v.findViewById(R.id.browse);
@@ -913,9 +905,9 @@ public class HomeActivity extends AppCompatActivity {
 
     // Executes an API call to the OpenLibrary search endpoint, parses the results
     // Converts them into an array of book objects and adds them to the adapter
-    private void fetchBooks(String query) {
-        query="Andrew sloss ";
-        client = new BookClient();
+    private void fetchBooks() {
+        String query = "Andrew sloss ";
+        BookClient client = new BookClient();
         client.getBooks(query, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -1011,7 +1003,7 @@ public class HomeActivity extends AppCompatActivity {
 //                                    buy = saleInfo.getString("buyLink");
 //                                    categories = volumeInfo.getJSONArray("categories").getString(0);
 
-                                }catch (Exception e){
+                                }catch (Exception ignored){
 
                                 }
                                 String thumbnail = volumeInfo.getJSONObject("imageLinks").getString("thumbnail");

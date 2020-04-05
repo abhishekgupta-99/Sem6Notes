@@ -20,20 +20,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.abhishek.SEM6.R;
 import com.abhishek.SEM6.models.Book_db;
-
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.squareup.picasso.Picasso;
-import com.bumptech.glide.Glide;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static android.view.View.GONE;
 
 /**
  * * Created by abhishek on 3/2020.

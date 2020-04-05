@@ -1,16 +1,19 @@
 package com.abhishek.SEM6;
+
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
+
 import com.abhishek.SEM6.adapters.SubjectAdapter_db;
 import com.abhishek.SEM6.models.Book;
 import com.abhishek.SEM6.models.Book_db;
@@ -26,6 +29,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -40,7 +44,6 @@ public class BookFragment extends Fragment  {
     List<String> subject_names = new ArrayList<>();
     private SubjectAdapter_db subjectAdapter_db,subjectAdapter_db_dialog;
     private ArrayList<Subject> subjects;
-    private ChipGroup chipGroup;
     String chiptype;
     boolean filter_flag=false;
     String filter_query_string="";
@@ -297,7 +300,7 @@ public class BookFragment extends Fragment  {
             {
                 query = db.collection(each_subject_from_db).whereEqualTo("content_type", filter_query_string.replace("_"," "));
             }
-            else if (filter_flag == false)
+            else if (!filter_flag)
             {
                 query = db.collection(each_subject_from_db);
                 //
@@ -404,8 +407,7 @@ public class BookFragment extends Fragment  {
         View view = inflater.inflate(R.layout.fragment_book, container, false);
 
 
-
-        chipGroup = view.findViewById(R.id.chip_group);
+        ChipGroup chipGroup = view.findViewById(R.id.chip_group);
         rvSubject = view.findViewById(R.id.rvSubject);
         rvsubject_search=rvSubject;
         floatingActionButton = view.findViewById(R.id.imgFour);

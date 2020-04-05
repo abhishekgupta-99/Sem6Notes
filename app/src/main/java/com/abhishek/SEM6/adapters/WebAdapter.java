@@ -36,8 +36,6 @@ public class WebAdapter extends RecyclerView.Adapter<WebAdapter.ViewHolder> {
 
     private Context context;
     private ArrayList<Book_db> books;
-    private LayoutInflater inflater;
-    private String subjectname;
 
     class ViewHolder extends RecyclerView.ViewHolder implements  View.OnLongClickListener{
 
@@ -77,8 +75,7 @@ public class WebAdapter extends RecyclerView.Adapter<WebAdapter.ViewHolder> {
 
         this.context = context;
         this.books = books;
-        this.inflater = LayoutInflater.from(context);
-        this.subjectname=subjectName;
+        LayoutInflater inflater = LayoutInflater.from(context);
     }
 
     @NonNull

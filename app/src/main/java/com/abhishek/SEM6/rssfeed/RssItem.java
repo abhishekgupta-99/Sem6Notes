@@ -16,14 +16,14 @@
 
 package com.abhishek.SEM6.rssfeed;
 
+import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
-import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 
 public class RssItem implements Comparable<RssItem>, Parcelable {
 

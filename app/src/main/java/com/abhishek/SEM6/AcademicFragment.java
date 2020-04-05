@@ -1,6 +1,11 @@
 package com.abhishek.SEM6;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -8,15 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.Toast;
-
 import com.abhishek.SEM6.adapters.WebAdapter;
-import com.abhishek.SEM6.models.Book;
 import com.abhishek.SEM6.models.Book_db;
 import com.abhishek.SEM6.models.Subject;
 import com.abhishek.SEM6.models.Subject_db;
@@ -40,10 +37,7 @@ import pl.droidsonroids.gif.GifImageView;
 public class AcademicFragment extends Fragment {
     private SwipeRefreshLayout swipeContainer;
     List<String> subject_names = new ArrayList<>();
-    //private SubjectAdapter_db subjectAdapter_db,subjectAdapter_db_dialog;
-    private WebAdapter webAdapter;
     private ArrayList<Subject> subjects;
-    private ChipGroup chipGroup;
     String chiptype;
     boolean filter_flag=false;
     String filter_query_string="";
@@ -81,7 +75,8 @@ public class AcademicFragment extends Fragment {
     private void set_recyclerView(ArrayList<Book_db> subjects) {
         //subjectAdapter_db = new SubjectAdapter_db(subjects_db, getContext(),chiptype);
        // Log.d("sub11",subjects.toString());
-        webAdapter = new WebAdapter( getContext(),subjects,chiptype);
+        //private SubjectAdapter_db subjectAdapter_db,subjectAdapter_db_dialog;
+        WebAdapter webAdapter = new WebAdapter(getContext(), subjects, chiptype);
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         rvSubject.setLayoutManager(manager);
         rvSubject.setAdapter(webAdapter);
@@ -183,7 +178,7 @@ public class AcademicFragment extends Fragment {
 
        // subjects = prepareData();
 
-        chipGroup = view.findViewById(R.id.chip_group);
+        ChipGroup chipGroup = view.findViewById(R.id.chip_group);
         rvSubject = view.findViewById(R.id.rvSubject);
         claas_chip=view.findViewById(R.id.Class);
 

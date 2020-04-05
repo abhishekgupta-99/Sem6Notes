@@ -1,12 +1,13 @@
 package com.abhishek.SEM6.adapters;
 
 import android.content.Context;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.abhishek.SEM6.R;
 import com.abhishek.SEM6.models.Book;
@@ -22,12 +23,10 @@ import java.util.ArrayList;
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.CustomViewHolder> {
 
-    private Context context;
     private ArrayList<Book> books;
     private LayoutInflater inflater;
 
     public BookAdapter(Context context, ArrayList<Book> books) {
-        this.context = context;
         this.books = books;
         this.inflater = LayoutInflater.from(context);
 
