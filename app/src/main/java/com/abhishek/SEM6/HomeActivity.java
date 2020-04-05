@@ -116,7 +116,6 @@ public class HomeActivity extends AppCompatActivity {
     int filter_query=1;
     int all_books_query=0;
 
-
     boolean filter_flag=false;
     String filter_query_string="";
 
