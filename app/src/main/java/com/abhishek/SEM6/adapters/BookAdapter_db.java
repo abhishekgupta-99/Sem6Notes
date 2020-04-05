@@ -27,6 +27,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 import com.bumptech.glide.Glide;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -69,8 +71,9 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
         this.v = v;
     }
 
+    @NotNull
     @Override
-    public CustomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CustomViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
         View view;
         view = inflater.inflate(R.layout.single_book, parent, false);
         return new CustomViewHolder(view);
@@ -86,6 +89,11 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
         Log.d("BINDVIEWHOLDER",book.name);
         holder.tvChapterName.setText(book.name);
         holder.uploader.setText(book.uploader);
+
+        if(num==1)
+        {
+            Glide.with(context).load(book.thumbnail).centerCrop().into(holder.ivChapter);
+        }
 
         try {
             if(!(book.content_type.isEmpty() )|| !(book.content_type==null))

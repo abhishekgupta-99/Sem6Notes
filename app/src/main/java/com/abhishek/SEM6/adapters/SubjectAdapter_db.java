@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.abhishek.SEM6.R;
 import com.abhishek.SEM6.models.Subject_db;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 
 /**
@@ -41,12 +43,12 @@ public class SubjectAdapter_db extends RecyclerView.Adapter<SubjectAdapter_db.Vi
         this.context = context;
         this.chiptype = chiptype;
         this.num = num;
-        this.v = v;
         this.layoutInflater = LayoutInflater.from(context);
     }
 
+    @NotNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
         View view = layoutInflater.inflate(R.layout.single_subject, parent, false);
         return new ViewHolder(view);
     }

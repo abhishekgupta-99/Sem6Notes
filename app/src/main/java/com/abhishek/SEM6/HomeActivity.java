@@ -82,6 +82,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -359,7 +360,7 @@ public class HomeActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 count[0] += 1;
 
-                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
 
                                     Book_db book = document.toObject(Book_db.class);
                                     subject.books.add(book);
@@ -798,13 +799,13 @@ public class HomeActivity extends AppCompatActivity {
             if((tabLayout.getSelectedTabPosition()+"").equals("1"))
             {
                // chipGroup.setVisibility(GONE);
-                add_dialog_announcement(account);
+                add_dialog_announcement(Objects.requireNonNull(account));
 
 
             }
             else {
 
-                add_dialog(account);
+                add_dialog(Objects.requireNonNull(account));
             }
 
             //updateUI(account);
@@ -964,8 +965,8 @@ public class HomeActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        String title ="";
-                        String author ="";
+                        String title;
+                        String author;
 //                        String publishedDate = "NoT Available";
 //                        String description = "No Description";
 //                        int pageCount = 1000;

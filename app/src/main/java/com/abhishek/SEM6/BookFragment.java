@@ -29,6 +29,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+
 import pl.droidsonroids.gif.GifImageView;
 
 public class BookFragment extends Fragment  {
@@ -314,7 +316,7 @@ public class BookFragment extends Fragment  {
                             if (task.isSuccessful()) {
                                 count[0] += 1;
 
-                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
 
                                     Book_db book = document.toObject(Book_db.class);
                                     subject.books.add(book);
@@ -377,7 +379,7 @@ public class BookFragment extends Fragment  {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
 
-                    for (QueryDocumentSnapshot document : task.getResult()) {
+                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                         subject_names.add(document.getId());
                     }
 

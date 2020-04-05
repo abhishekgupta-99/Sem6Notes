@@ -96,7 +96,7 @@ public class AcademicFragment extends Fragment {
         gifImageView.setVisibility(View.VISIBLE);
 
         final int[] count = {0};
-        Query query = null;
+        Query query;
 
             final Subject_db subject=new Subject_db();
             subject.subjectName=filter_query_string;

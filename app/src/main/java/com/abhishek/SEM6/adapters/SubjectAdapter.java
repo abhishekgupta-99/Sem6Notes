@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.abhishek.SEM6.R;
 import com.abhishek.SEM6.models.Subject;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 
 /**
@@ -30,8 +32,9 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
         this.layoutInflater = LayoutInflater.from(context);
     }
 
+    @NotNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
         View view = layoutInflater.inflate(R.layout.single_subject, parent, false);
         //Log.d("cg",chipGroup+"");
 

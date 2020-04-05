@@ -12,6 +12,8 @@ import com.abhishek.SEM6.R;
 import com.abhishek.SEM6.models.Book;
 import com.squareup.picasso.Picasso;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 
 /**
@@ -32,7 +34,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.CustomViewHold
     }
 
     @Override
-    public CustomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CustomViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
         View view;
         view = inflater.inflate(R.layout.single_book, parent, false);
         return new CustomViewHolder(view);
