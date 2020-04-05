@@ -527,6 +527,8 @@ public class HomeActivity extends AppCompatActivity {
                             //Toast.makeText(HomeActivity.this, chiptype+" Selected", Toast.LENGTH_SHORT).show();
                             break;
                         case "papers":
+                            browse_text.setVisibility(View.INVISIBLE);
+                            dialog_image.setImageResource(R.drawable.paper);
                             //Toast.makeText(HomeActivity.this, chiptype+" Selected", Toast.LENGTH_SHORT).show();
                             break;
 

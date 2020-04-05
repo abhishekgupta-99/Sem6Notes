@@ -8,6 +8,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".BookFragment">
 
+
+    <HorizontalScrollView
+        android:id="@+id/horizontal_scroll_chip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chip_group"
         android:layout_width="wrap_content"
@@ -89,10 +96,11 @@
 
     </com.google.android.material.chip.ChipGroup>
 
+    </HorizontalScrollView>
 
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:layout_below="@id/chip_group"
+        android:layout_below="@id/horizontal_scroll_chip"
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
