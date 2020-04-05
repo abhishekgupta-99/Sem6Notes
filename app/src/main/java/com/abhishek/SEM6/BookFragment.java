@@ -317,11 +317,7 @@ public class BookFragment extends Fragment  {
 
                                     Book_db book = document.toObject(Book_db.class);
                                     subject.books.add(book);
-                                    //Toast.makeText(HomeActivity.this, book.name+" hh", Toast.LENGTH_SHORT).show();
-                                    //Toast.makeText(HomeActivity.this, book.uploader+" hh", Toast.LENGTH_SHORT).show();
-                                    //    Log.d("Books",  " => " + book.name);
 
-                                    //Log.d("UnReached adapter",  " => " );
 
 
                                 }
