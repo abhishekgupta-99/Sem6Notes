@@ -392,9 +392,8 @@ public class BookFragment extends Fragment  {
                     getAllBooks(filter_flag,filter_query_string);
                     // set_recyclerView(subjects_db);
 
-                } else {
-                    //  Log.d("subjects", "Error getting documents: ", task.getException());
-                }
+                }  //  Log.d("subjects", "Error getting documents: ", task.getException());
+
             }
         });
 

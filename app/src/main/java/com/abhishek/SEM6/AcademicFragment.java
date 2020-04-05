@@ -117,8 +117,6 @@ public class AcademicFragment extends Fragment {
                                 subjects_db.add(subject);
 
 
-                            } else {
-
                             }
                         }
                     }).addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -163,9 +161,8 @@ public class AcademicFragment extends Fragment {
                     getAllBooks(filter_flag,filter_query_string);
                     // set_recyclerView(subjects_db);
 
-                } else {
-                    //  Log.d("subjects", "Error getting documents: ", task.getException());
-                }
+                }  //  Log.d("subjects", "Error getting documents: ", task.getException());
+
             }
         });
 
