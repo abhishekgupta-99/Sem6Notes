@@ -133,6 +133,8 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
         {
             if(num==1)
             {
+
+                Log.d("THUMBNAIL",book.thumbnail);
                 Glide.with(context).load(book.thumbnail).into(holder.ivChapter);
             }
             else {
@@ -227,7 +229,7 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
         alert.show();
 }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
+
     public void  enterpassword(final String bookname)
     {
 

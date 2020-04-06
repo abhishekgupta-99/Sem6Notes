@@ -171,9 +171,9 @@ public class HomeActivity extends AppCompatActivity implements ForceUpdateChecke
 
         TypefaceUtil.overrideFont(getApplicationContext(), "POPPINS", "fonts/poppins_regular.ttf");
 
-        PermissionManager permissionManager = new PermissionManager() {
-        };
-        permissionManager.checkAndRequestPermissions(this);
+//        PermissionManager permissionManager = new PermissionManager() {
+//        };
+//        permissionManager.checkAndRequestPermissions(this);
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 //            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE_REQUEST_CODE);
 //            return;
