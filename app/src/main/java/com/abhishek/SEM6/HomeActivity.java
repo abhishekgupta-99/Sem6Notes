@@ -147,7 +147,7 @@ public class HomeActivity extends AppCompatActivity {
         selected_book = view.findViewById(R.id.selected_book);
         browse = view.findViewById(R.id.browse);
         selected_book.setBackgroundResource(R.drawable.andrew);
-        browse.setText("hello");
+        browse.setText("Browse");
 
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         // this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -209,44 +209,44 @@ public class HomeActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
                // Toast.makeText(HomeActivity.this, "Seach Initiated", Toast.LENGTH_SHORT).show();
 
-                ArrayList<Subject_db> filtered_subjects = new ArrayList<Subject_db>();
-               // Subject_db filter_subject=new Subject_db();
+//                ArrayList<Subject_db> filtered_subjects = new ArrayList<Subject_db>();
+//               // Subject_db filter_subject=new Subject_db();
+//
+//                Toast.makeText(HomeActivity.this, BookFragment.getSubjects_db_clone().size()+" __", Toast.LENGTH_SHORT).show();
+//                for(Subject_db subject: BookFragment.getSubjects_db_clone())
+//                {  Subject_db filter_subject=new Subject_db();
+//                    filter_subject.subjectName=subject.subjectName;
+//                    filter_subject.books = new ArrayList<Book_db>();
+//
+//                    for(Book_db book: subject.books)
+//                    {
+//
+//                        Log.d("All BOOKS NAME",book.name);
+//
+//                        if (book.name.contains(query))
+//                        {
+//
+//                            filter_subject.books.add(book);
+//
+//                        }
+//                    }
+//                    if(filter_subject.books.size()!=0)
+//                    {
+//                        filtered_subjects.add(filter_subject);
+//                    }
+//
+//                }
+//
+//
+//
+//                   // Toast.makeText(HomeActivity.this, filtered_subjects.size()+" __", Toast.LENGTH_SHORT).show();
+//
+//
+//
+//               BookFragment fragment = new BookFragment();
+//                fragment.set_recyclerView_search(filtered_subjects);
 
-                Toast.makeText(HomeActivity.this, BookFragment.getSubjects_db_clone().size()+" __", Toast.LENGTH_SHORT).show();
-                for(Subject_db subject: BookFragment.getSubjects_db_clone())
-                {  Subject_db filter_subject=new Subject_db();
-                    filter_subject.subjectName=subject.subjectName;
-                    filter_subject.books = new ArrayList<Book_db>();
-
-                    for(Book_db book: subject.books)
-                    {
-
-                        Log.d("All BOOKS NAME",book.name);
-
-                        if (book.name.contains(query))
-                        {
-
-                            filter_subject.books.add(book);
-
-                        }
-                    }
-                    if(filter_subject.books.size()!=0)
-                    {
-                        filtered_subjects.add(filter_subject);
-                    }
-
-                }
-
-
-
-                   // Toast.makeText(HomeActivity.this, filtered_subjects.size()+" __", Toast.LENGTH_SHORT).show();
-
-
-
-               BookFragment fragment = new BookFragment();
-                fragment.set_recyclerView_search(filtered_subjects);
-
-
+                Toast.makeText(HomeActivity.this, "Coming Soon", Toast.LENGTH_SHORT).show();
                 return false;
             }
 
@@ -298,7 +298,7 @@ public class HomeActivity extends AppCompatActivity {
         LinearLayoutManager manager = new LinearLayoutManager(HomeActivity.this);
         rv_playbooks.setLayoutManager(manager);
         rv_playbooks.setAdapter(subjectAdapter_db_dialog);
-        Toast.makeText(this, "Entered recycler", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Long Press on any thumnbnail to set it as the cover", Toast.LENGTH_LONG).show();
        // subjectAdapter_db_dialog.notifyDataSetChanged();
 
 
@@ -1072,6 +1072,7 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText(this,"Please enter your query",Toast.LENGTH_SHORT).show();
             return;
         }
+
         String final_query=search_query.replace(" ","+");
         Uri uri=Uri.parse(BASE_URL+final_query);
         Uri.Builder buider = uri.buildUpon();
