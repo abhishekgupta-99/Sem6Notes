@@ -96,11 +96,17 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
             {
                 switch (book.content_type)
                 {
-                    case "Book_Pdf":
+                    case "Book Pdf":
                         if(!book.thumbnail.isEmpty()) {
 
 
-                            Glide.with(context).load(book.thumbnail).centerCrop().into(holder.ivChapter);
+                            Glide.with(context).load(book.thumbnail).into(holder.ivChapter);
+                        }
+                        break;
+                    case "Book_Pdf":
+                        if(!book.thumbnail.isEmpty()) {
+
+                            Glide.with(context).load(book.thumbnail).into(holder.ivChapter);
                         }
 
 
@@ -132,18 +138,16 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
             }
         }
         catch (Exception e)
-        {  Glide.with(context).load(R.drawable.andrew).centerCrop().into(holder.ivChapter);
+        {
+            if(num==1)
+            {
+                Glide.with(context).load(book.thumbnail).into(holder.ivChapter);
+            }
+            else {
+                Glide.with(context).load(R.drawable.book_placeholder_1).into(holder.ivChapter);
+            }
 
         }
-
-
-
-
-
-
-
-
-
 
                 holder.setItemLongClickListener(new ItemLongClickListener() {
             @Override
