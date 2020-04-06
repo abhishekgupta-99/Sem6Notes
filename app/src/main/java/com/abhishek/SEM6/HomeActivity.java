@@ -486,7 +486,7 @@ public class HomeActivity extends AppCompatActivity implements ForceUpdateChecke
         toolbar.setTitle("Add new");
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         chipGroup=v.findViewById(R.id.chip_group);
-        Chip book_chip = v.findViewById(R.id.book);
+
         //book_chip.setSelected(true);
         dialog_image=v.findViewById(R.id.selected_book);
         browse_text = v.findViewById(R.id.browse);

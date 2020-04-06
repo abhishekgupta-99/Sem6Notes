@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "722697088-onds3lp42m600th9h5p0111agjbbdvv7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.abhishek.SEM6",
+            "certificate_hash": "60510fa2b4f0fa7e3be99b7a0d6468f287c07008"
+          }
+        },
+        {
           "client_id": "722697088-shg1p50hp5o1dnsrk499han23fv51cvq.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

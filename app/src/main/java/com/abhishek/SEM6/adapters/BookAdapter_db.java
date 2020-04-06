@@ -26,6 +26,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -90,8 +91,17 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
 
         if(num==1)
         {
-            Glide.with(context).load(book.thumbnail).centerCrop().into(holder.ivChapter);
+
+            Log.d("numnum",book.thumbnail+"");
+           // Glide.with(context).load(book.thumbnail).centerCrop().into(holder.ivChapter);
+
+            Picasso.get().load(book.thumbnail).into(holder.ivChapter);
+
         }
+        else
+        {
+
+
 
         try {
             if(!(book.content_type.isEmpty() )|| !(book.content_type==null))
@@ -131,16 +141,10 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
         }
         catch (Exception e)
         {
-            if(num==1)
-            {
 
-                Log.d("THUMBNAIL",book.thumbnail);
-                Glide.with(context).load(book.thumbnail).into(holder.ivChapter);
-            }
-            else {
                 Glide.with(context).load(R.drawable.book_placeholder_1).into(holder.ivChapter);
-            }
 
+        }
         }
 
                 holder.setItemLongClickListener(new ItemLongClickListener() {
