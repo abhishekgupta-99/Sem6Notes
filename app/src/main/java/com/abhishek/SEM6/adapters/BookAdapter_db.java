@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -94,23 +96,17 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
         try {
             if(!(book.content_type.isEmpty() )|| !(book.content_type==null))
             {
-                switch (book.content_type)
+                switch (book.content_type.toLowerCase())
                 {
-                    case "Book Pdf":
+                    case "book":
                         if(!book.thumbnail.isEmpty()) {
 
 
                             Glide.with(context).load(book.thumbnail).into(holder.ivChapter);
                         }
                         break;
-                    case "Book_Pdf":
-                        if(!book.thumbnail.isEmpty()) {
-
-                            Glide.with(context).load(book.thumbnail).into(holder.ivChapter);
-                        }
 
 
-                        break;
                     case "ppt":
                         Glide.with(context).load(R.drawable.ppt).centerCrop().into(holder.ivChapter);
 
@@ -120,16 +116,12 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
                         Glide.with(context).load(R.drawable.note2).centerCrop().into(holder.ivChapter);
 
                         break;
-                    case "Youtube_Url":
-                        check_content_type(book,holder);
-
-                        break;
-
-                    case "Youtube Url":
+                    case "youtube":
 
                         check_content_type(book,holder);
 
                         break;
+
                     case "papers":
                         Glide.with(context).load(R.drawable.paper).centerCrop().into(holder.ivChapter);
 
@@ -180,22 +172,27 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
         });
 
 
-       holder.download_button.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(books.get(position).url)));
+        if(num == 1)
+        {
+            holder.download_button.setVisibility(View.GONE);
+        }
+        else
+        {
+            holder.download_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(books.get(position).url)));
 
-             //  file_download(books.get(position).url,book.name);
+                    //  file_download(books.get(position).url,book.name);
 
-                  /// holder.uploader.setText("Dhruv Khandelwal");
+                    /// holder.uploader.setText("Dhruv Khandelwal");
 
-            //   context.startService(DownloadService.getDownloadService(context, books.get(position).url, DirectoryHelper.ROOT_DIRECTORY_NAME.concat("/")));
+                    //   context.startService(DownloadService.getDownloadService(context, books.get(position).url, DirectoryHelper.ROOT_DIRECTORY_NAME.concat("/")));
 
+                }
+            });
+        }
 
-
-
-           }
-       });
 
     }
 
@@ -230,6 +227,7 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
         alert.show();
 }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
     public void  enterpassword(final String bookname)
     {
 
@@ -326,7 +324,7 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
 
     private void check_content_type(Book_db book, CustomViewHolder holder) {
 
-        if(String.valueOf(book.content_type).equals("Youtube Url"))
+        if(String.valueOf(book.content_type).equals("youtube"))
         {
 
           //  Toast.makeText(context, "Youtube "+ book.content_type, Toast.LENGTH_SHORT).show();

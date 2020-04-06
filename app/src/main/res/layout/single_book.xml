@@ -24,7 +24,7 @@
             android:layout_height="140dp"
             android:layout_gravity="start"
             android:scaleType="fitXY"
-            android:src="@drawable/andrew" />
+            android:src="@drawable/book_placeholder_1" />
 
         <TextView
             android:id="@+id/tvChapterName"

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -96,6 +98,7 @@ public class WebAdapter extends RecyclerView.Adapter<WebAdapter.ViewHolder> {
         builder.setMessage("Are you sure you want to delete "+book_name) .setTitle("Delete this Announcement ?")
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
                     public void onClick(DialogInterface dialog, int id) {
                         //finish();
 
@@ -118,6 +121,7 @@ public class WebAdapter extends RecyclerView.Adapter<WebAdapter.ViewHolder> {
         alert.show();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
     public void  enterpassword(final String bookname)
     {
 
@@ -143,6 +147,7 @@ public class WebAdapter extends RecyclerView.Adapter<WebAdapter.ViewHolder> {
         builder.setView(v)
                 // Add action buttons
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
 
