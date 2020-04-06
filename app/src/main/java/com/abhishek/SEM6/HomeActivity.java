@@ -2,6 +2,7 @@ package com.abhishek.SEM6;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -70,6 +71,7 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.karan.churi.PermissionManager.PermissionManager;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -87,7 +89,7 @@ import cz.msebera.android.httpclient.Header;
 
 import static android.view.View.GONE;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements ForceUpdateChecker.OnUpdateNeededListener  {
 
     private static final int RC_SIGN_IN = 321;
     private RecyclerView rvSubject;
@@ -162,6 +164,11 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         HomeActivity.context = getApplicationContext();
 
+        ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
+
+
+     //   check_version();
+
         TypefaceUtil.overrideFont(getApplicationContext(), "POPPINS", "fonts/poppins_regular.ttf");
 
         PermissionManager permissionManager = new PermissionManager() {
@@ -178,6 +185,9 @@ public class HomeActivity extends AppCompatActivity {
         //firestore_cache();
 
         //initComponents();
+
+
+        ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
 
         new RetrieveFeedTask(this).execute();
        // fetchBooks("xa");
@@ -258,8 +268,37 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onUpdateNeeded(final String updateUrl) {
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("New version available")
+                .setMessage("Please, update app to the new version .")
+                .setPositiveButton("Update",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                redirectStore(updateUrl);
+                            }
+                        }).setNegativeButton("No, thanks",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).create();
+        dialog.show();
+    }
 
-        public static void firestore_cache() {
+    private void redirectStore(String updateUrl) {
+        final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(updateUrl));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+
+
+
+    public static void firestore_cache() {
 
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
                 .setPersistenceEnabled(true)
@@ -447,7 +486,7 @@ public class HomeActivity extends AppCompatActivity {
         toolbar.setTitle("Add new");
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         chipGroup=v.findViewById(R.id.chip_group);
-        Chip book_chip = v.findViewById(R.id.Book_Pdf);
+        Chip book_chip = v.findViewById(R.id.book);
         //book_chip.setSelected(true);
         dialog_image=v.findViewById(R.id.selected_book);
         browse_text = v.findViewById(R.id.browse);
@@ -496,7 +535,7 @@ public class HomeActivity extends AppCompatActivity {
 
                     switch (chiptype+"")
                     {
-                        case "Book_Pdf":
+                        case "book":
                             browse_text.setVisibility(View.VISIBLE);
                             dialog_image.setImageResource(R.color.grey300);
                             //Toast.makeText(HomeActivity.this, chiptype+" Selected", Toast.LENGTH_SHORT).show();
@@ -513,9 +552,11 @@ public class HomeActivity extends AppCompatActivity {
                             dialog_image.setScaleType(ImageView.ScaleType.CENTER_CROP);
                             //Toast.makeText(HomeActivity.this, chiptype+" Selected", Toast.LENGTH_SHORT).show();
                             break;
-                        case "Youtube_Url":
-                            browse_text.setVisibility(GONE);
-                            dialog_image.setImageResource(R.color.grey300);
+                        case "youtube":
+                            browse_text.setVisibility(View.INVISIBLE);
+                            dialog_image.setImageResource(R.drawable.youtub);
+                           // dialog_image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                          //  dialog_image.setImageResource(R.color.grey300);
                             //Toast.makeText(HomeActivity.this, chiptype+" Selected", Toast.LENGTH_SHORT).show();
                             break;
                         case "papers":
@@ -1086,16 +1127,5 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    public void hideSoftKeyboard(View view) {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
-    }
 
-    public void showSoftKeyboard(View view) {
-        if (view.requestFocus()) {
-            InputMethodManager imm = (InputMethodManager)
-                    getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
-        }
-    }
 }
