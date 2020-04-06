@@ -117,7 +117,6 @@ public class HomeActivity extends AppCompatActivity {
     boolean filter_flag=false;
     String filter_query_string="";
 
-
     private SwipeRefreshLayout swipeContainer;
 
 
