@@ -23,7 +23,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.abhishek.SEM6.R;
 import com.abhishek.SEM6.models.Book_db;
-import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -54,13 +53,15 @@ public class WebAdapter extends RecyclerView.Adapter<WebAdapter.ViewHolder> {
             webtext = view.findViewById(R.id.web_text);
             uploader = view.findViewById(R.id.pub_date);
             web_image = view.findViewById(R.id.web_image);
-            itemView.setOnLongClickListener(this);
-            //Log.d("myactivitysee",activity.toString()+"...");
-            //Log.d("myactivitysee2","hehe "+activity.toString());
+            view.setOnLongClickListener(this);
+            web_card.setOnLongClickListener(this);
         }
 
         @Override
         public boolean onLongClick(View view) {
+
+
+
 
             this.itemLongClickListener.onItemLongClicked(view,getLayoutPosition());
             return false;
@@ -84,7 +85,8 @@ public class WebAdapter extends RecyclerView.Adapter<WebAdapter.ViewHolder> {
     @Override
     public WebAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.web_card,viewGroup,false);
-        //Log.d("myactivitysee",names[2]+" "+activity.toString());
+
+
         ViewHolder viewHolder = new ViewHolder(v);
         return viewHolder;
     }
@@ -92,7 +94,7 @@ public class WebAdapter extends RecyclerView.Adapter<WebAdapter.ViewHolder> {
     private void delete_alert_dialog(final String book_name) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        // builder.setMessage("Are you sure you want to delete "+book_name) .setTitle("Delete this book ?");
+
 
         //Setting message manually and performing action on button click
         builder.setMessage("Are you sure you want to delete "+book_name) .setTitle("Delete this Announcement ?")
@@ -103,16 +105,14 @@ public class WebAdapter extends RecyclerView.Adapter<WebAdapter.ViewHolder> {
                         //finish();
 
                         enterpassword(book_name);
-//                        Toast.makeText(context,"you choose yes action for alertbox",
-//                                Toast.LENGTH_SHORT).show();
+
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         //  Action for 'NO' Button
                         dialog.cancel();
-//                        Toast.makeText(context,"you choose no action for alertbox",
-//                                Toast.LENGTH_SHORT).show();
+
                     }
                 });
         //Creating dialog box
@@ -121,7 +121,7 @@ public class WebAdapter extends RecyclerView.Adapter<WebAdapter.ViewHolder> {
         alert.show();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
+
     public void  enterpassword(final String bookname)
     {
 
@@ -153,15 +153,17 @@ public class WebAdapter extends RecyclerView.Adapter<WebAdapter.ViewHolder> {
 
                         EditText password_Et= v.findViewById(R.id.password_edit);
 
-                        // Log.d("correct_password_edit", passowrd.toString());
+
                         String  password_entered = password_Et.getText().toString();
                         //showToast("Entered Password: "+password_entered);
-                        Log.d("correct_password",password_entered);
+
+
                         String original= "1234";
 
                         if (password_entered.equals("bookextc"))
                         {
-                            // Log.d("correct_password","heyyy");
+
+
 
                             delete_from_firestore(bookname);
                             dialog.cancel();
@@ -170,7 +172,8 @@ public class WebAdapter extends RecyclerView.Adapter<WebAdapter.ViewHolder> {
 
                         }
                         else {
-                            //Log.d(user_text,"string is empty");
+
+
                             String message = "The password you have entered is incorrect." + " \n \n" + "Please try again!";
                             AlertDialog.Builder builder = new AlertDialog.Builder(context,android.R.style.Theme_DeviceDefault_Light_Dialog_Alert);
                             builder.setTitle("Error");
@@ -203,7 +206,8 @@ public class WebAdapter extends RecyclerView.Adapter<WebAdapter.ViewHolder> {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        //  Log.d(TAG, "DocumentSnapshot successfully deleted!");
+
+
                         Toast.makeText(context, "Book Successfully Deleted. Please Refresh.", Toast.LENGTH_SHORT).show();
                     }
                 })
@@ -225,16 +229,12 @@ public class WebAdapter extends RecyclerView.Adapter<WebAdapter.ViewHolder> {
         viewHolder.webtext.setText(book.name);
         viewHolder.uploader.setText(book.uploader);
 
-        if(!book.thumbnail.isEmpty() || !book.thumbnail.equals("null")) {
-            // Picasso.get().load(book.thumbnail.replace("http","https")).into(holder.ivChapter);
-
-            Glide.with(context).load(book.thumbnail).into(viewHolder.web_image);
-        }
 
 
         viewHolder.setItemLongClickListener(new ItemLongClickListener() {
             @Override
             public void onItemLongClicked(View v, int pos) {
+
 
                 delete_alert_dialog(books.get(pos).getName());
             }

@@ -93,9 +93,9 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
         {
 
             Log.d("numnum",book.thumbnail+"");
-           // Glide.with(context).load(book.thumbnail).centerCrop().into(holder.ivChapter);
+            Glide.with(context).load(book.thumbnail).centerCrop().into(holder.ivChapter);
 
-            Picasso.get().load(book.thumbnail).into(holder.ivChapter);
+         //   Picasso.get().load(book.thumbnail.replace("http","https")).into(holder.ivChapter);
 
         }
         else

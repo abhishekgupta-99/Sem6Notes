@@ -496,7 +496,7 @@ public class HomeActivity extends AppCompatActivity implements ForceUpdateChecke
 
             @Override
             public void onClick(View view) {
-                Toast.makeText(HomeActivity.this, "Dialog box closed", Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(HomeActivity.this, "Dialog box closed", Toast.LENGTH_SHORT).show();
                 alertDialog.dismiss();
             }
         });
@@ -568,7 +568,7 @@ public class HomeActivity extends AppCompatActivity implements ForceUpdateChecke
 
                     }
 
-                    Log.d("chip",chiptype);
+
                     filter_flag = true;
 
                 }
@@ -676,7 +676,7 @@ public class HomeActivity extends AppCompatActivity implements ForceUpdateChecke
         boolean all_fields_appropriate=true;
 
 
-        Toast.makeText(HomeActivity.this, chiptype+"", Toast.LENGTH_SHORT).show();
+     //   Toast.makeText(HomeActivity.this, chiptype+"", Toast.LENGTH_SHORT).show();
         EditText title=v.findViewById(R.id.title);
         EditText url= v.findViewById(R.id.ref_url);
 
@@ -775,7 +775,7 @@ public class HomeActivity extends AppCompatActivity implements ForceUpdateChecke
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(getApplicationContext(), "Book Uploaded to database", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Book uploaded to database", Toast.LENGTH_SHORT).show();
 
 
                         //Toast.makeText(ctx, "The car is "+lab+" , with a confidence of "+  conf, Toast.LENGTH_LONG).show();
@@ -789,7 +789,7 @@ public class HomeActivity extends AppCompatActivity implements ForceUpdateChecke
                     public void onFailure(@NonNull Exception e) {
                         // Log.w(TAG, "Error writing document", e);
 
-                        Toast.makeText(HomeActivity.this, "Failed Writing to database", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(HomeActivity.this, "Failed writing to database", Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -868,14 +868,14 @@ public class HomeActivity extends AppCompatActivity implements ForceUpdateChecke
 
             @Override
             public void onClick(View view) {
-                Toast.makeText(HomeActivity.this, "Dialog box closed", Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(HomeActivity.this, "Dialog box closed", Toast.LENGTH_SHORT).show();
                 alertDialog.dismiss();
             }
         });
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                 Toast.makeText(HomeActivity.this, "Save clicked", Toast.LENGTH_SHORT).show();
+               //  Toast.makeText(HomeActivity.this, "Save clicked", Toast.LENGTH_SHORT).show();
 
 
                 check_validity_details_announcement(v,account);
@@ -1047,8 +1047,16 @@ public class HomeActivity extends AppCompatActivity implements ForceUpdateChecke
 
                                 }
                                 String thumbnail = volumeInfo.getJSONObject("imageLinks").getString("thumbnail");
-                                book1.thumbnail=thumbnail;
-                                Log.d("Thumbnail ",thumbnail);
+
+                                try{
+                                    book1.thumbnail=thumbnail.replace("http","https");
+                                }
+                                catch (Exception ignored)
+                                {
+
+                                }
+
+                                Log.d("Thumbnail ",book1.thumbnail);
 
 //                                String previewLink = volumeInfo.getString("previewLink");
 //                                String url = volumeInfo.getString("infoLink");
@@ -1065,7 +1073,7 @@ public class HomeActivity extends AppCompatActivity implements ForceUpdateChecke
 
                                 if(i==5 || (i==items.length()-1))
                                 {
-                                    Toast.makeText(HomeActivity.this, i+"", Toast.LENGTH_SHORT).show();
+                                 //   Toast.makeText(HomeActivity.this, i+"", Toast.LENGTH_SHORT).show();
                                     fetched_books_playbooks.add(fetched_books);
                                     set_recyclerView_dialogbox(fetched_books_playbooks,v);
 
