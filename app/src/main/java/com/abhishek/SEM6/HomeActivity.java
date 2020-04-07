@@ -566,10 +566,6 @@ public class HomeActivity extends AppCompatActivity implements ForceUpdateChecke
                 {
                     filter_query_string = chiptype;
                 }
-                //  Toast.makeText(HomeActivity.this, chiptype, Toast.LENGTH_SHORT).show();
-             //   subject_names.clear();
-               // subjectAdapter_db.clear();
-               // getAllSubject(filter_flag,filter_query_string);
 
 
             }
@@ -579,79 +575,9 @@ public class HomeActivity extends AppCompatActivity implements ForceUpdateChecke
         TextView signedin=v.findViewById(R.id.signedIn);
         signedin.setText(account.getDisplayName());
 
-        //  builder.getContext().setTheme(R.style.AppTheme);
-        final AlertDialog  alert= builder.create();
-        //alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-        // Inflate and set the layout for the dialog
-        // Pass null as the parent view because its going in the dialog layout
 
         builder.setView(v);
-                // Add action buttons
-               /* .setPositiveButton("Upload", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
 
-                        EditText title=v.findViewById(R.id.title);
-                       // EditText url=v.findViewById(R.id.ref_url);
-
-//                        if(!(title.getText().toString().isEmpty()) || !(url.getText().toString().isEmpty())) {
-//
-//                            if (URLUtil.isValidUrl(url.getText().toString())) {
-//                                upload_to_firestore(account, title.getText().toString(), url.getText().toString());
-//                            } else {
-//                                Toast.makeText(HomeActivity.this, "Please enter a valid url ", Toast.LENGTH_SHORT).show();
-//                            }
-//                        }
-//                        else
-//                        {
-//                            Toast.makeText(HomeActivity.this, "Fields can't be empty", Toast.LENGTH_SHORT).show();
-//                        }
-
-
-
-
-
-//                        password_Et= v.findViewById(R.id.password_edit);
-//
-//                        // Log.d("correct_password_edit", passowrd.toString());
-//                        password_entered = password_Et.getText().toString();
-//                        showToast("Entered Password: "+password_entered);
-//                        Log.d("correct_password",password_entered);
-//                        String original= "1234";
-//
-//                        if (password_entered.equals("bmc_car"))
-//                        {
-//                            // Log.d("correct_password","heyyy");
-//                            dialog.cancel();
-//                            check_current_user();
-//
-//
-//                        }
-//                        else {
-//                            //Log.d(user_text,"string is empty");
-//                            String message = "The password you have entered is incorrect." + " \n \n" + "Please try again!";
-//                            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this,android.R.style.Theme_DeviceDefault_Light_Dialog_Alert);
-//                            builder.setTitle("Error");
-//                            builder.setMessage(message);
-//                            builder.setCancelable(false);
-//                            // builder.setPositiveButton("Cancel", null);
-//                            builder.setNegativeButton("Retry", new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int id) {
-//                                    dialog();
-//                                }
-//                            });
-//                            builder.create().show();
-//
-//                        }
-                    }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        });*/
 
         alertDialog = builder.create();
 
@@ -772,6 +698,7 @@ public class HomeActivity extends AppCompatActivity implements ForceUpdateChecke
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(getApplicationContext(), "Book uploaded to database", Toast.LENGTH_SHORT).show();
+                        alertDialog.dismiss();
 
 
                         //Toast.makeText(ctx, "The car is "+lab+" , with a confidence of "+  conf, Toast.LENGTH_LONG).show();
@@ -786,6 +713,7 @@ public class HomeActivity extends AppCompatActivity implements ForceUpdateChecke
                         // Log.w(TAG, "Error writing document", e);
 
                         Toast.makeText(HomeActivity.this, "Failed writing to database", Toast.LENGTH_SHORT).show();
+                        alertDialog.dismiss();
 
                     }
                 });
