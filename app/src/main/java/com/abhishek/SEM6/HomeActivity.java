@@ -16,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -71,8 +70,6 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
-import com.karan.churi.PermissionManager.PermissionManager;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;

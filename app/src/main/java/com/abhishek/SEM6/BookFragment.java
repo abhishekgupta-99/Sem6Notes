@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.abhishek.SEM6.adapters.SubjectAdapter_db;
-import com.abhishek.SEM6.models.Book;
 import com.abhishek.SEM6.models.Book_db;
 import com.abhishek.SEM6.models.Subject;
 import com.abhishek.SEM6.models.Subject_db;
