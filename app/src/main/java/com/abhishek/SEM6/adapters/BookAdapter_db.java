@@ -151,10 +151,10 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
             @Override
             public void onItemLongClicked(View view, int pos) {
                 // Toast.makeText(context,books.get(pos).getName(),Toast.LENGTH_SHORT).show();
-                Log.d("numnum",num+"");
+             //   Log.d("numnum",num+"");
                 if(num==1)
                 {
-                    Log.d("setimg","setimg");
+                  //  Log.d("setimg","setimg");
                     //View view = View.inflate(context,R.layout.add_book_dialog,null);
                     /*selected_book = view.findViewById(R.id.selected_book);
                     browse = view.findViewById(R.id.browse);
