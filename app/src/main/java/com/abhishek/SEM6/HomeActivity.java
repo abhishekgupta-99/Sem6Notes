@@ -79,6 +79,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -125,6 +126,7 @@ public class HomeActivity extends AppCompatActivity implements ForceUpdateChecke
     private SubjectAdapter_db subjectAdapter_db;
     private ArrayList<Subject> subjects;
     private static FirebaseFirestore db;
+    RecyclerView rv_playbooks;
     private static final int WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 54654;
     List<String> subject_names = new ArrayList<>();
 
@@ -312,31 +314,16 @@ public class HomeActivity extends AppCompatActivity implements ForceUpdateChecke
         return HomeActivity.context;
     }
 
-    /*private void set_recyclerView(ArrayList<Subject_db> subjects_db) {
-        subjectAdapter_db = new SubjectAdapter_db(subjects_db, HomeActivity.this,chiptype);
-        LinearLayoutManager manager = new LinearLayoutManager(HomeActivity.this);
-        rvSubject.setLayoutManager(manager);
-        rvSubject.setAdapter(subjectAdapter_db);
-
-        rvSubject.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0)
-                    floatingActionButton.hide();
-                else if (dy < 0)
-                    floatingActionButton.show();
-            }
-        });
-    }*/
 
 
     private void set_recyclerView_dialogbox (ArrayList<Subject_db> subjects_db, View v) {
-        RecyclerView rv_playbooks = v.findViewById(R.id.load_images_googleplay);
+         rv_playbooks = v.findViewById(R.id.load_images_googleplay);
         SubjectAdapter_db subjectAdapter_db_dialog = new SubjectAdapter_db(subjects_db, HomeActivity.this, chiptype, 1, v);
         LinearLayoutManager manager = new LinearLayoutManager(HomeActivity.this);
         rv_playbooks.setLayoutManager(manager);
         rv_playbooks.setAdapter(subjectAdapter_db_dialog);
         Toast.makeText(this, "Long Press on any thumnbnail to set it as the cover", Toast.LENGTH_LONG).show();
+        browse.setClickable(true);
        // subjectAdapter_db_dialog.notifyDataSetChanged();
 
 
@@ -536,6 +523,7 @@ public class HomeActivity extends AppCompatActivity implements ForceUpdateChecke
                     switch (chiptype+"")
                     {
                         case "book":
+                            rv_playbooks.setVisibility(View.VISIBLE);
                             browse_text.setVisibility(View.VISIBLE);
                             dialog_image.setImageResource(R.color.grey300);
                             //Toast.makeText(HomeActivity.this, chiptype+" Selected", Toast.LENGTH_SHORT).show();
@@ -544,17 +532,21 @@ public class HomeActivity extends AppCompatActivity implements ForceUpdateChecke
                             browse_text.setVisibility(View.INVISIBLE);
                             dialog_image.setImageResource(R.drawable.ppt);
                             dialog_image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                            rv_playbooks.setVisibility(GONE);
+
                             //Toast.makeText(HomeActivity.this, chiptype+" Selected", Toast.LENGTH_SHORT).show();
                             break;
                         case "notes":
                             browse_text.setVisibility(View.INVISIBLE);
                             dialog_image.setImageResource(R.drawable.note2);
                             dialog_image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                            rv_playbooks.setVisibility(GONE);
                             //Toast.makeText(HomeActivity.this, chiptype+" Selected", Toast.LENGTH_SHORT).show();
                             break;
                         case "youtube":
                             browse_text.setVisibility(View.INVISIBLE);
                             dialog_image.setImageResource(R.drawable.youtub);
+                            rv_playbooks.setVisibility(GONE);
                            // dialog_image.setScaleType(ImageView.ScaleType.CENTER_CROP);
                           //  dialog_image.setImageResource(R.color.grey300);
                             //Toast.makeText(HomeActivity.this, chiptype+" Selected", Toast.LENGTH_SHORT).show();
@@ -562,6 +554,7 @@ public class HomeActivity extends AppCompatActivity implements ForceUpdateChecke
                         case "papers":
                             browse_text.setVisibility(View.INVISIBLE);
                             dialog_image.setImageResource(R.drawable.paper);
+                            rv_playbooks.setVisibility(GONE);
                             //Toast.makeText(HomeActivity.this, chiptype+" Selected", Toast.LENGTH_SHORT).show();
                             break;
 
@@ -731,6 +724,12 @@ public class HomeActivity extends AppCompatActivity implements ForceUpdateChecke
             Toast.makeText(HomeActivity.this, "Please Select a Chip", Toast.LENGTH_SHORT).show();
         }
 
+        if(!isValid(url.getText().toString()))
+        {
+            all_fields_appropriate=false;
+            Toast.makeText(HomeActivity.this, "Please enter a valid url", Toast.LENGTH_SHORT).show();
+        }
+
         if(all_fields_appropriate)
         {
             upload_to_firestore(account,title.getText().toString(), url.getText().toString(),subject.getText().toString());
@@ -846,6 +845,21 @@ public class HomeActivity extends AppCompatActivity implements ForceUpdateChecke
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Toast.makeText(this, "Failed Sign In", Toast.LENGTH_SHORT).show();
             //Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+        }
+    }
+
+    public static boolean isValid(String url)
+    {
+        /* Try creating a valid URL */
+        try {
+            new URL(url).toURI();
+            return true;
+        }
+
+        // If there was an Exception
+        // while creating URL object
+        catch (Exception e) {
+            return false;
         }
     }
 
@@ -1114,7 +1128,6 @@ public class HomeActivity extends AppCompatActivity implements ForceUpdateChecke
 
     private void search(String search_query)
     {
-
         if(search_query.equals(""))
         {
             Toast.makeText(this,"Please enter your query",Toast.LENGTH_SHORT).show();
@@ -1128,6 +1141,7 @@ public class HomeActivity extends AppCompatActivity implements ForceUpdateChecke
     }
 
     public void search(View view) {
+        browse.setClickable(false);
         EditText search_title = v.findViewById(R.id.title);
         search(search_title.getText().toString());
       //  set_recyclerView_dialogbox(fetched_books_playbooks,v);

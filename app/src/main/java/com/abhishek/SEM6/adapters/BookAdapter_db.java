@@ -154,13 +154,7 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
              //   Log.d("numnum",num+"");
                 if(num==1)
                 {
-                  //  Log.d("setimg","setimg");
-                    //View view = View.inflate(context,R.layout.add_book_dialog,null);
-                    /*selected_book = view.findViewById(R.id.selected_book);
-                    browse = view.findViewById(R.id.browse);
-                    browse.setVisibility(View.GONE);*/
-                    //HomeActivity h = new HomeActivity();
-                    //h.setImage(v);
+
                     selected_book = v.findViewById(R.id.selected_book);
                     browse = v.findViewById(R.id.browse);
                     browse.setVisibility(View.GONE);
@@ -187,7 +181,16 @@ public class BookAdapter_db extends RecyclerView.Adapter<BookAdapter_db.CustomVi
             holder.download_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(books.get(position).url)));
+
+                    try
+                    {
+                        context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(books.get(position).url)));
+                    }
+                    catch(Exception e)
+                    {
+                        Toast.makeText(context, "Invalid Url", Toast.LENGTH_SHORT).show();
+                    }
+
 
                     //  file_download(books.get(position).url,book.name);
 

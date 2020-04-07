@@ -244,7 +244,16 @@ public class WebAdapter extends RecyclerView.Adapter<WebAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
 
-                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(books.get(i).url)));
+
+                try
+                {
+                    context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(books.get(i).url)));
+                }
+                catch(Exception e)
+                {
+                    Toast.makeText(context, "Invalid Url", Toast.LENGTH_SHORT).show();
+                }
+
 
             }
         });
