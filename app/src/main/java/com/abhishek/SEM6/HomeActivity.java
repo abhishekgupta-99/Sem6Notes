@@ -86,6 +86,7 @@ import java.util.Objects;
 import cz.msebera.android.httpclient.Header;
 
 import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 public class HomeActivity extends AppCompatActivity implements ForceUpdateChecker.OnUpdateNeededListener  {
 
@@ -474,6 +475,7 @@ public class HomeActivity extends AppCompatActivity implements ForceUpdateChecke
         //book_chip.setSelected(true);
         dialog_image=v.findViewById(R.id.selected_book);
         browse_text = v.findViewById(R.id.browse);
+        rv_playbooks=v.findViewById(R.id.load_images_googleplay);
         toolbar.inflateMenu(R.menu.dialog_menu);
         toolbar.setNavigationOnClickListener(new Toolbar.OnClickListener()
         {
@@ -520,15 +522,18 @@ public class HomeActivity extends AppCompatActivity implements ForceUpdateChecke
                     switch (chiptype+"")
                     {
                         case "book":
-                            rv_playbooks.setVisibility(View.VISIBLE);
+                            if( rv_playbooks.getVisibility()!=VISIBLE)
+                                rv_playbooks.setVisibility(View.VISIBLE);
                             browse_text.setVisibility(View.VISIBLE);
                             dialog_image.setImageResource(R.color.grey300);
                             //Toast.makeText(HomeActivity.this, chiptype+" Selected", Toast.LENGTH_SHORT).show();
                             break;
                         case "ppt":
+
                             browse_text.setVisibility(View.INVISIBLE);
                             dialog_image.setImageResource(R.drawable.ppt);
                             dialog_image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                            if( rv_playbooks.getVisibility()!=GONE)
                             rv_playbooks.setVisibility(GONE);
 
                             //Toast.makeText(HomeActivity.this, chiptype+" Selected", Toast.LENGTH_SHORT).show();
@@ -537,12 +542,14 @@ public class HomeActivity extends AppCompatActivity implements ForceUpdateChecke
                             browse_text.setVisibility(View.INVISIBLE);
                             dialog_image.setImageResource(R.drawable.note2);
                             dialog_image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                            rv_playbooks.setVisibility(GONE);
+                            if( rv_playbooks.getVisibility()!=GONE)
+                             rv_playbooks.setVisibility(GONE);
                             //Toast.makeText(HomeActivity.this, chiptype+" Selected", Toast.LENGTH_SHORT).show();
                             break;
                         case "youtube":
                             browse_text.setVisibility(View.INVISIBLE);
                             dialog_image.setImageResource(R.drawable.youtub);
+                            if( rv_playbooks.getVisibility()!=GONE)
                             rv_playbooks.setVisibility(GONE);
                            // dialog_image.setScaleType(ImageView.ScaleType.CENTER_CROP);
                           //  dialog_image.setImageResource(R.color.grey300);
@@ -551,6 +558,7 @@ public class HomeActivity extends AppCompatActivity implements ForceUpdateChecke
                         case "papers":
                             browse_text.setVisibility(View.INVISIBLE);
                             dialog_image.setImageResource(R.drawable.paper);
+                            if( rv_playbooks.getVisibility()!=GONE)
                             rv_playbooks.setVisibility(GONE);
                             //Toast.makeText(HomeActivity.this, chiptype+" Selected", Toast.LENGTH_SHORT).show();
                             break;
@@ -620,7 +628,7 @@ public class HomeActivity extends AppCompatActivity implements ForceUpdateChecke
         boolean all_fields_appropriate=true;
 
 
-        Toast.makeText(HomeActivity.this, chiptype+"", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(HomeActivity.this, chiptype+"", Toast.LENGTH_SHORT).show();
         EditText title=v.findViewById(R.id.title);
         EditText url= v.findViewById(R.id.ref_url);
         AutoCompleteTextView year =
