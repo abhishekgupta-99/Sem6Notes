@@ -60,6 +60,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -426,26 +427,6 @@ public class HomeActivity extends AppCompatActivity implements ForceUpdateChecke
 
     }
 
-    /*private void getAllSubject(final boolean filter_flag, final String filter_query_string) {
-        db.collection("Subjects").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        subject_names.add(document.getId());
-                    }
-                  //  Log.d("subjects", subject_names.toString());
-                    getAllBooks(filter_flag,filter_query_string);
-                   // set_recyclerView(subjects_db);
-
-                } else {
-                  //  Log.d("subjects", "Error getting documents: ", task.getException());
-                }
-            }
-        });
-
-    }*/
 
     public void add_dialog(final GoogleSignInAccount account) {
 
@@ -800,6 +781,11 @@ public class HomeActivity extends AppCompatActivity implements ForceUpdateChecke
         final AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.AppTheme_FullScreenDialog);
         inflater = getLayoutInflater();
         v=inflater.inflate(R.layout.add_book_dialog, null);
+        rv_playbooks=v.findViewById(R.id.load_images_googleplay);
+        rv_playbooks.setVisibility(GONE);
+
+        MaterialCardView cd=v.findViewById(R.id.thumbnail_card);
+        cd.setVisibility(GONE);
         LinearLayout layout_spinner = v.findViewById(R.id.spinners);
         layout_spinner.setVisibility(GONE);
         toolbar = v.findViewById(R.id.toolbar);

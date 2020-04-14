@@ -186,6 +186,7 @@
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="100dp"
                     android:layout_height="150dp"
+                    android:id="@+id/thumbnail_card"
                     app:cardBackgroundColor="@color/grey300"
                     app:cardCornerRadius="8dp">
 
